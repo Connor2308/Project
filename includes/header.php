@@ -4,9 +4,9 @@
   </div>
     <nav class="navbar">
       <div class="nav-container">
-        <a href="index.php">Home</a>
-        <a href="map.php">Map</a>
-        <a href="hotels.php">Hotels</a>
+        <a href="index.php">######</a>
+        <a href="map.php">#######</a>
+        <a href="hotels.php">########</a>
         <a href=""></a>
       </div>
     </nav>
