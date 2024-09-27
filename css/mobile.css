@@ -1,0 +1,63 @@
+.header {
+    background-color: blue;
+    -webkit-backgraound-size:cover;
+    -moz-backgraound-size:cover;
+    -o-backgraound-size:cover;
+    color: #FFF 
+}
+
+
+.header .navbar{
+    overflow: hidden;
+    padding: 20px;
+    position: absolute;
+    top: 0;
+    left:0;
+    width: 100%;
+}
+
+.header .navbar .links {
+    float: right;
+}
+
+.header .intro h1 {
+    margin: 0;
+    font-size: 40px;
+    font-weight: 800;
+    
+}
+
+.header .intro p {
+    margin: 5px 0 40px;
+    line-height: 1.9;
+    font-size: 20px;
+}
+.header .buttons button {
+    background: transparent;
+    padding: 10px 0;
+    width: 180px;
+    font-size: 20px;
+    border: 1px solid #969090;
+    margin: 0 8px;
+    border-radius: 10px;
+     color: #FFF;    
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+         transition: all .5s ease-in-out;
+
+}
+.container {
+    width: 1200px;
+    margin: auto;
+    position: relative;
+    
+}
+.table {
+    height: 100%;
+    display: table;
+}
+
+.table-row {
+    display: table-row;
+       
+}
