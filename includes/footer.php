@@ -10,7 +10,7 @@
                 <li><a href="aboutus.php">About Us</a></li>
             </ul>
             <ul>
-                <li><div>&copy; <?php echo "Group 12 20$year";?></div><li>
+                <li><div>&copy; <?php echo "Group 9 20$year";?></div><li>
             </ul>
         </div>
     </footer>
