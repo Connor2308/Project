@@ -19,8 +19,8 @@
         ?>
         <div class="content">
                 <h1>########<br><span>Welcomes</span>You</h1>
-                <p class="par">This will be a webpage for students and leactures</p>
-                
+                <p class="par">This will be a webpage for Inventory Management</p>
+                <button type="submit"><a href="logout.php" class="btn">Login</a></button>
             </div>
     </div>
         <!-- <div class="content">
