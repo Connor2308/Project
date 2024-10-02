@@ -114,7 +114,7 @@ ul li a :hover{
     padding: 0; 
 }
 .content {
-    width: 80%; 
+    width: 100%; 
     color: #000000;
     text-align: center;
     position: relative;

@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
     <title>#########</title>
-    <link rel="stylesheet" href="css/map.css"/>
     <link rel="stylesheet" href="css/mobile.css"/>
-    <link rel="stylesheet" href="css/index.css"/>
     <link
       rel="stylesheet"
       href="css/index.css"
