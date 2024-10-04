@@ -7,7 +7,6 @@
         <a href="index.php">Home</a>
         <a href="">Gallery</a>
         <a href="">Car Repairs</a>
-        <a href="map.php">#######</a>
         <a href=""></a>
       </div>
     </nav>
