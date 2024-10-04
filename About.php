@@ -17,7 +17,18 @@
     </div>
     <div class="content">
       <h2>Team Members (Group 9)</h2>
-      <p>Connor, Misbah, naida, Felix and Tom</p>
+      <p>Connor, Misbah, Naida, Felix and Tom</p>
+      <h2>Connor (Description)</h2>
+      <p></p>
+      <h2>Misbah (Description)</h2>
+      <p></p>
+      <h2>Naida (Description)</h2>
+      <p></p>
+      <h2>Felix (Description)</h2>
+      <p></p>
+      <h2>Tom (Description)</h2>
+      <p></p>
+
     </div>
     <?php include("includes/footer.php")?>
     
