@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "nahrim_schema";
+$dbname = "to_do_list";
 //this establishes a connection to the database, conn will be our database connection variable
 $conn = new mysqli($servername, $username, $password, $dbname);
 

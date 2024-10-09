@@ -5,6 +5,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
+    border: none;
 }
 .menu{
     width: 400px;
@@ -58,11 +59,10 @@
 }
 .navbar{
     display: flex;
-    justify-content: flex-end; 
     margin-right: 50px; 
 }
 .navbar a:hover {
-    color: #ff7200; 
+    color: crimson; 
 }
 
 /* Footer */
@@ -165,7 +165,7 @@ tr:nth-child(odd) {
 .uc{
     text-transform: uppercase;
 }
-/* Search Hotels */
+
 .search-container{
     text-align: center;
     margin-top: 3%;
