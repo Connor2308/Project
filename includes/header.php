@@ -5,9 +5,9 @@
     <nav class="navbar">
       <div class="nav-container">
         <a href="index.php">Home</a>
-        <a href="">Gallery</a>
-        <a href="">Car Repairs</a>
-        <a href=""></a>
+        <a href="shop.php">Shop</a>
+        <a href="checkout.php">Checkout</a>
+        <a href="cart.php">Cart Here</a>
       </div>
     </nav>
 </header>

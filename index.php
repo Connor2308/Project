@@ -8,7 +8,6 @@
       href="css/index.css"
       media="only screen and (min-width : 720px)"
     />
-    <script type="text/javascript" src="js/map.js"></script>
 
 </head>
 <body>

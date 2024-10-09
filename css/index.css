@@ -174,17 +174,20 @@ tr:nth-child(odd) {
 .btn{
     width: 100px;
     height: 40px;
-    background: #ff7200;
-    border: 2px solid #ff7200;
+    background: red;
     margin-top: 13px;
-    color: #fff;
+    color: black;
     font-size: 15px;
     border-bottom-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
+.btn:hover{
+    color: crimson;
+}
 .btn:focus{
     outline: none;
 }
+
 .srch{
     outline: none;
 }
@@ -216,16 +219,16 @@ tr:nth-child(odd) {
     transition: 45 ease;
 }
 .content span{
-    color: #ff7200;
+    color: crimson;
     font-size: 60px;
 }
 .content .cn a{
     text-decoration: none;
-    color: #fff;
+    color: black;
     transition: .3s ease;
 }
 .cn:hover{
-    background-color: #fff;
+    background-color: crimson;
 }
 .form{
     width: 250px;
@@ -272,7 +275,7 @@ tr:nth-child(odd) {
 .btnn{
     width: 240px;
     height: 40px;
-    background: #ff7200;
+    background: crimson;
     border: none;
     margin-top: 30px;
     font-size: 18px;
@@ -283,7 +286,7 @@ tr:nth-child(odd) {
 }
 .btnn:hover{
     background: #fff;
-    color: #ff7200;
+    color: crimson;
 }
 .btnn a{
     text-decoration: none;
