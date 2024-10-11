@@ -31,7 +31,7 @@ if(!isset($_SESSION['user_name'])){
       <h1>welcome <span><?php echo $_SESSION['user_name'] ?></span></h1>
       <p>this is an user page</p>
       <a href="index_user.php" class="btn">WishList</a>
-      <a href="index.php" class="btn">Home</a>
+      <a href="home_user.php" class="btn">Home</a>
       <a href="register_form.php" class="btn">register</a>
       <a href="logout.php" class="btn">logout</a>
    </div>
