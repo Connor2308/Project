@@ -12,11 +12,11 @@
 </head>
 <body>
     <div class="main">
-        <?php include("includes/header.php")
+        <?php include("includes/index_admin.php")
         ?>
         <div class="content">
-                <h1>Welcome<br>user</h1>
-                <p class="par">This will be a webpage for Inventory Management</p>
+                <h1>Welcome<span>Admin</span></h1>
+                <p class="par"></p>
                 <button type="submit"><a href="logout.php" class="btn">Logout</a></button>
             </div>
     </div>
