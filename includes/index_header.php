@@ -4,7 +4,7 @@
   </div>
     <nav class="navbar">
       <div class="nav-container">
-        <a href="index.php">Home</a>
+        <a href="home_user.php">Home</a>
         <a href="shop.php">Shop</a>
       </div>
     </nav>
