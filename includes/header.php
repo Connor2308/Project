@@ -6,6 +6,7 @@
       <div class="nav-container">
         <a href="index.php">Home</a>
         <a href="shop.php">Shop</a>
+        <a href="gallery.php">Gallery</a>
       </div>
     </nav>
 </header>

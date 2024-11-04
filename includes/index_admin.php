@@ -6,6 +6,8 @@
       <div class="nav-container">
         <a href="admin_index.php">Home</a>
         <a href="user_details.php">User Details</a>
+        <a href="">User Invoices</a>
+        <a href="Edit_gallery.php">Edit Gallery</a>
       </div>
     </nav>
 </header>
