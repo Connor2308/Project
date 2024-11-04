@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>About Us</title>
-    <link rel="stylesheet" href="css/About_us_bot.css" media="only screen and (min-width : 720px)"/>
+   
     <link rel="stylesheet" href="css/index.css" media="only screen and (min-width : 720px)"/>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -10,7 +10,7 @@
 <?php include("includes/header.php")?>
 <body>
 <div class="wrapper">
-        <div class="title">Assistent</div>
+        <div class="titles">Assistent</div>
         <div class="forms">
             <div class="bot-inbox inbox">
                 <div class="icon">
