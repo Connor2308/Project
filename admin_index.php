@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>#########</title>
+    <title>Car repair Website</title>
     <link rel="stylesheet" href="css/mobile.css"/>
     <link
       rel="stylesheet"

@@ -1,6 +1,6 @@
 <header class="header">
   <div class="title">
-    <a href="index.php" class="name">########</a>
+    <a href="index.php" class="name">Car repair Website</a>
   </div>
     <nav class="navbar">
       <div class="nav-container">
