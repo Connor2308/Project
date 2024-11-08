@@ -7,12 +7,11 @@
 </head>
 <body>
 <div class="main">
-        <?php include("includes/index_header.php")
-        ?>
+        <?php include("includes/index_header.php")?>
         <div class="content">
-                <h1><br><span></span></h1>
-                <p class="par"></p>
-            </div>
+          <h1><br><span></span></h1>
+          <p class="par"></p>
+        </div>
     </div>
     <?php include("includes/footer.php")?>
 </body>

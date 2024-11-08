@@ -15,9 +15,31 @@
         <?php include("includes/index_header.php")
         ?>
         <div class="content">
-                <h1><br><span></span></h1>
-                <p class="par"></p>
-            </div>
+        <div class="gallery">
+            <a target="_blank" href="#">
+                <img src="#" alt="#" width="600" height="400">
+            </a>
+            <div class="desc">Add Description</div>
+        </div>
+        <div class="gallery">
+            <a target="_blank" href="#">
+                <img src="#" alt="#" width="600" height="400">
+            </a>
+            <div class="desc">Add Description</div>
+        </div>
+        <div class="gallery">
+            <a target="_blank" href="#">
+                <img src="#" alt="#" width="600" height="400">
+            </a>
+            <div class="desc">Add Description</div>
+        </div>
+        <div class="gallery">
+            <a target="_blank" href="#">
+                <img src="#" alt="#" width="600" height="400">
+            </a>
+            <div class="desc">Add Description</div>
+        </div>
+        </div>
     </div>
         
     <?php include("includes/footer.php")?>
