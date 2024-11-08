@@ -7,7 +7,7 @@ require 'db_conn.php'
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User index</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/index2.css">
 </head>
 <body>
     
@@ -23,6 +23,7 @@ require 'db_conn.php'
                 <?php } else { ?>
                 <input type="text" name="title" placeholder="What do you need?" />
                 <button type="submit">Add &nbsp; <span>&#43;</span></button>
+                <button type="submit"><a href="home_user.php" class="btn">Home &nbsp; <span>&#43;</span></a></button>
                 <button type="submit"><a href="logout.php" class="btn">logout &nbsp; <span>&#43;</span></a></button>
                 <?php } ?>
             </form>
