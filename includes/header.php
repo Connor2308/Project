@@ -9,4 +9,8 @@
         <a href="gallery.php">Gallery</a>
       </div>
     </nav>
+    <div class="auth-links">
+    <a href="logout.php" class="btn">Login</a>
+    <a href="register_form.php" class="btn">Register</a>
+  </div>
 </header>
