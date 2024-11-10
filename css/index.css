@@ -474,8 +474,9 @@ tr:nth-child(odd) {
 /*Gallery page*/
 .gallery{
     margin: 5px;
-    border: 1px solid #ccc;
-    float: left;
+    border: 1px solid #1f2c67;
+    display: flex;
+    justify-content: center;
     width: 180px;
 }
 .gallery:hover{

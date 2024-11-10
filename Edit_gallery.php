@@ -21,7 +21,7 @@
         ?>
         <div class="content">
                 <h2>Gallery</h2>
-                <p>Welcome Admin to the Gallery page! You can View and edit the lists of uploaded images below</p>
+                <p></p>
     </div>
         
     <?php include("includes/footer.php")?>
