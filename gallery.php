@@ -38,6 +38,36 @@
             </a>
             <div class="desc">Add Description</div>
         </div>
+        <div class="gallery">
+            <a target="_blank" href="#">
+                <img src="#" alt="#" width="600" height="400">
+            </a>
+            <div class="desc">Add Description</div>
+        </div>
+        <div class="gallery">
+            <a target="_blank" href="#">
+                <img src="#" alt="#" width="600" height="400">
+            </a>
+            <div class="desc">Add Description</div>
+        </div>
+        <div class="gallery">
+            <a target="_blank" href="#">
+                <img src="#" alt="#" width="600" height="400">
+            </a>
+            <div class="desc">Add Description</div>
+        </div>
+        <div class="gallery">
+            <a target="_blank" href="#">
+                <img src="#" alt="#" width="600" height="400">
+            </a>
+            <div class="desc">Add Description</div>
+        </div>
+        <div class="gallery">
+            <a target="_blank" href="#">
+                <img src="#" alt="#" width="600" height="400">
+            </a>
+            <div class="desc">Add Description</div>
+        </div>
     </div>
         
     <?php include("includes/footer.php")?>
