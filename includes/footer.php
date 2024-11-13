@@ -3,9 +3,9 @@
     <?php $year = date("y"); ?>
         <div class="panel">
             <ul>
-                <li><a href="">FAQs</a></li>
-                <li><a href="">Privacy Policy</a></li>
-                <li><a href="">Security Policy</a></li>
+                <li><a href="faqs.php">FAQs</a></li>
+                <li><a href="privacy_policy.php">Privacy Policy</a></li>
+                <li><a href="security_policy.php">Security Policy</a></li>
                 <li><a href="About.php">About Us</a></li>
             </ul>
             <ul>
