@@ -1,3 +1,11 @@
+<?php
+session_start();
+include('include/functions.php');
+include('include/connection.php');
+$user_data = check_login($con);//to get the data of the currently logged in user
+$user_id = $user_data['user_id'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,46 +17,43 @@
     <title>Homepage</title>
 </head>
 <body>
-
-        
+    
     <?php include('include/header.php')?>
     <div class="page-container">   
+        <div class="categories">
 
-    <div class="categories">
+            <div class="category-btn">
+            <p>View All</p>
+            </div>
 
-        <div class="category-btn">
-        <p>View All</p>
+            <div class="category-btn">
+            <p>Engine Oil</p>
+            </div>
+
+            <div class="category-btn">
+            <p>Brakes</p>
+            </div>
+
+            <div class="category-btn">
+            <p>Motor Filter</p>
+            </div>
+
+            <div class="category-btn">
+            <p>Car Battery</p>
+            </div>
+
+            <div class="category-btn">
+            <p>Car</p>
+            </div>
+
+            <div class="category-btn">
+            <p>Motorcycle</p>
+            </div>
+            
+            <div class="category-btn">
+            <p>Truck</p>
+            </div>
         </div>
-
-        <div class="category-btn">
-        <p>Engine Oil</p>
-        </div>
-
-        <div class="category-btn">
-        <p>Breaks</p>
-        </div>
-
-        <div class="category-btn">
-        <p>Motor Filter</p>
-        </div>
-
-        <div class="category-btn">
-        <p>Car Battery</p>
-        </div>
-
-        <div class="category-btn">
-        <p>Car</p>
-        </div>
-
-        <div class="category-btn">
-        <p>Motorcycle</p>
-        </div>
-        
-        <div class="category-btn">
-        <p>Truck</p>
-        </div>
-    </div>
-
     </div>
     <?php include('include/footer.php')?>
 </body>
