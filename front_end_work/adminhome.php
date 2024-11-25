@@ -1,3 +1,6 @@
+<?php
+include('include/init.php'); //initalise everything like user data
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

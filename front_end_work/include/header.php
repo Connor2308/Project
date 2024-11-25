@@ -7,17 +7,17 @@
     </a>
   </h1></div>
 
-  <!-- Search Bar -->
+  <!-- Search Bar
   <form class="search-bar">
     <input type="text" name="" placeholder="Search parts..." required>
     <button type="search-submit" aria-label="Search">Search</button>
-  </form>
+  </form> -->
 
   <!-- Nav Bar -->
   <ul class="navbar">
     <li><a href="orders.php">View Orders</a></li>
-    <li><a href="adminhome.php">Welcome Username</a></li>
-    <li>    <a href="logout.php">Sign Out</a></li>
+    <li><a href="adminhome.php">Welcome <?php echo htmlspecialchars($user_data['username']); ?></a></li>
+    <li><a href="logout.php">Sign Out</a></li>
   </ul>
 
 </header>

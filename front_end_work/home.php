@@ -1,9 +1,5 @@
 <?php
-session_start();
-include('include/functions.php');
-include('include/connection.php');
-$user_data = check_login($con);//to get the data of the currently logged in user
-$user_id = $user_data['user_id'];
+include('include/init.php'); //initalise everything like user data
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +8,6 @@ $user_id = $user_data['user_id'];
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style/base.css">
     <link rel="stylesheet" href="style/category.css">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage</title>
 </head>
@@ -21,37 +16,25 @@ $user_id = $user_data['user_id'];
     <?php include('include/header.php')?>
     <div class="page-container">   
         <div class="categories">
-
             <div class="category-btn">
-            <p>View All</p>
+                <a href="inventory.php">
+                    <p>View Inventory</p>
+                </a>
             </div>
-
             <div class="category-btn">
-            <p>Engine Oil</p>
+                <a href="orders.php">
+                    <p>View Orders</p>
+                </a>
             </div>
-
             <div class="category-btn">
-            <p>Brakes</p>
+                <a href="users.php">
+                    <p>View Users</p>
+                </a>
             </div>
-
             <div class="category-btn">
-            <p>Motor Filter</p>
-            </div>
-
-            <div class="category-btn">
-            <p>Car Battery</p>
-            </div>
-
-            <div class="category-btn">
-            <p>Car</p>
-            </div>
-
-            <div class="category-btn">
-            <p>Motorcycle</p>
-            </div>
-            
-            <div class="category-btn">
-            <p>Truck</p>
+                <a href="transactions.php">
+                    <p>View Inventory Transactions</p>
+                </a>
             </div>
         </div>
     </div>

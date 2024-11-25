@@ -1,9 +1,5 @@
 <?php
-session_start();
-include('include/functions.php');
-include('include/connection.php');
-$user_data = check_login($con);//to get the data of the currently logged in user
-$user_id = $user_data['user_id'];
+include('include/init.php'); //initalise everything like user data
 
 //handling the sorting part. using what is in the url to either sort to asc or desc if nothing then it will default to part id eg when the page is first loaded
 $sort_column = isset($_GET['sort_column']) ? $_GET['sort_column'] : 'part_id';
@@ -39,8 +35,9 @@ $result = $con->query($sql);
 </head>
 <body>
     <?php include('include/header.php'); ?>
+    
     <div class="page-container">
-           <!-- page header -->
+        <!-- page header -->
         <h2 class="page-title">Car Parts Inventory</h2>
 
         <div class="table-container">
@@ -76,20 +73,24 @@ $result = $con->query($sql);
                             echo "<td>" . htmlspecialchars($row['reorder_level']) . "</td>";
                             echo "<td class='quantity'>" . htmlspecialchars($row['quantity_in_stock']) . "</td>";
                             echo "<td>
-                                    <button class='update-btn' data-id='{$row['part_id']}' data-action='decrease'>-</button>
-                                    <button class='update-btn' data-id='{$row['part_id']}' data-action='increase'>+</button>
+                                    <div class='button-container'>
+                                        <button class='update-btn' data-id='{$row['part_id']}' data-action='decrease'>-</button>
+                                        <button class='update-btn' data-id='{$row['part_id']}' data-action='increase'>+</button>
+                                    </div>
                                   </td>";
                             echo "</tr>";
                         }
                     } else {
-                        echo "<tr><td>No parts found.</td></tr>";
+                        echo "<tr><td colspan='10'>No parts found.</td></tr>";
                     }
                     ?>
                 </tbody>
             </table>
         </div>
     </div>
+
     <?php include('include/footer.php'); ?>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="js/update_stock.js"></script>
 </body>

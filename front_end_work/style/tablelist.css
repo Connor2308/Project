@@ -1,7 +1,7 @@
-*{
-    font-family:'Poppins', sans-serif;
-    margin:0;
-    padding:0;
+* {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
     text-decoration: none;
 }
@@ -13,9 +13,9 @@
     background-size: cover;
     position: relative;
     display: flex;
-    flex-direction: column;  
-    padding-top: 20px;       
-    margin: 0 auto;        
+    flex-direction: column;
+    padding-top: 20px;
+    margin: 0 auto;
 }
 
 .page-title {
@@ -27,17 +27,19 @@
 }
 
 .table-container {
-    background-color: #e0e0e0; 
-    width: 80%;
+    background-color: #e0e0e0;
+    width: 90%; 
+    max-width: 1200px;
     padding: 20px;
     border-radius: 8px;
-    margin: 10px auto; 
+    margin: 10px auto;
 }
 
 .inventory-list {
     width: 100%;
     border-collapse: collapse;
     background-color: #fff;
+    table-layout: auto;
 }
 
 .inventory-list thead {
@@ -52,8 +54,8 @@
 
 .inventory-list th {
     font-weight: bold;
-    background-color: #f5f5f5; 
-    color: #333; 
+    background-color: #f5f5f5;
+    color: #333;
 }
 
 .inventory-list tbody tr {
@@ -63,17 +65,38 @@
 .inventory-list tbody tr:hover {
     background-color: #f0f0f0;
 }
-/* Quantity Buttons */
+
 .update-btn {
+    display: inline-block;
     padding: 5px 10px;
     margin: 0 5px;
     cursor: pointer;
-    background-color: #007bff;
     color: white;
     border: none;
     border-radius: 4px;
 }
 
-.update-btn:hover {
-    background-color: #0056b3;
+.update-btn[data-action='decrease'] {
+    background-color: #dc3545;
+}
+
+.update-btn[data-action='decrease']:hover {
+    background-color: #c82333;
+}
+
+.update-btn[data-action='increase'] {
+    background-color: #28a745;
+}
+
+.update-btn[data-action='increase']:hover {
+    background-color: #218838;
+}
+
+.button-container {
+    display: flex;
+    gap: 10px;
+}
+
+.quantity {
+    text-align: center;
 }
