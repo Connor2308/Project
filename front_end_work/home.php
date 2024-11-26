@@ -27,7 +27,7 @@ include('include/init.php'); //initalise everything like user data
                 </a>
             </div>
             <div class="category-btn">
-                <a href="users.php">
+                <a href="view_users.php">
                     <p>View Users</p>
                 </a>
             </div>

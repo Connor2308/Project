@@ -8,24 +8,27 @@ if(isset($_POST['username'], $_POST['password'])){ //whatever user has entered i
   $entered_username = $_POST['username']; //saving inputted data as variables, this is used all over the codebase
   $entered_password = $_POST['password'];
 
-  if(($entered_username) && ($entered_password)){ //data has been entered into these variables if it is true
-    $login_query = "SELECT * FROM users WHERE username = '$entered_username'";
-    $login_result = mysqli_query($con, $login_query);
+  if(($entered_username) && ($entered_password)){ //data has been entered into these variables if it is true or not empty
+    $login_query = "SELECT * FROM users WHERE username = ?"; //login query
+    $stmt = mysqli_prepare($con, $login_query); //mysqli_prepare prepares the statement for execution, the ? is just a temp thing and will be changed with the username, this prevents sql injections
+    mysqli_stmt_bind_param($stmt, 's', $entered_username); //this bind the entered username to the prepared statement, the 's' specifies that the parameter is a string, as usernames are strings
+    mysqli_stmt_execute($stmt); //runs the query
+    $login_result = mysqli_stmt_get_result($stmt);//fetching the query and then login result is used to see if it exists (username)
     
-    if($login_result){//if it returns a username from the db
-      if($login_result && mysqli_num_rows($login_result) === 1){ //only one row should return since usernams are unique, we did this in account creation
-        $user_data = mysqli_fetch_assoc($login_result);//fetching all the associated data to the login result or the username
-        //if passwords match then we set the current logged in user in the session to the user
-        if($user_data['password'] === $entered_password){ 
-          $_SESSION['user_id'] = $user_data['user_id']; 
-          header("Location: home.php");//redirect to home page
-        }
+    if($login_result && mysqli_num_rows($login_result) === 1){ //checking if the user name exists
+      $user_data = mysqli_fetch_assoc($login_result); //fetching the user data
+      //verify the entered password with the hashed password in the DB
+      if(password_verify($entered_password, $user_data['password'])){ //this is where we acutally 'dehash' the password with password_verify()
+        //if the password matches!, create session and redirect
+        $_SESSION['user_id'] = $user_data['user_id'];
+        header("Location: home.php"); //redirect to home page
+        exit;
       }
     }
     //js alert as they have done something wrong
     echo "<script>alert('Wrong username or password');</script>";//js alert informing user of wrong user or pass
   }
-}
+} 
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +42,6 @@ if(isset($_POST['username'], $_POST['password'])){ //whatever user has entered i
     <title>Sign In</title>
 </head>
 <body>      
-<?php include('include/header.php')?>
 <div class="page-container"> 
     <div class="form-container">
         <form action="signin.php" method="post">
@@ -47,7 +49,6 @@ if(isset($_POST['username'], $_POST['password'])){ //whatever user has entered i
             <input type="text" placeholder="Enter Username" name="username" required>
             <input type="password" placeholder="Enter Password" name="password" required>
             <input type="submit" name="submit" value="Login" class="form-btn">
-            <p>Don't have an account? <a href="signup.php">Sign up</a></p>
         </form>
     </div>
 </div>

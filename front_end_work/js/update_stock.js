@@ -8,7 +8,7 @@ $(document).ready(function () { //loading the dom in first
             type: 'POST',
             data: { part_id: partId, action: action },
             success: function (response) {
-                $(`#row-${partId} .quantity`).text(response);// if the response is success full then it will update the quantitys stock of the designated Part ID
+                $(`#row-${partId} .quantity`).text(response);//if the response is success full then it will update the quantitys stock of the designated Part ID
             },
             error: function () { //any errors will show this.
                 alert('Error updating stock');
