@@ -7,7 +7,6 @@
 </h1></div>
 
 <form class="search-bar" action="search.php" method="GET">
-<form class="search-bar" action="search.php" method="GET">
 
 <input type="text" name="" placeholder="Search parts..." required>
 <button type="search-submit" aria-label="Search">
