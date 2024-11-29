@@ -46,10 +46,8 @@ if (!empty($conditions)) {
 
 //adding the ORDER BY clause (this is always added, ust kept breaking when everywhere else but here
 $sql .= " ORDER BY $sort_column $sort_order";
-
 //finally we execute the query :)
 $result = $con->query($sql);
-
 ?>
 
 <!DOCTYPE html>
@@ -122,6 +120,7 @@ $result = $con->query($sql);
                         <th><a href="?sort_column=reorder_level&sort_order=<?php echo $next_sort_order; ?>">Reorder Level</a></th>
                         <th><a href="?sort_column=quantity_in_stock&sort_order=<?php echo $next_sort_order; ?>">Quantity in Stock</a></th>
                         <th>Update Stock Levels</th>
+                        <th>Manage Part Details</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -145,6 +144,7 @@ $result = $con->query($sql);
                                         <button class='update-btn' data-id='{$row['part_id']}' data-action='increase'>+</button>
                                     </div>
                                   </td>";
+                            echo "<td><a href='manage_part.php?part_id=" . htmlspecialchars($row['part_id']) . "' class='manage-btn'>Manage Parts</a></td>";
                             echo "</tr>";
                         }
                     } else {

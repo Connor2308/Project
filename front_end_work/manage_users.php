@@ -31,33 +31,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_password = $_POST['new_password'];
     $confirm_password = $_POST['confirm_password'];
 
-    // Check if the new username already exists in the db
+    //check if the new username already exists in the db
     $check_username_sql = "SELECT COUNT(*) FROM users WHERE username = ? AND user_id != ?";
     $stmt_username = $con->prepare($check_username_sql);
     $stmt_username->bind_param('si', $username, $user_id);
     $stmt_username->execute();
     $stmt_username->bind_result($username_exists);
     $stmt_username->fetch();
-    $stmt_username->free_result();  // Free the result to prevent "Commands out of sync" error
+    $stmt_username->free_result(); //idk this just fixed it
 
-    // Check if the new email already exists in the db
+    //check if the new email already exists in the db
     $check_email_sql = "SELECT COUNT(*) FROM users WHERE email = ? AND user_id != ?";
     $stmt_email = $con->prepare($check_email_sql);
     $stmt_email->bind_param('si', $email, $user_id);
     $stmt_email->execute();
     $stmt_email->bind_result($email_exists);
     $stmt_email->fetch();
-    $stmt_email->free_result();  // Free the result to prevent "Commands out of sync" error
+    $stmt_email->free_result(); //idk this just fixed it
 
-    // Check if the new phone number exists in the db
+    //check if the new phone number exists in the db
     $check_phone_sql = "SELECT COUNT(*) FROM user_details WHERE phone_number = ? AND user_id != ?";
     $stmt_phone = $con->prepare($check_phone_sql);
     $stmt_phone->bind_param('si', $phone_number, $user_id);
     $stmt_phone->execute();
     $stmt_phone->bind_result($phone_exists);
     $stmt_phone->fetch();
-    $stmt_phone->free_result();  // Free the result to prevent "Commands out of sync" error
-
+    $stmt_phone->free_result();  //idk this just fixed it
 
     //if any exist then it retuns this error
     if ($username_exists > 0) {
