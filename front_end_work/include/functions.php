@@ -13,4 +13,37 @@ function check_login($con){
   //redirect to login page as login has failed
   header("Location: signin.php");
 }
+function checkAdmin() {
+  if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'Admin') {
+      echo "<script>
+              alert('You are not authorized to access this page.');
+              window.location.href = 'home.php';
+            </script>";
+      exit; // Stop further script execution
+  }
+}
+// Function to update the total cost in the orders table
+function updateOrderTotal($con, $order_id) {
+  // Recalculate the total order price
+  $total_order_price = 0;
+  $sql = "SELECT order_quantity, unit_price FROM order_items 
+          LEFT JOIN parts ON order_items.part_id = parts.part_id 
+          WHERE order_items.order_id = ?";
+  $stmt = $con->prepare($sql);
+  $stmt->bind_param('i', $order_id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+
+  // Sum up the total price of all order items
+  while ($row = $result->fetch_assoc()) {
+      $total_order_price += $row['order_quantity'] * $row['unit_price'];
+  }
+
+  // Update the total_cost in the orders table
+  $update_sql = "UPDATE orders SET total_cost = ? WHERE order_id = ?";
+  $update_stmt = $con->prepare($update_sql);
+  $update_stmt->bind_param('di', $total_order_price, $order_id);
+  $update_stmt->execute();
+}
+
 ?>

@@ -1,6 +1,7 @@
 <?php
 include('include/init.php'); //initalise everything like user data
-
+//verifying admin?
+checkAdmin();
 //Sorting Section
 $sort_column = isset($_GET['sort_column']) ? $_GET['sort_column'] : 'user_id'; //if nothing is in the sort column eg when we load up the page we will sort in the part_id
 $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'ASC'; //this ensures that when the page is first loaded it ensures that it is set to ASC order 

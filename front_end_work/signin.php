@@ -21,6 +21,7 @@ if(isset($_POST['username'], $_POST['password'])){ //whatever user has entered i
       if(password_verify($entered_password, $user_data['password'])){ //this is where we acutally 'dehash' the password with password_verify()
         //if the password matches!, create session and redirect
         $_SESSION['user_id'] = $user_data['user_id'];
+        $_SESSION['user_role'] = $user_data['role'];
         header("Location: home.php"); //redirect to home page
         exit;
       }

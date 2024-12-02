@@ -227,6 +227,7 @@ body {
         align-items: center;
     }
 }
+
 /* manage user btn */
 .manage-btn {
     padding: 8px 16px;
@@ -243,3 +244,111 @@ body {
     background-color: #218838;
 }
 
+/* Create Order Form */
+.create-order-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.create-order-form h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.create-order-form label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #555;
+}
+
+.create-order-form select, 
+.create-order-form input[type="date"], 
+.create-order-form input[type="time"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.create-order-form select:focus,
+.create-order-form input[type="date"]:focus,
+.create-order-form input[type="time"]:focus {
+    outline: none;
+    border-color: #0056b3;
+}
+
+.create-order-form button {
+    padding: 10px 15px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.create-order-form button:hover {
+    background-color: #004494;
+}
+
+/* Add Part Form */
+.add-part-form {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.add-part-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.add-part-form input,
+.add-part-form select,
+.add-part-form button {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.add-part-form button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.add-part-form button:hover {
+    background-color: #45a049;
+}
+
+/* Remove from Order button styles */
+.remove-btn {
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    color: white;
+    background-color: #dc3545; /* Red color */
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.remove-btn:hover {
+    background-color: #c82333; /* Darker red on hover */
+}

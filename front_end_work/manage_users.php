@@ -1,6 +1,7 @@
 <?php
 include('include/init.php'); //initalise, this includes the database connection
-
+//verifying admin?
+checkAdmin();
 //getting user id from the url, if the user id is not in the url it defaults to 0 to make sure it does not break
 $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : 0;
 
