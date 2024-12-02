@@ -37,6 +37,11 @@ include('include/init.php'); //initalise everything like user data
                 </a>
             </div>
             <div class="category-btn">
+                <a href="stock_analysis.php">
+                    <p>Stock Analysis</p>
+                </a>
+            </div>
+            <div class="category-btn">
                 <a href="suppliers.php">
                     <p>View Company Suppliers</p>
                 </a>

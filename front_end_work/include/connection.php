@@ -9,4 +9,25 @@ $con = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 if ($con->connect_error){
   die("Connection failed: " . $con->connect_error);
 }
+// Fetch sales data from the database
+$sql = "SELECT product, stock FROM ";
+$result = $conn->query($sql);
+
+$product = [];
+$stocks = [];
+
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        $Products[] = $row['Products'];
+        $Stocks[] = $row['Stocks'];
+    }
+}
+
+// Return data as JSON
+echo json_encode([
+    'products' => $product,
+    'stocks' => $stocks
+]);
+
+$conn->close();
 ?>
