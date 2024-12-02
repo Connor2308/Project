@@ -22,7 +22,7 @@ include('include/init.php'); //initalise everything like user data
                 </a>
             </div>
             <div class="category-btn">
-                <a href="orders.php">
+                <a href="view_orders.php">
                     <p>View Orders</p>
                 </a>
             </div>
@@ -34,6 +34,11 @@ include('include/init.php'); //initalise everything like user data
             <div class="category-btn">
                 <a href="transactions.php">
                     <p>View Inventory Transactions</p>
+                </a>
+            </div>
+            <div class="category-btn">
+                <a href="suppliers.php">
+                    <p>View Company Suppliers</p>
                 </a>
             </div>
         </div>
