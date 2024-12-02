@@ -11,7 +11,7 @@ if ($con->connect_error){
 }
 // Fetch sales data from the database
 $sql = "SELECT part_name, quantity_in_stock FROM parts";
-$result = $conn->query($sql);
+$result = $con->query($sql);
 
 $product = [];
 $stocks = [];
@@ -29,5 +29,4 @@ echo json_encode([
     'stocks' => $stocks
 ]);
 
-$conn->close();
 ?>
