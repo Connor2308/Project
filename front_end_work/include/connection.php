@@ -10,7 +10,7 @@ if ($con->connect_error){
   die("Connection failed: " . $con->connect_error);
 }
 // Fetch sales data from the database
-$sql = "SELECT product, stock FROM ";
+$sql = "SELECT part_name, quantity_in_stock FROM parts";
 $result = $conn->query($sql);
 
 $product = [];
