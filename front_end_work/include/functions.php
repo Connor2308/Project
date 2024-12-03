@@ -19,7 +19,7 @@ function checkAdmin() {
               alert('You are not authorized to access this page.');
               window.location.href = 'home.php';
             </script>";
-      exit; // Stop further script execution
+      exit;
   }
 }
 // Function to update the total cost in the orders table
