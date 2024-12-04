@@ -17,7 +17,7 @@
     </div>
         <div class="content">
            <h2>Your Privacy</h2>
-            <p></p>
+            <p class="par">privacy policy here</p>
         </div>
         <?php include("includes/footer.php")?>
 </body>
