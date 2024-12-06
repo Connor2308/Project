@@ -100,6 +100,10 @@ $result = $con->query($sql);
                 <label for="search">Search:</label>
                 <input type="text" id="search" name="search" placeholder="Search parts..." value="<?php echo isset($_POST['search']) ? htmlspecialchars($_POST['search']) : ''; ?>">
             </div>
+            <form action="inventory.php">
+                <input name="inventory" id="search" type="text" placement="Search">
+                <input id="submit" type="submit" value="Search">
+            </form>
             <!-- apply filter button/ this is disabled by default but is enabled by js when the user actually selects a filter to apply, this is cause it kept breaking -->
             <button type="submit" id="apply-filters" disabled>Apply Filters</button> 
         </form>
