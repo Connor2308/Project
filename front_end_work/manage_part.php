@@ -85,6 +85,8 @@ $suppliers = [];
 while ($row = $supplier_result->fetch_assoc()) {
     $suppliers[] = $row;
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -154,6 +156,7 @@ while ($row = $supplier_result->fetch_assoc()) {
             </div>
 
             <button type="submit">Save Changes</button>
+            <button type="submit">Add part</button>
         </form>
     </div>
 </body>
