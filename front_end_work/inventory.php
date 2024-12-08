@@ -48,7 +48,10 @@ if (!empty($conditions)) {
 $sql .= " ORDER BY $sort_column $sort_order";
 //finally we execute the query :)
 $result = $con->query($sql);
+
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -64,7 +67,7 @@ $result = $con->query($sql);
     
     <div class="page-container">
         <h2 class="page-title">Car Parts Inventory</h2>
-        
+
         <!-- Filter Form (This is split into 3 sections, filters left which is price filtering, filters right which is genre check boxes and a search box, also a search button  to execute the filters) -->
         <form id="filter-form" method="POST">
             <!-- price filter section -->
@@ -100,13 +103,21 @@ $result = $con->query($sql);
                 <label for="search">Search:</label>
                 <input type="text" id="search" name="search" placeholder="Search parts..." value="<?php echo isset($_POST['search']) ? htmlspecialchars($_POST['search']) : ''; ?>">
             </div>
-            <form action="inventory.php">
+
+            <!-- just had to comment out this search as it broke the functionality of the filters, will fix -->
+            <!-- <form action="inventory.php">
                 <input name="inventory" id="search" type="text" placement="Search">
                 <input id="submit" type="submit" value="Search">
-            </form>
+            </form> -->
+
             <!-- apply filter button/ this is disabled by default but is enabled by js when the user actually selects a filter to apply, this is cause it kept breaking -->
             <button type="submit" id="apply-filters" disabled>Apply Filters</button> 
         </form>
+
+        <!-- Add a Part Button -->
+        <div id="add-part-button-container" class="button-container">
+            <a href="adding_new_parts.php" class="add-part-btn">Add Part</a>  <!-- Update href to the correct URL -->
+        </div>
 
         <!-- table bit -->
         <div class="table-container">

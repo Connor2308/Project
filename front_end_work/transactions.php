@@ -1,5 +1,5 @@
 <?php
-include('include/init.php')
+include('include/init.php');
 //get the part_id from the url, default to 0 to avoid errors
 $part_id = isset($_GET['part_id']) ? $_GET['part_id'] : 0;
 

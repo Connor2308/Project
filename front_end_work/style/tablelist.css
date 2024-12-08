@@ -342,7 +342,7 @@ body {
     padding: 6px 12px;
     cursor: pointer;
     color: white;
-    background-color: #dc3545; /* Red color */
+    background-color: #dc3545; 
     border: none;
     border-radius: 6px;
     font-size: 16px;
@@ -350,5 +350,27 @@ body {
 }
 
 .remove-btn:hover {
-    background-color: #c82333; /* Darker red on hover */
+    background-color: #c82333; 
+}
+
+/* Button container for Add Part */
+#add-part-button-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Add Part Button */
+.add-part-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.add-part-btn:hover {
+    background-color: #218838;
 }

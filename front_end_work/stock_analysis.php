@@ -1,5 +1,6 @@
 <?php
-include('include/connection.php');
+include('include/init.php');
+include('include/chart_functionality.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">

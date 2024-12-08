@@ -7,12 +7,6 @@
     </a>
   </h1></div>
 
-  <!-- Search Bar
-  <form class="search-bar">
-    <input type="text" name="" placeholder="Search parts..." required>
-    <button type="search-submit" aria-label="Search">Search</button>
-  </form> -->
-
   <!-- Nav Bar -->
   <ul class="navbar">
     <li><a href="home.php">Welcome <?php echo htmlspecialchars($user_data['username']); ?></a></li>

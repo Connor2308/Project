@@ -1,7 +1,5 @@
 <?php
-session_start();
-include('include/functions.php');
-include('include/connection.php');
+include('include/init.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
