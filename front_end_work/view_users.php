@@ -1,6 +1,5 @@
 <?php
 include('include/init.php');
-var_dump($_SESSION['user_role']); // This will display the session role value
 checkAdmin();
 
 //sorting section, when you click the table headers
@@ -130,11 +129,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
     <link rel="stylesheet" href="style/useradd.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin View Users</title>
-    <script>
-        <?php if (!empty($error_message)) { ?>
-            alert("<?php echo $error_message; ?>");
-        <?php } ?>
-    </script>
 </head>
 <body>
     <?php include('include/header.php')?>

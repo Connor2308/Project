@@ -78,8 +78,8 @@ while ($row = $genre_result->fetch_assoc()) {
     $genres[] = $row['genre'];
 }
 
-//fetch all suppliers for the dropdown
-$supplier_sql = "SELECT supplier_id, supplier_name FROM suppliers";
+//fetch only active suppliers for the dropdown
+$supplier_sql = "SELECT supplier_id, supplier_name FROM suppliers WHERE active = 1";
 $supplier_result = $con->query($supplier_sql);
 $suppliers = [];
 while ($row = $supplier_result->fetch_assoc()) {

@@ -26,6 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $email = $_POST['email'];
     $role = $_POST['role'];
+    // Update session role
+    if ($_SESSION['user_id'] == $user_id) {
+        $_SESSION['user_role'] = $user_data['role'];
+    }
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
     $phone_number = $_POST['phone_number'];
@@ -84,11 +88,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $update_stmt = $con->prepare($update_sql);
     $update_stmt->bind_param('sssi', $username, $email, $role, $user_id);
     $update_stmt->execute();
-
-    // Update session role
-    if ($_SESSION['user_id'] == $user_id) {
-        $_SESSION['role'] = $role;  // Update session role with new role
-    }
 
     //updating the user details table with this new data
     $update_details_sql = "UPDATE user_details SET first_name = ?, last_name = ?, phone_number = ? WHERE user_id = ?";
