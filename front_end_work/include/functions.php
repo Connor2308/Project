@@ -22,6 +22,7 @@ function checkAdmin() {
       exit;
   }
 }
+
 // Function to update the total cost in the orders table
 function updateOrderTotal($con, $order_id) {
   // Recalculate the total order price
@@ -45,5 +46,6 @@ function updateOrderTotal($con, $order_id) {
   $update_stmt->bind_param('di', $total_order_price, $order_id);
   $update_stmt->execute();
 }
+
 
 ?>

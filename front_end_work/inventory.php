@@ -43,15 +43,47 @@ if (!empty($genre_filter)) {
 if (!empty($conditions)) {
     $sql .= " WHERE " . implode(" AND ", $conditions);
 }
-
 //adding the ORDER BY clause (this is always added, ust kept breaking when everywhere else but here
 $sql .= " ORDER BY $sort_column $sort_order";
+
 //finally we execute the query :)
 $result = $con->query($sql);
 
 
-?>
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
+    $part_id = $_POST['part_id'];
 
+    //begin transaction to ensure data consistency
+    $con->begin_transaction();
+
+    try {
+        //Delete all items in the order
+        $delete_items_sql = "DELETE FROM order_items WHERE part_id = ?";
+        $delete_items_stmt = $con->prepare($delete_items_sql);
+        $delete_items_stmt->bind_param('i', $part_id);
+        if (!$delete_items_stmt->execute()) {
+            throw new Exception('Error deleting item from order items.');
+        }
+
+        //Delete the order itself
+        $delete_part_sql = "DELETE FROM parts WHERE part_id = ?";
+        $delete_part_stmt = $con->prepare($delete_part_sql);
+        $delete_part_stmt->bind_param('i', $part_id);
+        if (!$delete_part_stmt->execute()) {
+            throw new Exception('Error deleting the parts.');
+        }
+
+        //Commit the transaction
+        $con->commit();
+        header('Location: inventory.php'); //Redirect to parts page after successful removal
+        exit;
+    } catch (Exception $e) {
+        //Rollback in case of error
+        $con->rollback();
+        echo "<p>Error removing part: " . $e->getMessage() . "</p>";
+    }
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -136,6 +168,7 @@ $result = $con->query($sql);
                         <th><a href="?sort_column=quantity_in_stock&sort_order=<?php echo $next_sort_order; ?>">Quantity in Stock</a></th>
                         <th>Update Stock Levels</th>
                         <th>Manage Part Details</th>
+                        <th>Remove Part</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -159,7 +192,13 @@ $result = $con->query($sql);
                                         <button class='update-btn' data-id='{$row['part_id']}' data-action='increase'>+</button>
                                     </div>
                                   </td>";
-                            echo "<td><a href='manage_part.php?part_id=" . htmlspecialchars($row['part_id']) . "' class='manage-btn'>Manage Parts</a></td>";
+                            echo "<td><a href='manage_part.php?part_id=" . htmlspecialchars($row['part_id']) . "' class='manage-btn'>Manage Part</a></td>";
+                            echo "<td>
+                                    <form method='POST' onsubmit='return confirm(\"Are you sure you want to delete this part?, This will remove the part from all existing orders!\");'>
+                                        <input type='hidden' name='part_id' value='" . htmlspecialchars($row['part_id']) . "'>
+                                        <button type='submit' name='remove_part' class='remove-btn'>Remove Part</button>
+                                    </form>
+                                  </td>";
                             echo "</tr>";
                         }
                     } else {

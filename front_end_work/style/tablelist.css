@@ -127,7 +127,7 @@ body {
 .table-container {
     background-color: #fff;
     width: 90%;
-    max-width: 1200px;
+    max-width: auto;
     padding: 20px;
     border-radius: 8px;
     margin: 20px auto;
@@ -230,14 +230,15 @@ body {
 
 /* manage user btn */
 .manage-btn {
-    padding: 8px 16px;
     background-color: #28a745;
-    color: white;
-    border-radius: 4px;
-    text-decoration: none;
-    text-align: center;
     display: inline-block;
-    font-size: 1em;
+    padding: 6px 12px;
+    cursor: pointer;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
 }
 
 .manage-btn:hover {
@@ -368,9 +369,26 @@ body {
     border-radius: 4px;
     text-decoration: none;
     font-size: 16px;
+    width: 250px;
+    height:50x;
     transition: background-color 0.3s ease;
 }
 
 .add-part-btn:hover {
     background-color: #218838;
+}
+/* Refresh Button for price on Order Page */
+.refresh-btn{
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    color: white;
+    background-color: #3a71e6; 
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+.refresh-btn:hover {
+    background-color: #1e54ca; 
 }

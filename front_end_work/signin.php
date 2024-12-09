@@ -1,34 +1,36 @@
 <?php
-//the basis for my superglobals and how i submit my forms comes from this documentation https://www.w3schools.com/php/php_superglobals_post.asp
 session_start();
 include("include/connection.php");
 include("include/functions.php");
 
-if(isset($_POST['username'], $_POST['password'])){ //whatever user has entered in box
-  $entered_username = $_POST['username']; //saving inputted data as variables, this is used all over the codebase
-  $entered_password = $_POST['password'];
+if (isset($_POST['username'], $_POST['password'])) { // check if username and password are entered
+    $entered_username = $_POST['username']; // saving inputted data as variables
+    $entered_password = $_POST['password'];
 
-  if(($entered_username) && ($entered_password)){ //data has been entered into these variables if it is true or not empty
-    $login_query = "SELECT * FROM users WHERE username = ?"; //login query
-    $stmt = mysqli_prepare($con, $login_query); //mysqli_prepare prepares the statement for execution, the ? is just a temp thing and will be changed with the username, this prevents sql injections
-    mysqli_stmt_bind_param($stmt, 's', $entered_username); //this bind the entered username to the prepared statement, the 's' specifies that the parameter is a string, as usernames are strings
-    mysqli_stmt_execute($stmt); //runs the query
-    $login_result = mysqli_stmt_get_result($stmt);//fetching the query and then login result is used to see if it exists (username)
-    
-    if($login_result && mysqli_num_rows($login_result) === 1){ //checking if the user name exists
-      $user_data = mysqli_fetch_assoc($login_result); //fetching the user data
-      //verify the entered password with the hashed password in the DB
-      if(password_verify($entered_password, $user_data['password'])){ //this is where we acutally 'dehash' the password with password_verify()
-        //if the password matches!, create session and redirect
-        $_SESSION['user_id'] = $user_data['user_id'];
-        $_SESSION['user_role'] = $user_data['role'];
-        header("Location: home.php"); //redirect to home page
-        exit;
-      }
+    if (($entered_username) && ($entered_password)) { // check if data has been entered
+        // Modify the query to check if the user is active
+        $login_query = "SELECT * FROM users WHERE username = ? AND active = 1"; // check if the user is active
+        $stmt = mysqli_prepare($con, $login_query); // prepare the statement
+        mysqli_stmt_bind_param($stmt, 's', $entered_username); // bind the username to the prepared statement
+        mysqli_stmt_execute($stmt); // execute the query
+        $login_result = mysqli_stmt_get_result($stmt); // fetch the result
+
+        if ($login_result && mysqli_num_rows($login_result) === 1) { // check if user exists
+            $user_data = mysqli_fetch_assoc($login_result); // fetch the user data
+            // verify the entered password with the hashed password in the DB
+            if (password_verify($entered_password, $user_data['password'])) { // check if the password matches
+                // if password is correct, create session and redirect
+                $_SESSION['user_id'] = $user_data['user_id'];
+                $_SESSION['user_role'] = $user_data['role'];
+                header("Location: home.php"); // redirect to home page
+                exit;
+            } else {
+                echo "<script>alert('Wrong password');</script>"; // if password doesn't match
+            }
+        } else {
+            echo "<script>alert('User not found or account is inactive');</script>"; // if no active user is found
+        }
     }
-    //js alert as they have done something wrong
-    echo "<script>alert('Wrong username or password');</script>";//js alert informing user of wrong user or pass
-  }
 } 
 ?>
 
@@ -37,7 +39,6 @@ if(isset($_POST['username'], $_POST['password'])){ //whatever user has entered i
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style/base.css">
-
     <link rel="stylesheet" href="style/signin.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In</title>

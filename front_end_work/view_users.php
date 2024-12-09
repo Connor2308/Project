@@ -1,5 +1,6 @@
 <?php
 include('include/init.php');
+var_dump($_SESSION['user_role']); // This will display the session role value
 checkAdmin();
 
 //sorting section, when you click the table headers
@@ -7,7 +8,7 @@ $sort_column = $_GET['sort_column'] ?? 'user_id';
 $sort_order = $_GET['sort_order'] ?? 'ASC';
 $next_sort_order = ($sort_order === 'ASC') ? 'DESC' : 'ASC'; 
 
-//SQL Query to fetch user data
+//SQL Query to fetch active user data
 $sql = "SELECT 
             users.user_id,
             users.username,
@@ -23,8 +24,11 @@ $sql = "SELECT
             user_details 
         ON 
             users.user_id = user_details.user_id
+        WHERE 
+            users.active = 1
         ORDER BY 
             $sort_column $sort_order";
+
 $result = $con->query($sql);
 
 $error_message = ''; //creating the error message varibale for later just incase
@@ -95,20 +99,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
     $con->begin_transaction();
 
     try {
-        //delete the user details first
-        $delete_details_sql = "DELETE FROM user_details WHERE user_id = ?";
-        $delete_details_stmt = $con->prepare($delete_details_sql);
-        $delete_details_stmt->bind_param('i', $user_id);
-        if (!$delete_details_stmt->execute()) {
-            throw new Exception('Error deleting user details.');
-        }
-
-        //delete the user
-        $delete_user_sql = "DELETE FROM users WHERE user_id = ?";
-        $delete_user_stmt = $con->prepare($delete_user_sql);
-        $delete_user_stmt->bind_param('i', $user_id);
-        if (!$delete_user_stmt->execute()) {
-            throw new Exception('Error deleting the user.');
+        // Set the user's status to inactive
+        $update_user_sql = "UPDATE users SET active = 0 WHERE user_id = ?";
+        $update_user_stmt = $con->prepare($update_user_sql);
+        $update_user_stmt->bind_param('i', $user_id);
+        if (!$update_user_stmt->execute()) {
+            throw new Exception('Error deactivating the user.');
         }
 
         //commit transaction
@@ -116,11 +112,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
         header('Location: view_users.php'); //redirects you to the users page if it is successful
         exit;
     } catch (Exception $e) {
-        //roll back just incase anything breaks
+        //roll back just in case anything breaks
         $con->rollback();
         echo "<p>Error removing user: " . $e->getMessage() . "</p>";
     }
 }
+
 ?>
 
 <!-- HTML -->
@@ -224,7 +221,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
                             
                             // Remove User button
                             echo "<td>
-                                    <form method='POST' onsubmit='return confirm(\"Are you sure you want to delete this user?\");'>
+                                    <form method='POST' onsubmit='return confirm(\"Are you sure you want to delete this user?.\");'>
                                         <input type='hidden' name='user_id' value='" . htmlspecialchars($row['user_id']) . "'>
                                         <button type='submit' name='remove_user' class='remove-btn'>Remove User</button>
                                     </form>

@@ -85,15 +85,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $update_stmt->bind_param('sssi', $username, $email, $role, $user_id);
     $update_stmt->execute();
 
+    // Update session role
+    if ($_SESSION['user_id'] == $user_id) {
+        $_SESSION['role'] = $role;  // Update session role with new role
+    }
+
     //updating the user details table with this new data
     $update_details_sql = "UPDATE user_details SET first_name = ?, last_name = ?, phone_number = ? WHERE user_id = ?";
     $update_details_stmt = $con->prepare($update_details_sql);
     $update_details_stmt->bind_param('sssi', $first_name, $last_name, $phone_number, $user_id);
     $update_details_stmt->execute();
 
-    //once they have finished the action then send them back to table
+    // Once the action is completed, redirect to view users page
     header('Location: view_users.php');
     exit;
+
 }
 ?>
 

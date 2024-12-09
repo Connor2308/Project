@@ -14,6 +14,7 @@ $sql = "SELECT
             orders.order_time,
             orders.total_cost,
             orders.order_status,
+            orders.recipient_name,
             users.username
         FROM 
             orders
@@ -24,31 +25,34 @@ $sql = "SELECT
         ORDER BY 
             $sort_column $sort_order";
 
+
 $result = $con->query($sql);
 
-//handle form submission for creating a new order
+//create an order
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['create_order'])) {
-    //capture form data
+    // capture form data
     $user_id = $_POST['user_id'];
     $order_status = $_POST['order_status'];
     $order_date = $_POST['order_date'];
     $order_time = $_POST['order_time'];
+    $recipient_name = $_POST['recipient_name']; // Add this line to capture recipient's name
 
-    //insert the new order into the orders table
-    $insert_sql = "INSERT INTO orders (user_id, order_date, order_time, order_status) 
-                   VALUES (?, ?, ?, ?)";
+    // insert the new order into the orders table
+    $insert_sql = "INSERT INTO orders (user_id, order_date, order_time, order_status, recipient_name) 
+                   VALUES (?, ?, ?, ?, ?)";
     $stmt = $con->prepare($insert_sql);
-    $stmt->bind_param('isss', $user_id, $order_date, $order_time, $order_status);
+    $stmt->bind_param('issss', $user_id, $order_date, $order_time, $order_status, $recipient_name);
 
     if ($stmt->execute()) {
-        $order_id = $stmt->insert_id; //get the inserted order's ID
-        //redirect to the manage orders page with the newly created order's ID
+        $order_id = $stmt->insert_id; // get the inserted order's ID
+        // redirect to the manage orders page with the newly created order's ID
         header("Location: view_orders.php?order_id=$order_id");
         exit;
     } else {
         echo "<p>Error creating order. Please try again.</p>";
     }
 }
+
 
 //get all users for the user selection dropdown
 $users_query = "SELECT user_id, username FROM users";
@@ -61,6 +65,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_order'])) {
     $con->begin_transaction();
 
     try {
+        //Delete all references of the order in the invoice table
+        $delete_invoice_sql = "DELETE FROM invoices WHERE order_id = ?";
+        $delete_invoice_stmt = $con->prepare($delete_invoice_sql);
+        $delete_invoice_stmt->bind_param('i', $order_id);
+        if (!$delete_invoice_stmt->execute()) {
+            throw new Exception('Error deleting invoices.');
+        }
+
         //Delete all items in the order
         $delete_items_sql = "DELETE FROM order_items WHERE order_id = ?";
         $delete_items_stmt = $con->prepare($delete_items_sql);
@@ -86,6 +98,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_order'])) {
         $con->rollback();
         echo "<p>Error removing order: " . $e->getMessage() . "</p>";
     }
+}
+
+// Handle Refresh Price Request
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['refresh_price'])) {
+    $order_id = $_POST['order_id'];
+    updateOrderTotal($con, $order_id);
+    header("Location: view_orders.php"); // Redirect to avoid form resubmission
+    exit;
 }
 ?>
 
@@ -133,9 +153,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_order'])) {
                         <th><a href="?sort_column=order_date&sort_order=<?php echo $next_sort_order; ?>">Order Date</a></th>
                         <th><a href="?sort_column=order_time&sort_order=<?php echo $next_sort_order; ?>">Order Time</a></th>
                         <th><a href="?sort_column=order_status&sort_order=<?php echo $next_sort_order; ?>">Status</a></th>
+                        <th><a href="?sort_column=recipient_name&sort_order=<?php echo $next_sort_order; ?>">Recipient</a></th>
                         <th>Total Cost</th>
-                        <th>Manage Orders</th>
-                        <th>View Order Details</th>
+                        <th>Reset Price</th>
+                        <th>Manage Order Details</th>
+                        <th>View Order Content</th>
                         <th>Remove Order</th> 
                     </tr>
                 </thead>
@@ -153,11 +175,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_order'])) {
                             echo "<td>" . htmlspecialchars($row['order_date']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['order_time']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['order_status']) . "</td>";
-                            echo "<td>£" . $total_cost . "</td>"; // Display total cost
-                            // Manage Order button
-                            echo "<td><a href='manage_orders.php?order_id=" . htmlspecialchars($row['order_id']) . "' class='manage-btn'>Manage Order</a></td>";
-                            // View Order Details button
-                            echo "<td><a href='view_order_details.php?order_id=" . htmlspecialchars($row['order_id']) . "' class='manage-btn'>View Order Details</a></td>";
+                            echo "<td>" . htmlspecialchars($row['recipient_name'] ?? "N/A") . "</td>";
+                            echo "<td>£" . $total_cost . "</td>";
+                            // Refresh Price Button
+                            echo "<td>
+                                    <form method='POST'>
+                                        <input type='hidden' name='order_id' value='" . htmlspecialchars($row['order_id']) . "'>
+                                        <button type='submit' name='refresh_price' class='refresh-btn'>Refresh</button>
+                                    </form>
+                                  </td>";
+                            //Manage Order Details
+                            echo "<td><a href='manage_orders.php?order_id=" . htmlspecialchars($row['order_id']) . "' class='manage-btn'>Manage Order Details</a></td>";
+                            //View Order Content
+                            echo "<td><a href='view_order_details.php?order_id=" . htmlspecialchars($row['order_id']) . "' class='manage-btn'>View Order Content</a></td>";
                             // Remove Order button
                             echo "<td>
                                     <form method='POST' onsubmit='return confirm(\"Are you sure you want to delete this order?\");'>
@@ -189,6 +219,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_order'])) {
                     }
                     ?>
                 </select>
+                <label for="recipient_name">Recipient Name:</label>
+                <input type="text" name="recipient_name" id="recipient_name" required>
+
 
                 <label for="order_date">Order Date:</label>
                 <input type="date" name="order_date" id="order_date" required>
