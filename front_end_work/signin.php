@@ -1,7 +1,7 @@
 <?php
 session_start();
 include("include/connection.php");
-include("include/functions.php");
+include("include/functions.php"); // Ensure this is included to access the logAction function
 
 if (isset($_POST['username'], $_POST['password'])) { // check if username and password are entered
     $entered_username = $_POST['username']; // saving inputted data as variables
@@ -22,6 +22,10 @@ if (isset($_POST['username'], $_POST['password'])) { // check if username and pa
                 // if password is correct, create session and redirect
                 $_SESSION['user_id'] = $user_data['user_id'];
                 $_SESSION['user_role'] = $user_data['role'];
+                
+                // Log the login action (log the user's login event)
+                logAction($user_data['user_id'], $user_data['username'], 'LOGIN', 'Logged in at this time'); // Log the action here
+                
                 header("Location: home.php"); // redirect to home page
                 exit;
             } else {
@@ -31,7 +35,7 @@ if (isset($_POST['username'], $_POST['password'])) { // check if username and pa
             echo "<script>alert('User not found or account is inactive');</script>"; // if no active user is found
         }
     }
-} 
+}
 ?>
 
 <!DOCTYPE html>

@@ -19,6 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_part'])) {
     //execute and handle results
     if ($stmt->execute()) {
         //success, redirect to inventory.php
+        logAction($user_data['user_id'], $user_data['username'], 'CREATE', "Added an item with part ID: $part_id"); // Log the action here
+
         header('Location: inventory.php');
         exit;
     } else {

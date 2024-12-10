@@ -10,7 +10,6 @@
   <!-- Nav Bar -->
   <ul class="navbar">
     <li><a href="home.php">Welcome <?php echo htmlspecialchars($user_data['username']); ?></a></li>
-    <li><a href="manage_account.php">Manage Account</a></li>
     <li><a href="logout.php">Sign Out</a></li>
   </ul>
 

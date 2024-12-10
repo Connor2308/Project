@@ -45,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['create_order'])) {
 
     if ($stmt->execute()) {
         $order_id = $stmt->insert_id; // get the inserted order's ID
+        logAction($user_data['user_id'], $user_data['username'], 'CREATE', 'Added an order'); // Log the action here
         // redirect to the manage orders page with the newly created order's ID
         header("Location: view_orders.php?order_id=$order_id");
         exit;
@@ -63,7 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_order'])) {
 
     //begin transaction to ensure data consistency
     $con->begin_transaction();
-
     try {
         //Delete all references of the order in the invoice table
         $delete_invoice_sql = "DELETE FROM invoices WHERE order_id = ?";
@@ -90,6 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_order'])) {
         }
 
         //Commit the transaction
+        logAction($user_data['user_id'], $user_data['username'], 'DELETE', 'Removed an order'); // Log the action here
         $con->commit();
         header('Location: view_orders.php'); //Redirect to orders page after successful removal
         exit;

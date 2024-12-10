@@ -53,6 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_part'])) {
         if ($insert_stmt->execute()) {
             //after inserting, update the total cost in orders table
             updateOrderTotal($con, $order_id);
+            logAction($user_data['user_id'], $user_data['username'], 'ADD', "Added an item with part ID: $part_id to order ID: $order_id"); // Log the action here
+
             //redirect to the current order details page after inserting the new part
             header("Location: view_order_details.php?order_id=$order_id");
             exit;
@@ -77,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
         //after removing, update the total cost in orders table
         updateOrderTotal($con, $order_id);
         //redirect to the current order details page after removing the part
+        logAction($user_data['user_id'], $user_data['username'], 'DELETE', "Removed an item with part ID: $part_id from order ID: $order_id"); // Log the action here
         header("Location: view_order_details.php?order_id=$order_id");
         exit;
     } else {

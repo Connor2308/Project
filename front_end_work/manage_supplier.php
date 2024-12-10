@@ -1,5 +1,5 @@
 <?php
-include('include/init.php'); // Initialize, this includes the database connection
+include('include/init.php'); // Initialise, this includes the database connection
 // Verifying admin?
 checkAdmin();
 
@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $update_stmt->bind_param('ssssssi', $supplier_name, $contact_name, $contact_email, $contact_phone, $address, $active, $supplier_id);
     $update_stmt->execute();
 
+    logAction($user_data['user_id'], $user_data['username'], 'UPDATE', 'Updated a supplier'); // Log the action here
     // Once the action is completed, redirect to the suppliers list page
     header('Location: suppliers.php');
     exit;

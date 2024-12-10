@@ -95,6 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $update_details_stmt->bind_param('sssi', $first_name, $last_name, $phone_number, $user_id);
     $update_details_stmt->execute();
 
+    logAction($user_data['user_id'], $user_data['username'], 'UPDATE', 'Updated a user'); // Log the action here
     // Once the action is completed, redirect to view users page
     header('Location: view_users.php');
     exit;

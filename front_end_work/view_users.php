@@ -81,6 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['create_user'])) {
             $stmt = $con->prepare($insert_details_sql);
             $stmt->bind_param('isss', $user_id, $first_name, $last_name, $phone_number);
             $stmt->execute();
+            logAction($user_data['user_id'], $user_data['username'], 'CREATE', "Created $user_id"); // Log the action here
 
             header('Location: view_users.php');//if it correct it will redirect to the view_users table with the new user
             exit;
@@ -107,6 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
         }
 
         //commit transaction
+        logAction($user_data['user_id'], $user_data['username'], 'DELETE', "Removed $user_id "); // Log the action here
         $con->commit();
         header('Location: view_users.php'); //redirects you to the users page if it is successful
         exit;
@@ -197,6 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
                         <th><a href="?sort_column=last_name&sort_order=<?php echo $next_sort_order; ?>">Last Name</a></th>
                         <th><a href="?sort_column=phone_number&sort_order=<?php echo $next_sort_order; ?>">Phone Number</a></th>
                         <th>Manage Users</th>
+                        <th>Delete Users</th>
                     </tr>
                 </thead>
                 <tbody>

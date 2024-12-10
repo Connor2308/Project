@@ -8,6 +8,7 @@ if (isset($_GET['deactivate_supplier_id'])) {
     $stmt = $con->prepare($deactivate_sql);
     $stmt->bind_param('i', $deactivate_supplier_id);
     $stmt->execute();
+    logAction($user_data['user_id'], $user_data['username'], 'DELETE', 'Deleted a supplier'); // Log the action here
     header('Location: ' . $_SERVER['REQUEST_URI']);
     exit;
 }
@@ -28,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_supplier'])) {
     $stmt->bind_param('sssss', $supplier_name, $contact_name, $contact_phone, $contact_email, $address);
 
     if ($stmt->execute()) {
+        logAction($user_data['user_id'], $user_data['username'], 'CREATE', 'Added a supplier'); // Log the action here
         header('Location: suppliers.php'); // Redirect to the suppliers page after successful addition
         exit;
     } else {

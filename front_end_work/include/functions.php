@@ -46,6 +46,24 @@ function updateOrderTotal($con, $order_id) {
   $update_stmt->bind_param('di', $total_order_price, $order_id);
   $update_stmt->execute();
 }
+//Function to log actions
+function logAction($user_id, $user_name, $action_type, $desc) {
+  global $con; // Access the database connection
 
+  //Prepare the SQL query to insert log data
+  $sql = "INSERT INTO system_logs (user_id, user_name, action_type, log_description) 
+          VALUES (?, ?, ?, ?)";
+  $stmt = $con->prepare($sql);
+  
+  //Bind the parameters to the prepared statement
+  $stmt->bind_param('isss', $user_id, $user_name, $action_type, $desc);
+
+  //Execute the query
+  if ($stmt->execute()) {
+      return true;  //Successfully logged the action
+  } else {
+      return false; //Failed to log the action
+  }
+}
 
 ?>

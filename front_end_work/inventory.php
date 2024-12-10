@@ -75,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
 
         //Commit the transaction
         $con->commit();
+        logAction($user_data['user_id'], $user_data['username'], 'DELETE', "Deleted Part ID: $part_id"); // Log the action here
         header('Location: inventory.php'); //Redirect to parts page after successful removal
         exit;
     } catch (Exception $e) {

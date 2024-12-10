@@ -26,16 +26,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $order_date = $_POST['order_date'];
     $order_time = $_POST['order_time'];
     $total_cost = $_POST['total_cost'];
+    $recipient = $_POST['recipient'];
     $order_status = $_POST['order_status'];
 
     //update the order in the database
     $update_sql = "UPDATE orders 
-                   SET order_date = ?, order_time = ?, total_cost = ?, order_status = ? 
+                   SET order_date = ?, order_time = ?, total_cost = ?, order_status = ?, recipient_name = ? 
                    WHERE order_id = ?";
     $update_stmt = $con->prepare($update_sql);
-    $update_stmt->bind_param('ssdsi', $order_date, $order_time, $total_cost, $order_status, $order_id);
+    $update_stmt->bind_param('ssdssi', $order_date, $order_time, $total_cost, $order_status, $recipient, $order_id);
     $update_stmt->execute();
 
+    logAction($user_data['user_id'], $user_data['username'], 'UPDATE', 'Updated an order'); // Log the action here
     //redirect back to the orders list after update
     header('Location: view_orders.php');
     exit;
@@ -64,6 +66,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="username">Username:</label>
                 <input type="text" id="username" value="<?php echo htmlspecialchars($order['username']); ?>" readonly>
             </div>
+
+            <div class="form-box">
+                <label for="recipient">Recipient:</label>
+                <input type="text" id="recipient" name="recipient" value="<?php echo htmlspecialchars($order['recipient_name']); ?>" required>
+            </div>
+
 
             <div class="form-box">
                 <label for="order_date">Order Date:</label>

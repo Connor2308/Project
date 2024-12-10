@@ -32,8 +32,8 @@ include('include/init.php'); //initalise everything like user data
                 </a>
             </div>
             <div class="category-btn">
-                <a href="transactions.php">
-                    <p>View Inventory Transactions</p>
+                <a href="systemlog.php">
+                    <p>View System Logs</p>
                 </a>
             </div>
             <div class="category-btn">

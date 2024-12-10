@@ -65,6 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $update_stmt->execute();
 
+    logAction($user_data['user_id'], $user_data['username'], 'UPDATE', "Updated Part ID: $part_id "); // Log the action here
     //redirect to the parts table after saving changes
     header('Location: inventory.php');
     exit;

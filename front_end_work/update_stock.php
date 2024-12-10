@@ -1,6 +1,6 @@
 <?php
 //this is called in js/update_stock.js as an ajax request
-include('include/connection.php');
+include('include/init.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $part_id = intval($_POST['part_id']); //getting the part id from the post request
@@ -13,8 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         //update quantity based on action
         if ($action === 'increase') {
+            logAction($user_data['user_id'], $user_data['username'], 'UPDATE', "Increased stock for Part ID: $part_id to $quantity"); // Log the action here
             $quantity++;
         } elseif ($action === 'decrease' && $quantity > 0) {
+            logAction($user_data['user_id'], $user_data['username'], 'UPDATE', "Decreased stock for Part ID: $part_id to $quantity"); // Log the action here
             $quantity--;
         }
 
