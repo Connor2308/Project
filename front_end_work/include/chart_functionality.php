@@ -8,14 +8,14 @@ $stocks = [];
 
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
-        $Products[] = $row['Products'];
-        $Stocks[] = $row['Stocks'];
+        $products[] = $row['part_name'];
+        $stocks[] = $row['quantity_in_stock'];
     }
 }
 
 // Return data as JSON
 echo json_encode([
-    'products' => $product,
-    'stocks' => $stocks
+    'part_name' => $product,
+    'quantity_in_stock' => $stocks
 ]);
 ?>
