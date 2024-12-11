@@ -1,0 +1,141 @@
+/* Page Title */
+.page-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #333;
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+}
+
+/* Box Layout for Form */
+.manage-order-form {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    max-width: 100%;
+}
+
+.manage-order-form .form-box {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+}
+
+.manage-order-form .form-box:hover {
+    background-color: #f1f1f1;
+}
+
+.manage-order-form label {
+    font-size: 14px;
+    color: #555;
+    font-weight: 500;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.manage-order-form input[type="text"],
+.manage-order-form input[type="number"],
+.manage-order-form textarea,
+.manage-order-form select {
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    color: #333;
+    background-color: #fafafa;
+    transition: border-color 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.manage-order-form input[type="text"]:focus,
+.manage-order-form input[type="number"]:focus,
+.manage-order-form textarea:focus,
+.manage-order-form select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.manage-order-form button {
+    grid-column: span 2;
+    padding: 14px 30px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.manage-order-form button:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+    .manage-order-form {
+        grid-template-columns: 1fr;
+    }
+
+    .manage-order-form button {
+        grid-column: span 1;
+    }
+}
+
+/* Subtle effects */
+input[type="text"], input[type="number"], textarea, select {
+    background-color: #fafafa;
+    border: 1px solid #ddd;
+    transition: background-color 0.3s ease;
+}
+
+input[type="text"]:hover, input[type="number"]:hover, textarea:hover, select:hover {
+    background-color: #f1f1f1;
+}
+
+input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
+    background-color: #ffffff;
+    border-color: #007bff;
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+/* Orders Table */
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.orders-table th,
+.orders-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.orders-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.orders-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.orders-table tbody tr:hover {
+    background-color: #f1f1f1;
+}

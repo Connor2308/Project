@@ -1,43 +1,144 @@
-*{
-    font-family:'Poppins', sans-serif;
-    margin:0;
-    padding:0;
+/* Universal reset and font styles */
+* {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
     text-decoration: none;
-  }
-  
-  .page-container {
-    min-height: 100vh;
+}
+
+body {
+    background-color: #f4f4f9; 
+    color: #333;
+}
+
+.page-container {
+    min-height: auto;
     width: 100%;
-    background-position: center;
-    background-size: cover;
     position: relative;
     display: flex;
-    flex-direction: column;  
-    padding-top: 20px;       
-    margin: 0 auto;        
+    flex-direction: column;
+    padding-top: 20px;
+    margin: 0 auto;
 }
 
+/* Page title */
 .page-title {
+    margin-top: 0px;
     margin-bottom: 20px;
-    margin-top: 80px;
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 28px;
+    font-weight: 600;
     text-align: center;
+    color: #333;
 }
 
-.table-container {
-    background-color: #e0e0e0; 
-    width: 80%;
+/* Filter form styles */
+#filter-form {
+    background-color: #fff;
     padding: 20px;
     border-radius: 8px;
-    margin: 10px auto; 
+    max-width: 950px;
+    margin: 30px auto;
+    display: flex;
+    justify-content: space-between; 
+    align-items: flex-start;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filters-left, .filters-right, .filters-search {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 30%; 
+}
+
+.filters-left, .filters-right, .filters-search {
+    border: 1px solid #ddd; 
+    padding: 15px;
+    border-radius: 8px; 
+    background-color: #fafafa; 
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/* Style for the filter labels */
+.filters label {
+    font-size: 14px;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+/* Input fields and dropdown styles */
+.filters input[type="number"], .filters select, .filters input[type="checkbox"] {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.filters input[type="number"]:focus, .filters select:focus, .filters input[type="checkbox"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Checkboxes styling */
+.filters-right {
+    display: flex;
+    flex-wrap: wrap;  
+    gap: 15px;       
+}
+
+.filters-right input[type="checkbox"] {
+    margin-left: 5px; 
+    margin-right: 5px; 
+    display: inline-block; 
+    vertical-align: middle;
+    width: calc(50% - 10px); 
+}
+
+.filters-right label {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 14px;
+    font-weight: normal;
+    width: calc(50% - 10px); 
+}
+
+/* Apply button styles */
+#apply-filters {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    align-self: flex-start;
+    transition: background-color 0.3s ease;
+}
+
+#apply-filters:hover {
+    background-color: #0056b3;
+}
+
+/* Table styles */
+.table-container {
+    background-color: #fff;
+    width: 90%;
+    max-width: auto;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .inventory-list {
     width: 100%;
     border-collapse: collapse;
     background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .inventory-list thead {
@@ -52,12 +153,242 @@
 
 .inventory-list th {
     font-weight: bold;
+    background-color: #f5f5f5;
+    color: #333;
 }
 
 .inventory-list tbody tr {
-    background-color: #ffffff;
+    background-color: #fff;
 }
 
 .inventory-list tbody tr:hover {
-    background-color: #f0f0f0;
+    background-color: #f9f9f9;
+}
+
+.inventory-list tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+/* Button container for stock update */
+.button-container {
+    display: flex;
+    gap: 10px;
+}
+
+/* Update button styles */
+.update-btn {
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.update-btn[data-action='decrease'] {
+    background-color: #dc3545;
+}
+
+.update-btn[data-action='decrease']:hover {
+    background-color: #c82333;
+}
+
+.update-btn[data-action='increase'] {
+    background-color: #28a745;
+}
+
+.update-btn[data-action='increase']:hover {
+    background-color: #218838;
+}
+
+/* Quantity cell styling */
+.quantity {
+    text-align: center;
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+    #filter-form {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .filters-left, .filters-right, .filters-search {
+        width: 100%;
+    }
+    .filters-left {
+        align-items: center;
+    }
+    .filters-right {
+        align-items: center;
+    }
+    .filters-search {
+        align-items: center;
+    }
+}
+
+/* manage user btn */
+.manage-btn {
+    background-color: #28a745;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.manage-btn:hover {
+    background-color: #218838;
+}
+
+/* Create Order Form */
+.create-order-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.create-order-form h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.create-order-form label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #555;
+}
+
+.create-order-form select, 
+.create-order-form input[type="date"], 
+.create-order-form input[type="time"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.create-order-form select:focus,
+.create-order-form input[type="date"]:focus,
+.create-order-form input[type="time"]:focus {
+    outline: none;
+    border-color: #0056b3;
+}
+
+.create-order-form button {
+    padding: 10px 15px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.create-order-form button:hover {
+    background-color: #004494;
+}
+
+/* Add Part Form */
+.add-part-form {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.add-part-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.add-part-form input,
+.add-part-form select,
+.add-part-form button {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.add-part-form button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.add-part-form button:hover {
+    background-color: #45a049;
+}
+
+/* Remove from Order button styles */
+.remove-btn {
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    color: white;
+    background-color: #dc3545; 
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.remove-btn:hover {
+    background-color: #c82333; 
+}
+
+/* Button container for Add Part */
+#add-part-button-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Add Part Button */
+.add-part-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 16px;
+    width: 250px;
+    height:50x;
+    transition: background-color 0.3s ease;
+}
+
+.add-part-btn:hover {
+    background-color: #218838;
+}
+/* Refresh Button for price on Order Page */
+.refresh-btn{
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    color: white;
+    background-color: #3a71e6; 
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+.refresh-btn:hover {
+    background-color: #1e54ca; 
 }
