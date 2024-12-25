@@ -218,6 +218,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
     <script src="js/update_stock.js"></script>
     <script src="js/filter_inventory.js"></script>
     <script src="js/filter_validation.js"></script>
-</body>
+    </body>
 </html>
 
