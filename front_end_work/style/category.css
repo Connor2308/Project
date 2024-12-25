@@ -53,6 +53,18 @@
     color: inherit;
     border-radius: 8px; 
 }
+.categories > .category-btn:nth-child(5),
+.categories > .category-btn:nth-child(6) {
+    grid-column: span 1; 
+}
+
+.categories > .category-btn:nth-child(5) {
+    grid-column: 2 / 3; 
+}
+
+.categories > .category-btn:nth-child(6) {
+    grid-column: 3 / 4; 
+}
 
 @media (max-width: 1200px) {
     .categories {
