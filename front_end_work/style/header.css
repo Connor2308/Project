@@ -29,37 +29,6 @@ header .search-bar {
   align-items: center;
 }
 
-/* Search Bar Input Styling */
-.search-bar input[type="text"] {
-  padding: 10px 15px;
-  border: 2px solid transparent;
-  border-radius: 20px;
-  background-color: #fff;
-  transition: border-color 0.3s ease;
-  font-size: 1em;
-  color: #444;
-}
-
-.search-bar input[type="text"]:focus {
-  border-color: #778899;
-  outline: none;
-}
-
-/* Search Bar Button Styling */
-.search-bar button[type="submit"] {
-  padding: 10px;
-  background-color: #ffffff;
-  color: black;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.search-bar button[type="submit"]:hover {
-  background-color: #559683;
-}
-
 /* Navbar Styling */
 header ul {
   margin: 20;
