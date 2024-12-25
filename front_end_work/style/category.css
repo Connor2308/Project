@@ -9,6 +9,7 @@
     align-items: flex-start;
     padding-top: 100px;
 }
+
 .categories {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -40,6 +41,7 @@
     color: #333;
     margin: 0;
 }
+
 .category-btn a {
     display: flex;
     flex-direction: column; 
@@ -52,3 +54,20 @@
     border-radius: 8px; 
 }
 
+@media (max-width: 1200px) {
+    .categories {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .categories {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .categories {
+        grid-template-columns: 1fr;
+    }
+}
