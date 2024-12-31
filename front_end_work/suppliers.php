@@ -73,7 +73,7 @@ if (!$result) {
             <?php if (isset($error_message)): ?>
                 <p class="error-message"><?php echo htmlspecialchars($error_message); ?></p>
             <?php endif; ?>
-            <div class="form-columns">
+            <div class="supplier-form-columns">
                 <div class="left-column">
                     <div class="form-group">
                         <label for="supplier_name">Supplier Name:</label>

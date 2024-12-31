@@ -1,20 +1,24 @@
+/* User Add Form */
 .user-form {
     display: flex;
     flex-direction: column;
     max-width: 1000px;
-    margin: 20px auto;
-    padding: 20px;
+    margin: 10px auto;
+    padding: 30px;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
 }
 
 .user-form h3 {
     width: 100%;
     text-align: center;
-    color: #007bff;
+    color: #79B7AC;
     margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .form-columns {
@@ -22,18 +26,19 @@
     justify-content: space-between;
     margin-bottom: 20px;
     width: 100%;
+    gap: 20px;
 }
 
 .left-column, .right-column {
     display: flex;
     flex-direction: column;
-    width: 48%; 
+    width: 100%;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
 }
 
 .form-group label {
@@ -43,29 +48,33 @@
 
 .form-group input,
 .form-group select {
-    padding: 10px;
+    padding: 12px; 
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+    width: 100%;  
+    box-sizing: border-box;  
 }
 
+/* Submit Button */
 .submit-btn {
     display: block;
     width: 100%;
     padding: 12px 15px;
-    background-color: #007bff;
-    color: #ffffff;
+    background-color: #79B7AC;
+    color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
     margin-top: 20px;
 }
-
 .submit-btn:hover {
-    background-color: #0056b3;
+    background-color: #34534d;
+    color: #ffffff;  
 }
-/* Style for error alert */
+
+/* Error alert */
 .alert {
     background-color: #f8d7da;
     color: #721c24;
@@ -73,4 +82,20 @@
     padding: 15px;
     margin-bottom: 20px;
     border-radius: 5px;
+}
+
+/* Media Query for Smaller Screens */
+@media (max-width: 768px) {
+    .form-columns {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .left-column, .right-column {
+        width: 100%;
+    }
+
+    .submit-btn {
+        width: 100%;
+    }
 }

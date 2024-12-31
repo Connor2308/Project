@@ -37,21 +37,22 @@ $user_result = $con->query($user_sql);
     <div class="page-container">
         <h2 class="page-title">System Logs</h2>
 
-        <!-- Filter Form -->
-        <form method="POST">
+<!-- Filter Form -->
+    <form method="POST" class="filter-form">
+        <div class="filter-group">
             <label for="user_filter">Filter by User:</label>
             <select name="user_filter" id="user_filter">
-                <option value="">All Users</option>
-                <?php
-                // Populate the dropdown with users
-                while ($user_row = $user_result->fetch_assoc()) {
-                    $selected = ($user_row['user_id'] == $user_filter) ? 'selected' : '';
-                    echo "<option value='" . $user_row['user_id'] . "' $selected>#" . $user_row['user_id'] . " - " . htmlspecialchars($user_row['username']) . "</option>";
-                }
-                ?>
-            </select>
-            <button type="submit">Apply Filter</button>
-        </form>
+        <option value="">All Users</option>
+        <?php
+        while ($user_row = $user_result->fetch_assoc()) {
+            $selected = ($user_row['user_id'] == $user_filter) ? 'selected' : '';
+            echo "<option value='" . $user_row['user_id'] . "' $selected>#" . $user_row['user_id'] . " - " . htmlspecialchars($user_row['username']) . "</option>";
+        }
+        ?>
+        </select>
+    </div>
+        <button type="submit" class="filter-btn">Apply Filter</button>
+    </form>
 
         <!-- Logs Table -->
         <div class="table-container">

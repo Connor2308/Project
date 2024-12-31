@@ -140,26 +140,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
         <form action="view_users.php" method="POST" class="user-form">
             <h3>Create New User</h3>
             <div class="form-columns">
-                <div class="left-column">
-                    <div class="form-group">
-                        <label for="username">Username:</label>
-                        <input type="text" id="username" name="username" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password">Password:</label>
-                        <input type="password" id="password" name="password" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="role">Role:</label>
-                        <select id="role" name="role">
-                            <option value="admin">Admin</option>
-                            <option value="user">User</option>
-                        </select>
-                    </div>
-                </div>
-
                 <div class="right-column">
                     <div class="form-group">
                         <label for="first_name">First Name:</label>
@@ -179,6 +159,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
                     <div class="form-group">
                         <label for="phone_number">Phone Number:</label>
                         <input type="text" id="phone_number" name="phone_number">
+                    </div>
+                </div>
+                <div class="left-column">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="role">Role:</label>
+                        <select id="role" name="role">
+                            <option value="admin">Admin</option>
+                            <option value="user">User</option>
+                        </select>
                     </div>
                 </div>
             </div>
