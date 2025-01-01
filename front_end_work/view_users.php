@@ -182,6 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
                 </div>
             </div>
 
+
             <button type="submit" name="create_user" class="submit-btn">Create User</button>
         </form>
 
