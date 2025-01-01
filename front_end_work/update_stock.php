@@ -1,30 +1,48 @@
 <?php
-//this is called in js/update_stock.js as an ajax request
+// Include your database connection file
 include('include/init.php');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $part_id = intval($_POST['part_id']); //getting the part id from the post request
-    $action = $_POST['action']; //getting the type of action either minus or plus
+// Get the data from the AJAX request
+$invoice_id = isset($_POST['invoice_id']) ? $_POST['invoice_id'] : null;
+$action = isset($_POST['action']) ? $_POST['action'] : null;
 
-    $result = $con->query("SELECT quantity_in_stock FROM parts WHERE part_id = $part_id"); //fetching the current quantity
-    if ($result->num_rows > 0) { //just making sure the given id is actually associated with the data base and is a part
-        $row = $result->fetch_assoc();
-        $quantity = $row['quantity_in_stock']; 
+// Validate input
+if ($invoice_id && $action && in_array($action, ['increase', 'decrease'])) {
+    try {
+        // Begin transaction to ensure data consistency
+        $con->begin_transaction();
 
-        //update quantity based on action
-        if ($action === 'increase') {
-            logAction($user_data['user_id'], $user_data['username'], 'UPDATE', "Increased stock for Part ID: $part_id to $quantity"); // Log the action here
-            $quantity++;
-        } elseif ($action === 'decrease' && $quantity > 0) {
-            logAction($user_data['user_id'], $user_data['username'], 'UPDATE', "Decreased stock for Part ID: $part_id to $quantity"); // Log the action here
-            $quantity--;
-        }
+        // Get current quantity or total due (depending on your need)
+        $query = "SELECT total_due FROM invoices WHERE invoice_id = ?";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param('i', $invoice_id);
+        $stmt->execute();
+        $stmt->bind_result($total_due);
+        $stmt->fetch();
+        $stmt->close();
 
-        //save updated amount to db
-        $con->query("UPDATE parts SET quantity_in_stock = $quantity WHERE part_id = $part_id");
+        // Modify total_due based on the action
+        $quantity_change = ($action == 'increase') ? 10 : -10;  // For example, adjust the stock by 10 units (you can adjust this logic)
+        $new_total_due = $total_due + $quantity_change;
 
-        //returning the updated quantit to js file
-        echo $quantity;
+        // Update the database with the new total_due
+        $update_query = "UPDATE invoices SET total_due = ? WHERE invoice_id = ?";
+        $update_stmt = $con->prepare($update_query);
+        $update_stmt->bind_param('di', $new_total_due, $invoice_id);
+        $update_stmt->execute();
+        $update_stmt->close();
+
+        // Commit the transaction
+        $con->commit();
+
+        // Return the updated quantity or total_due (or whatever value you wish to return)
+        echo number_format($new_total_due, 2);  // Format the updated total due as a currency string
+    } catch (Exception $e) {
+        // Rollback if there's an error
+        $con->rollback();
+        echo 'Error updating stock: ' . $e->getMessage();
     }
+} else {
+    echo 'Invalid request';
 }
 ?>
