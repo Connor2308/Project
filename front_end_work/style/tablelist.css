@@ -31,6 +31,9 @@ body {
     color: #333;
 }
 
+
+
+
 /* Filter form styles */
 #filter-form {
     background-color: #fff;
@@ -182,15 +185,19 @@ body {
     background-color: #5c9d88; 
 }
 
+
+
+
 /* Table styles */
 .table-container {
     background-color: #fff;
     width: 90%;
-    max-width: auto;
-    padding: 20px;
+    max-width: 1600px; 
+    padding: 1.25rem;
     border-radius: 8px;
-    margin: 20px auto;
+    margin: 2rem auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-x: auto; 
 }
 .inventory-list {
     width: 100%;

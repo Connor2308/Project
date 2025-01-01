@@ -58,6 +58,7 @@ if (!$result) {
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style/base.css">
+    <link rel="stylesheet" href="style/suppliers.css">
     <link rel="stylesheet" href="style/tablelist.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suppliers</title>
