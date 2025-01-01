@@ -46,6 +46,11 @@ include('include/init.php'); //initalise everything like user data
                     <p>View Company Suppliers</p>
                 </a>
             </div>
+            <div class="category-btn">
+                <a href="invoice.php">
+                    <p>View Companys Invoices</p>
+                </a>
+            </div>
         </div>
     </div>
     <?php include('include/footer.php')?>
