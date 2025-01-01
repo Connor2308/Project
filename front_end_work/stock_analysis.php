@@ -1,7 +1,3 @@
-<?php
-include('include/init.php');
-include('include/chart_functionality.php');
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,53 +9,115 @@ include('include/chart_functionality.php');
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <?php include('include/header.php')?>
-    <div class="page-container">   
+    <?php include('include/header.php'); ?>
+    
+    <div class="page-container">
+        <h1>Stock Data</h1>
+        <table id="stockTable">
+            <thead>
+                <tr>
+                    <th>Part Name</th>
+                    <th>Quantity in Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be inserted here by JavaScript -->
+            </tbody>
+        </table>
 
-    <h1>Stock Data</h1>
+        <canvas id="StockData" width="400" height="200"></canvas>
+    </div>
 
-    <canvas id="StockData" width="400" height="200"></canvas>
+    <?php include('include/footer.php'); ?> 
+</body>
+</html>
+
+<?php
+include('include/connection.php');
+
+$query = "SELECT part_name, quantity_in_stock FROM parts";
+$result = mysqli_query($conn, $query);
+$data = [];
+if ($result) {
+    $data['part_names'] = [];
+    $data['quantity_in_stock'] = [];
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        $data['part_names'][] = $row['part_name'];
+        $data['quantity_in_stock'][] = $row['quantity_in_stock'];
+    }
+
+    if (empty($data['part_names']) || empty($data['quantity_in_stock'])) {
+        echo "<pre>No data found!</pre>"; 
+    } else {
+        echo "<pre>Data fetched successfully:</pre>";
+        var_dump($data); 
+    }
+
+    echo json_encode($data);
+} else {
+    echo json_encode(['error' => 'Failed to fetch data from the database']);
+}
+?>
+
+
 
 <script>
 $(document).ready(function() {
-    // Function to fetch data and update the chart
-    function fetchSalesData() {
-        var exceptedstock = 75;//this is to set the minimum stock theshold that is accepted and any thing under that will show up red.
+    function fetchStockData() {
+        var expectedStock = 75; 
+
         $.ajax({
-            url: 'connection.php', // PHP file that fetches data
+            url: 'connection.php', 
             type: 'GET',
             dataType: 'json',
             success: function(response) {
-                var products = response.products;
-                var stocks = response.stocks;
-                updateChart(products, stocks, expectedstock); // Call function to update the chart
+                if (response.error) {
+                    alert('Error fetching data: ' + response.error);
+                    return;
+                }
+
+                var products = response.part_names; 
+                var stocks = response.quantity_in_stock; 
+                insertStockData(products, stocks);
+
+                updateChart(products, stocks, expectedStock);
+            },
+            error: function(xhr, status, error) {
+                console.log("Error: " + error); 
             }
         });
     }
 
-    // Function to update the chart with new data
-    function updateChart(products, stocks, expectedstock) {
+    function insertStockData(products, stocks) {
+        var tableBody = $('#stockTable tbody'); 
+        tableBody.empty(); 
+        
+        products.forEach(function(product, index) {
+            var row = '<tr>' +
+                          '<td>' + product + '</td>' +
+                          '<td>' + stocks[index] + '</td>' +
+                      '</tr>';
+            tableBody.append(row); 
+        });
+    }
+    function updateChart(products, stocks, expectedStock) {
         var ctx = document.getElementById('StockData').getContext('2d');
 
-        // Find the indexes where sales are lower than expected
-        var highlightIndices = sales.map(function(value, index) {
-            return value < expectedSales ? index : -1;
-        }).filter(function(value) { return value !== -1; });
-
-        // Set up the colors: default is green, highlight is red
-        var pointColors = sales.map(function(value) {
-            return value < expectedSales ? 'rgba(255, 99, 132, 1)' : 'rgba(75, 192, 192, 1)';
+        var pointColors = stocks.map(function(stock) {
+            return stock < expectedStock ? 'rgba(255, 99, 132, 1)' : 'rgba(75, 192, 192, 1)';
         });
-        var salesChart = new Chart(ctx, {
-            type: 'line',
+
+        var stockChart = new Chart(ctx, {
+            type: 'bar', 
             data: {
-                labels: products, // X-axis labels (products)
+                labels: products, 
                 datasets: [{
-                    label: 'Sales Over Time',
-                    data: stocks, // Y-axis data (stocks)
+                    label: 'Stock Levels',
+                    data: stocks,
+                    backgroundColor: pointColors, 
                     borderColor: 'rgba(75, 192, 192, 1)',
-                    fill: false,
-                    tension: 0.1
+                    borderWidth: 1
                 }]
             },
             options: {
@@ -67,16 +125,14 @@ $(document).ready(function() {
                     y: {
                         beginAtZero: true
                     }
-                }
+                },
+                responsive: true,
+                maintainAspectRatio: false
             }
         });
     }
 
-    // Initial call to fetch and display data
-    fetchSalesData();
+    fetchStockData();
 });
 </script>
-    </div>
     <?php include('include/footer.php')?>
-</body>
-</html>

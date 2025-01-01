@@ -1,14 +1,46 @@
 .page-container {
-    min-height: 100vh; 
+    min-height: 100vh;
     width: 100%;
     background-position: center;
     background-size: cover;
     position: relative;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding-top: 100px;
+    flex-direction: column; 
+    justify-content: flex-start;
+    align-items: center; 
+    padding-top: 50px; 
+    padding-bottom: 50px; 
 }
+
+.page-container h1 {
+    text-align: center;
+    margin-bottom: 30px; 
+    font-size: 40px; 
+    color: #333; 
+    font-weight: bold;
+}
+
+#stockTable {
+    width: 80%; 
+    max-width: 1200px; 
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#stockTable th, #stockTable td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+#stockTable th {
+    background-color: #f2f2f2;
+}
+
+#StockData {
+    margin-top: 40px; 
+}
+
 
 .categories {
     display: grid;
