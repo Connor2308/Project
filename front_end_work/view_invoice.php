@@ -85,6 +85,7 @@ $invoice = $invoice_result->fetch_assoc();
                 <p><strong>Total Cost:</strong> £<?php echo number_format($order['total_cost'], 2, '.', ','); ?></p>
                 <button type="submit" name="update_invoice">Update Invoice</button>
             </form>
+            <a href="generate_invoice_pdf.php?order_id=<?php echo htmlspecialchars($order['order_id']); ?>" class="pdf-btn">Generate PDF</a>
         </div>
 
         <!-- Order Items -->
