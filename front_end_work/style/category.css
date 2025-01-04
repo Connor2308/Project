@@ -1,17 +1,15 @@
 .page-container {
-    min-height: 100vh;
+    min-height: 75vh;
     width: 100%;
     background-position: center;
     background-size: cover;
     position: relative;
     display: flex;
-    flex-direction: column; 
-    justify-content: flex-start;
-    align-items: center; 
-    padding-top: 50px; 
-    padding-bottom: 50px; 
+    margin: 0 auto;
+    padding-top: 0px;
+    justify-content: center; 
+    align-items: center;
 }
-
 .page-container h1 {
     text-align: center;
     margin-bottom: 30px; 
@@ -41,13 +39,14 @@
     margin-top: 40px; 
 }
 
-
 .categories {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 15px; /* Adjust the gap as needed */
+    gap: 15px;
     max-width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .category-btn {
@@ -73,7 +72,7 @@
 
 .category-btn p {
     font-size: 24px;
-    font-weight: bold;
+    font-weight: normal;
     color: #333;
     margin: 0;
 }
