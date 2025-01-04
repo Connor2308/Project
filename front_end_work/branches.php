@@ -1,20 +1,4 @@
 
-// Define default sorting variables
-$sort_column = isset($_GET['sort_column']) ? $_GET['sort_column'] : 'branch_id';
-$sort_order = isset($_GET['sort_order']) && $_GET['sort_order'] === 'desc' ? 'desc' : 'asc';
-$next_sort_order = $sort_order === 'asc' ? 'desc' : 'asc';
-
-// Fetch branches from the database, excluding inactive branch
-$sql = "SELECT branch_id, branch_name, contact_name, contact_phone, contact_email, address, active FROM branches 
-        WHERE active = 1 
-        ORDER BY $sort_column $sort_order";
-$result = $con->query($sql);
-
-if (!$result) {
-    die("Error fetching branches: " . $con->error);
-}
-?> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
