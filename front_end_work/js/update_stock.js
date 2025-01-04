@@ -1,17 +1,25 @@
-//updating quantity dynamically avoiding page refreshes (with JQuery and AJAX).
-$(document).ready(function () { //loading the dom in first
-    $('.update-btn').click(function () { //jquery click event handler to add a listener to see if someone wants to add or remove stock
-        const partId = $(this).data('id');
-        const action = $(this).data('action');
+$(document).ready(function() {
+    $('.update-btn').click(function() {
+        var partId = $(this).data('id');
+        var action = $(this).data('action');
+
         $.ajax({
             url: 'update_stock.php',
             type: 'POST',
-            data: { part_id: partId, action: action },
-            success: function (response) {
-                $(`#row-${partId} .quantity`).text(response);//if the response is success full then it will update the quantitys stock of the designated Part ID
+            data: {
+                part_id: partId,
+                action: action
             },
-            error: function () { //any errors will show this.
-                alert('Error updating stock');
+            success: function(response) {
+                var data = JSON.parse(response);
+                if (data.success) {
+                    $('#row-' + partId + ' .quantity').text(data.quantity_in_stock);
+                } else {
+                    alert(data.message);
+                }
+            },
+            error: function() {
+                alert('Error updating stock level.');
             }
         });
     });

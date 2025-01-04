@@ -193,6 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['refresh_price'])) {
                         <th>Reset Price</th>
                         <th>Manage Order Details</th>
                         <th>View Order Content</th>
+                        <th>View Invoice</th>
                         <th>Remove Order</th> 
                     </tr>
                 </thead>
@@ -223,6 +224,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['refresh_price'])) {
                             echo "<td><a href='manage_orders.php?order_id=" . htmlspecialchars($row['order_id']) . "' class='manage-btn'>Manage Order Details</a></td>";
                             //View Order Content
                             echo "<td><a href='view_order_details.php?order_id=" . htmlspecialchars($row['order_id']) . "' class='manage-btn'>View Order Content</a></td>";
+                            //View Invoice
+                            echo "<td><a href='view_invoice.php?order_id=" . htmlspecialchars($row['order_id']) . "' class='manage-btn'>View Invoice</a></td>";
                             // Remove Order button
                             echo "<td>
                                     <form method='POST' onsubmit='return confirm(\"Are you sure you want to delete this order?\");'>
@@ -233,7 +236,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['refresh_price'])) {
                             echo "</tr>";
                         }
                     } else {
-                        echo "<tr><td colspan='10'>No orders found.</td></tr>";
+                        echo "<tr><td colspan='13'>No orders found.</td></tr>";
                     }
                     ?>
                 </tbody>

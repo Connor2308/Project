@@ -17,11 +17,6 @@ include('include/init.php'); //initalise everything like user data
     <div class="page-container">   
         <div class="categories">
             <div class="category-btn">
-                <a href="inventory.php">
-                    <p>View Inventory</p>
-                </a>
-            </div>
-            <div class="category-btn">
                 <a href="view_orders.php">
                     <p>View Orders</p>
                 </a>
@@ -37,18 +32,28 @@ include('include/init.php'); //initalise everything like user data
                 </a>
             </div>
             <div class="category-btn">
+                <a href="view_branches.php">
+                    <p>View Company Branches</p>
+                </a>
+            </div>
+            <!-- <div class="category-btn">
                 <a href="stock_analysis.php">
                     <p>Stock Analysis</p>
                 </a>
-            </div>
+            </div> -->
             <div class="category-btn">
-                <a href="suppliers.php">
+                <a href="view_suppliers.php">
                     <p>View Company Suppliers</p>
                 </a>
             </div>
             <div class="category-btn">
-                <a href="invoice.php">
-                    <p>View Companys Invoices</p>
+                <a href="stock_alerts.php">
+                    <p>View Stock Alerts</p>
+                </a>
+            </div>
+            <div class="category-btn">
+                <a href="inventory.php">
+                    <p>View Inventory</p>
                 </a>
             </div>
         </div>

@@ -11,10 +11,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_part'])) {
     $quantity_in_stock = $_POST['quantity_in_stock'];
     $reorder_level = $_POST['reorder_level'];
     $description = $_POST['description'];
+    $branch_id = $_POST['branch_id'];
 
     //preparing SQL statement
-    $stmt = $con->prepare("INSERT INTO parts (part_name, genre, manufacturer, supplier_id, unit_price, quantity_in_stock, reorder_level, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssiddis", $part_name, $genre, $manufacturer, $supplier_id, $unit_price, $quantity_in_stock, $reorder_level, $description); // Binding params for preventing SQL attacks
+    $stmt = $con->prepare("INSERT INTO parts (part_name, genre, manufacturer, supplier_id, unit_price, quantity_in_stock, reorder_level, description, branch_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssiddisi", $part_name, $genre, $manufacturer, $supplier_id, $unit_price, $quantity_in_stock, $reorder_level, $description, $branch_id); // Binding params for preventing SQL attacks
 
     //execute and handle results
     if ($stmt->execute()) {
@@ -35,6 +36,14 @@ $supplier_result = $con->query($supplier_sql);
 $suppliers = [];
 while ($row = $supplier_result->fetch_assoc()) {
     $suppliers[] = $row;
+}
+
+//fetch all branches for the dropdown
+$branches_sql = "SELECT branch_id, branch_name FROM branches";
+$branches_result = $con->query($branches_sql);
+$branches = [];
+while ($row = $branches_result->fetch_assoc()) {
+    $branches[] = $row;
 }
 
 ?>
@@ -73,6 +82,12 @@ while ($row = $supplier_result->fetch_assoc()) {
                         <option value="Body">Body</option>
                         <option value="Brakes">Brakes</option>
                         <option value="Transmission">Transmission</option>
+                        <option value="Suspension">Suspension</option>
+                        <option value="Electrical">Electrical</option>
+                        <option value="Cooling">Cooling</option>
+                        <option value="Accessories">Accessories</option>
+                        <option value="Fuel">Fuel</option>
+                        <option value="Interior">Interior</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -90,7 +105,17 @@ while ($row = $supplier_result->fetch_assoc()) {
                         <?php endforeach; ?>
                     </select>
                 </div>
-
+                <div class="form-group">
+                    <label for="branch_id">Branch:</label>
+                    <select id="branch_id" name="branch_id" required>
+                        <option value="">Select Branch</option>
+                        <?php foreach ($branches as $branch): ?>
+                            <option value="<?php echo htmlspecialchars($branch['branch_id']); ?>">
+                                <?php echo htmlspecialchars($branch['branch_name']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label for="unit_price">Unit Price:</label>
                     <input type="number" step="0.01" id="unit_price" name="unit_price" required>

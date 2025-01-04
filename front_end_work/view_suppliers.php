@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_supplier'])) {
 
     if ($stmt->execute()) {
         logAction($user_data['user_id'], $user_data['username'], 'CREATE', 'Added a supplier'); // Log the action here
-        header('Location: suppliers.php'); // Redirect to the suppliers page after successful addition
+        header('Location: view_suppliers.php'); // Redirect to the suppliers page after successful addition
         exit;
     } else {
         $error_message = "Error adding supplier. Please try again.";
@@ -69,7 +69,7 @@ if (!$result) {
         <h2 class="page-title">Suppliers</h2>
         
         <!-- Add Supplier Form -->
-        <form action="suppliers.php" method="POST" class="supplier-form">
+        <form action="view_suppliers.php" method="POST" class="supplier-form">
             <h3>Add New Supplier</h3>
             <?php if (isset($error_message)): ?>
                 <p class="error-message"><?php echo htmlspecialchars($error_message); ?></p>
@@ -133,7 +133,7 @@ if (!$result) {
                                 <td><?php echo htmlspecialchars($row['contact_email']); ?></td>
                                 <td><?php echo htmlspecialchars($row['address']); ?></td>
                                 <td><a href="manage_supplier.php?supplier_id=<?php echo $row['supplier_id']; ?>" class="manage-btn">Manage Supplier</a></td>
-                                <td><a href="suppliers.php?deactivate_supplier_id=<?php echo $row['supplier_id']; ?>" class="remove-btn" onclick="return confirm('Are you sure you want to deactivate this supplier?');">Deactivate Supplier</a></td>
+                                <td><a href="view_suppliers.php?deactivate_supplier_id=<?php echo $row['supplier_id']; ?>" class="remove-btn" onclick="return confirm('Are you sure you want to deactivate this supplier?');">Deactivate Supplier</a></td>
                             </tr>
                         <?php endwhile; ?>
                     <?php else: ?>

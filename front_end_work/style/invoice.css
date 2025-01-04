@@ -1,0 +1,114 @@
+/* General styling for the page container */
+*{
+    font-family:'Poppins', sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+.page-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Styling for the page title */
+.page-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+/* Styling for the order and invoice details sections */
+.order-details, .invoice-details, .order-items {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Styling for the section titles */
+.order-details h3, .invoice-details h3, .order-items h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #444;
+    text-align: center;
+}
+
+/* Styling for the details paragraphs */
+.order-details p, .invoice-details p {
+    font-size: 16px;
+    margin: 10px 0;
+    color: #555;
+    text-align: center;
+}
+
+/* Styling for the form input fields */
+.invoice-details input[type="number"] {
+    width: 100px;
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: block;
+    margin: 10px auto;
+}
+
+/* Styling for the form button */
+.invoice-details button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #79B7AC;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+    margin: 20px auto;
+}
+
+.invoice-details button:hover {
+    background-color: #68a097;
+}
+
+/* Styling for the table */
+.inventory-list {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.inventory-list th, .inventory-list td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.inventory-list th {
+    background-color: #79B7AC;
+    color: #fff;
+    font-weight: bold;
+}
+
+.inventory-list tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.inventory-list tr:hover {
+    background-color: #e9e9e9;
+}

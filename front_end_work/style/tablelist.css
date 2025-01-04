@@ -437,4 +437,60 @@ body {
 .refresh-btn:hover {
     background-color: #1e54ca; 
 }
+/* Filters */
+.filters-section {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
 
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.filter-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.filter-group input,
+.filter-group select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.checkbox-group label {
+    margin-right: 15px;
+    margin-bottom: 5px;
+}
+
+.checkbox-group label:nth-child(12n) {
+    flex-basis: 100%;
+}
+
+#apply-filters {
+    padding: 10px 20px;
+    background-color: #79B7AC;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#apply-filters:hover {
+    background-color: #68a097;
+}

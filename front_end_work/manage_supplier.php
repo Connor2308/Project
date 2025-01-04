@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     logAction($user_data['user_id'], $user_data['username'], 'UPDATE', 'Updated a supplier'); // Log the action here
     // Once the action is completed, redirect to the suppliers list page
-    header('Location: suppliers.php');
+    header('Location: view_suppliers.php');
     exit;
 }
 ?>

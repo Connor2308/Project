@@ -10,6 +10,17 @@ $next_sort_order = ($sort_order == 'ASC') ? 'DESC' : 'ASC'; // this bit is for t
 $genre_filter = isset($_POST['genre']) ? $_POST['genre'] : [];
 $min_price = isset($_POST['min_price']) && is_numeric($_POST['min_price']) ? $_POST['min_price'] : null;
 $max_price = isset($_POST['max_price']) && is_numeric($_POST['max_price']) ? $_POST['max_price'] : null;
+$branch_filter = isset($_POST['branch']) ? $_POST['branch'] : '';
+
+//Fetch branches for the dropdown
+$branches_sql = "SELECT branch_id, branch_name FROM branches";
+$branches_result = $con->query($branches_sql);
+$branches = [];
+if ($branches_result->num_rows > 0) {
+    while ($branch = $branches_result->fetch_assoc()) {
+        $branches[] = $branch;
+    }
+}
 
 //sql selection to populate the table, including a join for the suppliers id
 $sql = "SELECT 
@@ -21,9 +32,11 @@ $sql = "SELECT
             parts.unit_price, 
             parts.quantity_in_stock, 
             parts.reorder_level, 
-            suppliers.supplier_name 
+            suppliers.supplier_name,
+            branches.branch_name
         FROM parts 
-        INNER JOIN suppliers ON parts.supplier_id = suppliers.supplier_id";
+        INNER JOIN suppliers ON parts.supplier_id = suppliers.supplier_id
+        LEFT JOIN branches ON parts.branch_id = branches.branch_id";
 
 //adding filters to my query to only fetch what we want
 $conditions = []; //array that we store any conditions in eg filters
@@ -38,6 +51,9 @@ if (!empty($genre_filter)) {
     $genre_list = implode("','", array_map('addslashes', $genre_filter));
     $conditions[] = "parts.genre IN ('$genre_list')";//only get specific 'genres' of parts that the user want, ik genre is not the right word but its in now :)
 }
+if (!empty($branch_filter)) {
+    $conditions[] = "parts.branch_id = '$branch_filter'";
+}
 
 //if the conditions array is NOT empty we IMPLODE ("Join array elements with a string") this to the previously written sql statement
 if (!empty($conditions)) {
@@ -50,6 +66,7 @@ $sql .= " ORDER BY $sort_column $sort_order";
 $result = $con->query($sql);
 
 
+// Delete part
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
     $part_id = $_POST['part_id'];
 
@@ -85,7 +102,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -129,7 +145,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
 
                     <input type="checkbox" id="transmission" name="genre[]" value="Transmission" <?php echo in_array('Transmission', $genre_filter) ? 'checked' : ''; ?>>
                     <label for="transmission">Transmission</label>
+
+                    <input type="checkbox" id="suspension" name="genre[]" value="Suspension" <?php echo in_array('Suspension', $genre_filter) ? 'checked' : ''; ?>>
+                    <label for="suspension">Suspension</label>
+
+                    <input type="checkbox" id="electrical" name="genre[]" value="Electrical" <?php echo in_array('Electrical', $genre_filter) ? 'checked' : ''; ?>>
+                    <label for="electrical">Electrical</label>
+
+                    <input type="checkbox" id="cooling" name="genre[]" value="Cooling" <?php echo in_array('Cooling', $genre_filter) ? 'checked' : ''; ?>>
+                    <label for="cooling">Cooling</label>
+
+                    <input type="checkbox" id="fuel" name="genre[]" value="Fuel" <?php echo in_array('Fuel', $genre_filter) ? 'checked' : ''; ?>>
+                    <label for="fuel">Fuel</label>
+
+                    <input type="checkbox" id="Accessories" name="genre[]" value="Accessories" <?php echo in_array('Accessories', $genre_filter) ? 'checked' : ''; ?>>
+                    <label for="Accessories">Accessories</label>
+
+                    <input type="checkbox" id="interior" name="genre[]" value="Interior" <?php echo in_array('Interior', $genre_filter) ? 'checked' : ''; ?>>
+                    <label for="interior">Interior</label>
                 </div>
+            </div>
+            <!-- branch filter section -->
+            <div class="filters-branch">
+                <label for="branch">Filter by Branch:</label>
+                <select id="branch" name="branch">
+                    <option value="">All Branches</option>
+                    <?php foreach ($branches as $branch): ?>
+                        <option value="<?php echo htmlspecialchars($branch['branch_id']); ?>" <?php echo (isset($_POST['branch']) && $_POST['branch'] == $branch['branch_id']) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($branch['branch_name']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
             </div>
             <!-- a search box section -->
             <div class="filters-search">
@@ -137,19 +183,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
                 <input type="text" id="search" name="search" placeholder="Search parts..." value="<?php echo isset($_POST['search']) ? htmlspecialchars($_POST['search']) : ''; ?>">
             </div>
 
-            <!-- just had to comment out this search as it broke the functionality of the filters, will fix -->
-            <!-- <form action="inventory.php">
-                <input name="inventory" id="search" type="text" placement="Search">
-                <input id="submit" type="submit" value="Search">
-            </form> -->
-
             <!-- apply filter button/ this is disabled by default but is enabled by js when the user actually selects a filter to apply, this is cause it kept breaking -->
-            <button type="submit" id="apply-filters" disabled>Apply Filters</button> 
+            <button type="submit" id="apply-filters">Apply Filters</button> 
         </form>
 
         <!-- Add a Part Button -->
         <div id="add-part-button-container" class="button-container">
-            <a href="adding_new_parts.php" class="add-part-btn">Add Part</a>  <!-- Update href to the correct URL -->
+            <a href="adding_new_parts.php" class="add-part-btn">Add Part</a> 
         </div>
 
         <!-- table bit -->
@@ -165,6 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
                         <th><a href="?sort_column=manufacturer&sort_order=<?php echo $next_sort_order; ?>">Manufacturer</a></th>
                         <th><a href="?sort_column=unit_price&sort_order=<?php echo $next_sort_order; ?>">Unit Price</a></th>
                         <th><a href="?sort_column=supplier_name&sort_order=<?php echo $next_sort_order; ?>">Supplier</a></th>
+                        <th><a href="?sort_column=branch_name&sort_order=<?php echo $next_sort_order; ?>">Branch</a></th>
                         <th><a href="?sort_column=reorder_level&sort_order=<?php echo $next_sort_order; ?>">Reorder Level</a></th>
                         <th><a href="?sort_column=quantity_in_stock&sort_order=<?php echo $next_sort_order; ?>">Quantity in Stock</a></th>
                         <th>Update Stock Levels</th>
@@ -185,6 +226,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
                             echo "<td>" . htmlspecialchars($row['manufacturer']) . "</td>";
                             echo "<td>£" . number_format($row['unit_price'], 2) . "</td>";
                             echo "<td>" . htmlspecialchars($row['supplier_name']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['branch_name']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['reorder_level']) . "</td>";
                             echo "<td class='quantity'>" . htmlspecialchars($row['quantity_in_stock']) . "</td>";
                             echo "<td>
@@ -195,7 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
                                   </td>";
                             echo "<td><a href='manage_part.php?part_id=" . htmlspecialchars($row['part_id']) . "' class='manage-btn'>Manage Part</a></td>";
                             echo "<td>
-                                    <form method='POST' onsubmit='return confirm(\"Are you sure you want to delete this part?, This will remove the part from all existing orders!\");'>
+                                    <form method='POST' onsubmit='return confirm(\"Are you sure you want to delete this part?\");'>
                                         <input type='hidden' name='part_id' value='" . htmlspecialchars($row['part_id']) . "'>
                                         <button type='submit' name='remove_part' class='remove-btn'>Remove Part</button>
                                     </form>
@@ -203,21 +245,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
                             echo "</tr>";
                         }
                     } else {
-                        echo "<tr><td colspan='10'>No parts found.</td></tr>";
+                        echo "<tr><td colspan='13'>No parts found.</td></tr>";
                     }
                     ?>
                 </tbody>
             </table>
         </div>
     </div>
-
-    <?php include('include/footer.php'); ?>
-    <!-- calling ajax for the updating stock part -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-     <!-- calling all of our js scripts -->
-    <script src="js/update_stock.js"></script>
-    <script src="js/filter_inventory.js"></script>
-    <script src="js/filter_validation.js"></script>
-    </body>
+</body>
 </html>
-
