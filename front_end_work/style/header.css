@@ -35,6 +35,7 @@ header ul {
   padding: 20;
   list-style: none;
   display: flex;
+  color: white;
 }
 
 header ul li {
