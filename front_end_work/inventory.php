@@ -65,7 +65,6 @@ $sql .= " ORDER BY $sort_column $sort_order";
 //finally we execute the query :)
 $result = $con->query($sql);
 
-
 // Delete part
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
     $part_id = $_POST['part_id'];
@@ -116,6 +115,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
     
     <div class="page-container">
         <h2 class="page-title">Car Parts Inventory</h2>
+
+        <!-- Export Inventory as PDF Button -->
+        <div class="button-container">
+            <a href="generate_inventory_report.php" class="export-btn">Export Inventory as PDF</a>
+        </div>
 
         <!-- Filter Form -->
         <form id="filter-form" method="POST">
@@ -252,6 +256,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
             </table>
         </div>
     </div>
+    <!-- Include JavaScript files -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="js/update_stock.js"></script>
 </body>
