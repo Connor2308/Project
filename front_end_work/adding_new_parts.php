@@ -56,7 +56,7 @@ while ($row = $branch_result->fetch_assoc()) {
     $branches[] = $row;
 }
 ?>
-
+<!-- HTML -->
 <!DOCTYPE html>
 <html lang="en">
 <head>

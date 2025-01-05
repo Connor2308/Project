@@ -52,6 +52,7 @@ if (!$result) {
     die("Error fetching suppliers: " . $con->error);
 }
 ?>
+<!-- HTML -->
 
 <!DOCTYPE html>
 <html lang="en">

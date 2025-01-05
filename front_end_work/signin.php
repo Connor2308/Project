@@ -38,8 +38,7 @@ if (isset($_POST['username'], $_POST['password'])) {
 }
 ?>
 
-
-
+<!-- HTML -->
 <!DOCTYPE html>
 <html lang="en">
 <head>

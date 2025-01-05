@@ -1,7 +1,7 @@
 <?php
 include('include/init.php'); //initalise everything like user data
 ?>
-
+<!-- HTML -->
 <!DOCTYPE html>
 <html lang="en">
 <head>

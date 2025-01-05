@@ -105,6 +105,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
     }
 }
 ?>
+<<<<<<< HEAD
+=======
+<!-- HTML -->
+>>>>>>> 3b39427 (HTML edits)
 <!DOCTYPE html>
 <html lang="en">
 <head>

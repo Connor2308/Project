@@ -2,7 +2,6 @@
 include('include/init.php');
 checkAdmin();
 
-//sorting section, when you click the table headers
 $sort_column = $_GET['sort_column'] ?? 'user_id';
 $sort_order = $_GET['sort_order'] ?? 'ASC';
 $next_sort_order = ($sort_order === 'ASC') ? 'DESC' : 'ASC'; 
@@ -90,7 +89,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['create_user'])) {
         }
     }
 }
-
 //if the remove user button is pressed
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
     $user_id = $_POST['user_id'];
@@ -106,7 +104,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
         if (!$update_user_stmt->execute()) {
             throw new Exception('Error deactivating the user.');
         }
-
         //commit transaction
         logAction($user_data['user_id'], $user_data['username'], 'DELETE', "Removed $user_id "); // Log the action here
         $con->commit();
@@ -120,7 +117,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
 }
 
 ?>
-
 <!-- HTML -->
 <!DOCTYPE html>
 <html lang="en">
@@ -177,7 +173,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
                     </div>
                 </div>
             </div>
+<<<<<<< HEAD
             <button type="submit" name="create_user" class="save-btn">Create User</button>
+=======
+            <button type="submit" name="create_user" class="submit-btn">Create User</button>
+>>>>>>> 3b39427 (HTML edits)
         </form>
 
         <!-- User table -->
@@ -222,6 +222,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
                     } else {
                         echo "<tr><td colspan='8'>No users found.</td></tr>";
                     }
+                    
                     ?>
                 </tbody>
             </table>

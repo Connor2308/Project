@@ -21,7 +21,7 @@ $result = $con->query($sql);
 $user_sql = "SELECT user_id, username FROM users ORDER BY username";
 $user_result = $con->query($user_sql);
 ?>
-
+<!-- HTML -->
 <!DOCTYPE html>
 <html lang="en">
 <head>

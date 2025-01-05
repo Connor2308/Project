@@ -92,6 +92,7 @@ $parts_query = "SELECT part_id, part_name, manufacturer, unit_price FROM parts";
 $parts_result = $con->query($parts_query);
 
 ?>
+<!-- HTML -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
