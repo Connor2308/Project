@@ -68,51 +68,44 @@ if (!$result) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style/base.css">
-   
-    <!-- uses same style as supplier form -->
-    <link rel="stylesheet" href="style/suppliers.css"> 
+    <link rel="stylesheet" href="style/base.css"> 
     <link rel="stylesheet" href="style/tablelist.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Branches</title>
 </head>
 <body>
-    <?php include('include/header.php')?>
+<?php include('include/header.php')?>
     <div class="page-container">
         <h2 class="page-title">Company Branches</h2>
-        
         <!-- Add Branch Form -->
-        <form action="view_branches.php" method="POST" class="supplier-form">
+        <form action="view_branches.php" method="POST" class="adding-form">
             <h3>Add New Branch</h3>
             <?php if (isset($error_message)): ?>
                 <p class="error-message"><?php echo htmlspecialchars($error_message); ?></p>
             <?php endif; ?>
-            <div class="supplier-form-columns">
+            <div class="form-columns">
                 <div class="left-column">
-                    <div class="form-group">
+                    <div class="form-box">
                         <label for="branch_name">Branch Name:</label>
                         <input type="text" id="branch_name" name="branch_name" required>
                     </div>
-
-                    <div class="form-group">
+                    <div class="form-box">
                         <label for="branch_phone">Contact Phone:</label>
                         <input type="text" id="branch_phone" name="branch_phone" required>
                     </div>
                 </div>
-
                 <div class="right-column">
-                    <div class="form-group">
+                    <div class="form-box">
                         <label for="branch_email">Contact Email:</label>
                         <input type="email" id="branch_email" name="branch_email" required>
                     </div>
-
-                    <div class="form-group">
+                    <div class="form-box">
                         <label for="branch_address">Address:</label>
                         <input type="text" id="branch_address" name="branch_address" required>
                     </div>
                 </div>
             </div>
-            <button type="submit" name="add_branch" class="submit-btn">Add Branch</button>
+            <button type="submit" name="add_branch" class="save-btn">Add Branch</button>
         </form>
 
         <!-- Branches Table -->

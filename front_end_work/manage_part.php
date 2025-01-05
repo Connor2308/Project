@@ -1,8 +1,7 @@
-<!-- filepath: /c:/xampp/htdocs/Project/front_end_work/manage_part.php -->
 <?php
 include('include/init.php'); // Initialise, includes the database connection
-// Verifying admin?
-checkAdmin();
+checkAdmin(); // Verifying admin
+
 // Get the part_id from the URL, default to 0 to avoid errors
 $part_id = isset($_GET['part_id']) ? $_GET['part_id'] : 0;
 
@@ -103,86 +102,92 @@ while ($row = $branch_result->fetch_assoc()) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style/part.css">
     <link rel="stylesheet" href="style/base.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Part</title>
 </head>
 <body>
     <?php include('include/header.php'); ?>
-    <h2 class="page-title">Edit Part Details</h2>
     <div class="page-container">
-        <!-- Back Button -->
-        <div class="back-button-container">
-            <a href="inventory.php" class="back-btn">Back</a>
+        <h2 class="page-title">Edit Part Details</h2>
+        <!-- Container that contains all of the boxes -->
+        <div class="form-container">
+            <!-- Back Button -->
+            <div class="back-button-container">
+                <a href="inventory.php" class="back-btn">Back</a>
+            </div>
+            <form action="manage_part.php?part_id=<?php echo htmlspecialchars($part['part_id']); ?>" method="POST" class="form">
+                <div class="form-columns">
+                    <div class="left-column">
+                        <div class="form-box">
+                            <label for="part_name">Part Name:</label>
+                            <input type="text" id="part_name" name="part_name" value="<?php echo htmlspecialchars($part['part_name']); ?>" required>
+                        </div>
+
+                        <div class="form-box">
+                            <label for="genre">Genre:</label>
+                            <select id="genre" name="genre" required>
+                                <option value="">Select Genre</option>
+                                <?php foreach ($genres as $genre): ?>
+                                    <option value="<?php echo htmlspecialchars($genre); ?>" <?php echo ($part['genre'] == $genre) ? 'selected' : ''; ?>><?php echo htmlspecialchars($genre); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="form-box">
+                            <label for="manufacturer">Manufacturer:</label>
+                            <input type="text" id="manufacturer" name="manufacturer" value="<?php echo htmlspecialchars($part['manufacturer']); ?>" required>
+                        </div>
+
+                        <div class="form-box">
+                            <label for="supplier_id">Supplier:</label>
+                            <select id="supplier_id" name="supplier_id" required>
+                                <option value="">Select Supplier</option>
+                                <?php foreach ($suppliers as $supplier): ?>
+                                    <option value="<?php echo htmlspecialchars($supplier['supplier_id']); ?>" <?php echo ($part['supplier_id'] == $supplier['supplier_id']) ? 'selected' : ''; ?>>
+                                        <?php echo htmlspecialchars($supplier['supplier_name']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="right-column">
+                        <div class="form-box">
+                            <label for="branch_id">Branch:</label>
+                            <select id="branch_id" name="branch_id" required>
+                                <option value="">Select Branch</option>
+                                <?php foreach ($branches as $branch): ?>
+                                    <option value="<?php echo htmlspecialchars($branch['branch_id']); ?>" <?php echo ($part['branch_id'] == $branch['branch_id']) ? 'selected' : ''; ?>>
+                                        <?php echo htmlspecialchars($branch['branch_name']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="form-box">
+                            <label for="unit_price">Unit Price:</label>
+                            <input type="number" step="0.01" id="unit_price" name="unit_price" value="<?php echo htmlspecialchars($part['unit_price']); ?>" required>
+                        </div>
+
+                        <div class="form-box">
+                            <label for="quantity_in_stock">Quantity in Stock:</label>
+                            <input type="number" id="quantity_in_stock" name="quantity_in_stock" value="<?php echo htmlspecialchars($part['quantity_in_stock']); ?>" required>
+                        </div>
+
+                        <div class="form-box">
+                            <label for="reorder_level">Reorder Level:</label>
+                            <input type="number" id="reorder_level" name="reorder_level" value="<?php echo htmlspecialchars($part['reorder_level']); ?>" required>
+                        </div>
+
+                        <div class="form-box">
+                            <label for="description">Description:</label>
+                            <textarea id="description" name="description" required><?php echo htmlspecialchars($part['description']); ?></textarea>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="save-btn">Save Changes</button>
+            </form>
         </div>
-        <form action="manage_part.php?part_id=<?php echo htmlspecialchars($part['part_id']); ?>" method="POST" class="manage-part-form">
-            <div class="form-box">
-                <label for="part_name">Part Name:</label>
-                <input type="text" id="part_name" name="part_name" value="<?php echo htmlspecialchars($part['part_name']); ?>" required>
-            </div>
-
-            <div class="form-box">
-                <label for="genre">Genre:</label>
-                <select id="genre" name="genre" required>
-                    <option value="">Select Genre</option>
-                    <?php foreach ($genres as $genre): ?>
-                        <option value="<?php echo htmlspecialchars($genre); ?>" <?php echo ($part['genre'] == $genre) ? 'selected' : ''; ?>><?php echo htmlspecialchars($genre); ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-
-            <div class="form-box">
-                <label for="manufacturer">Manufacturer:</label>
-                <input type="text" id="manufacturer" name="manufacturer" value="<?php echo htmlspecialchars($part['manufacturer']); ?>" required>
-            </div>
-
-            <div class="form-box">
-                <label for="supplier_id">Supplier:</label>
-                <select id="supplier_id" name="supplier_id" required>
-                    <option value="">Select Supplier</option>
-                    <?php foreach ($suppliers as $supplier): ?>
-                        <option value="<?php echo htmlspecialchars($supplier['supplier_id']); ?>" <?php echo ($part['supplier_id'] == $supplier['supplier_id']) ? 'selected' : ''; ?>>
-                            <?php echo htmlspecialchars($supplier['supplier_name']); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-
-            <div class="form-box">
-                <label for="branch_id">Branch:</label>
-                <select id="branch_id" name="branch_id" required>
-                    <option value="">Select Branch</option>
-                    <?php foreach ($branches as $branch): ?>
-                        <option value="<?php echo htmlspecialchars($branch['branch_id']); ?>" <?php echo ($part['branch_id'] == $branch['branch_id']) ? 'selected' : ''; ?>>
-                            <?php echo htmlspecialchars($branch['branch_name']); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-
-            <div class="form-box">
-                <label for="unit_price">Unit Price:</label>
-                <input type="number" step="0.01" id="unit_price" name="unit_price" value="<?php echo htmlspecialchars($part['unit_price']); ?>" required>
-            </div>
-
-            <div class="form-box">
-                <label for="quantity_in_stock">Quantity in Stock:</label>
-                <input type="number" id="quantity_in_stock" name="quantity_in_stock" value="<?php echo htmlspecialchars($part['quantity_in_stock']); ?>" required>
-            </div>
-
-            <div class="form-box">
-                <label for="reorder_level">Reorder Level:</label>
-                <input type="number" id="reorder_level" name="reorder_level" value="<?php echo htmlspecialchars($part['reorder_level']); ?>" required>
-            </div>
-
-            <div class="form-box">
-                <label for="description">Description:</label>
-                <textarea id="description" name="description" required><?php echo htmlspecialchars($part['description']); ?></textarea>
-            </div>
-
-            <button type="submit">Save Changes</button>
-        </form>
     </div>
 </body>
 </html>

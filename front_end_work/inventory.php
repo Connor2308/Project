@@ -1,28 +1,35 @@
 <?php
-include('include/init.php'); //initialise everything like user data
+include('include/init.php'); // Initialise, includes the database connection
+checkAdmin(); // Verifying admin
 
-//Sorting Section
-$sort_column = isset($_GET['sort_column']) ? $_GET['sort_column'] : 'part_id'; //if nothing is in the sort column eg when we load up the page we will sort in the part_id
-$sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'ASC'; //this ensures that when the page is first loaded it ensures that it is set to ASC order 
-$next_sort_order = ($sort_order == 'ASC') ? 'DESC' : 'ASC'; // this bit is for toggling between ASC and DESC order
+// Sorting Section
+$sort_column = isset($_GET['sort_column']) ? $_GET['sort_column'] : 'part_id'; // Default sort column
+$sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'ASC'; // Default sort order
+$next_sort_order = ($sort_order == 'ASC') ? 'DESC' : 'ASC'; // Toggle sort order
 
-//Handling filters
-$genre_filter = isset($_POST['genre']) ? $_POST['genre'] : [];
+// Handling filters
+$selected_genres = isset($_POST['genres']) ? $_POST['genres'] : [];
 $min_price = isset($_POST['min_price']) && is_numeric($_POST['min_price']) ? $_POST['min_price'] : null;
 $max_price = isset($_POST['max_price']) && is_numeric($_POST['max_price']) ? $_POST['max_price'] : null;
 $branch_filter = isset($_POST['branch']) ? $_POST['branch'] : '';
 
-//Fetch branches for the dropdown
+// Fetch all genres for the dropdown
+$genre_sql = "SELECT DISTINCT genre FROM parts";
+$genre_result = $con->query($genre_sql);
+$genres = [];
+while ($row = $genre_result->fetch_assoc()) {
+    $genres[] = $row['genre'];
+}
+
+// Fetch branches for the dropdown
 $branches_sql = "SELECT branch_id, branch_name FROM branches";
 $branches_result = $con->query($branches_sql);
 $branches = [];
-if ($branches_result->num_rows > 0) {
-    while ($branch = $branches_result->fetch_assoc()) {
-        $branches[] = $branch;
-    }
+while ($row = $branches_result->fetch_assoc()) {
+    $branches[] = $row;
 }
 
-//sql selection to populate the table, including a join for the suppliers id
+// Build the query based on the filters
 $sql = "SELECT 
             parts.part_id, 
             parts.part_name, 
@@ -38,8 +45,7 @@ $sql = "SELECT
         INNER JOIN suppliers ON parts.supplier_id = suppliers.supplier_id
         LEFT JOIN branches ON parts.branch_id = branches.branch_id";
 
-//adding filters to my query to only fetch what we want
-$conditions = []; //array that we store any conditions in eg filters
+$conditions = []; // Array to store conditions
 
 if ($min_price !== null) {
     $conditions[] = "parts.unit_price >= $min_price";
@@ -47,33 +53,31 @@ if ($min_price !== null) {
 if ($max_price !== null) {
     $conditions[] = "parts.unit_price <= $max_price";
 }
-if (!empty($genre_filter)) {
-    $genre_list = implode("','", array_map('addslashes', $genre_filter));
-    $conditions[] = "parts.genre IN ('$genre_list')";//only get specific 'genres' of parts that the user want, ik genre is not the right word but its in now :)
+if (!empty($selected_genres) && !in_array("", $selected_genres)) {
+    $genre_list = implode("','", array_map('addslashes', $selected_genres));
+    $conditions[] = "parts.genre IN ('$genre_list')";
 }
 if (!empty($branch_filter)) {
     $conditions[] = "parts.branch_id = '$branch_filter'";
 }
 
-//if the conditions array is NOT empty we IMPLODE ("Join array elements with a string") this to the previously written sql statement
 if (!empty($conditions)) {
     $sql .= " WHERE " . implode(" AND ", $conditions);
 }
-//adding the ORDER BY clause (this is always added, ust kept breaking when everywhere else but here
+
 $sql .= " ORDER BY $sort_column $sort_order";
 
-//finally we execute the query :)
 $result = $con->query($sql);
 
 // Delete part
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
     $part_id = $_POST['part_id'];
 
-    //begin transaction to ensure data consistency
+    // Begin transaction to ensure data consistency
     $con->begin_transaction();
 
     try {
-        //Delete all items in the order
+        // Delete all items in the order
         $delete_items_sql = "DELETE FROM order_items WHERE part_id = ?";
         $delete_items_stmt = $con->prepare($delete_items_sql);
         $delete_items_stmt->bind_param('i', $part_id);
@@ -81,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
             throw new Exception('Error deleting item from order items.');
         }
 
-        //Delete the order itself
+        // Delete the order itself
         $delete_part_sql = "DELETE FROM parts WHERE part_id = ?";
         $delete_part_stmt = $con->prepare($delete_part_sql);
         $delete_part_stmt->bind_param('i', $part_id);
@@ -89,13 +93,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
             throw new Exception('Error deleting the parts.');
         }
 
-        //Commit the transaction
+        // Commit the transaction
         $con->commit();
         logAction($user_data['user_id'], $user_data['username'], 'DELETE', "Deleted Part ID: $part_id"); // Log the action here
-        header('Location: inventory.php'); //Redirect to parts page after successful removal
+        header('Location: inventory.php'); // Redirect to parts page after successful removal
         exit;
     } catch (Exception $e) {
-        //Rollback in case of error
+        // Rollback in case of error
         $con->rollback();
         echo "<p>Error removing part: " . $e->getMessage() . "</p>";
     }
@@ -121,87 +125,56 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
             <a href="generate_inventory_report.php" class="export-btn">Export Inventory as PDF</a>
         </div>
 
-        <!-- Filter Form -->
-        <form id="filter-form" method="POST">
-            <!-- price filter section -->
-            <div class="filters-left">
-                <label for="min_price">Min Price:</label>
-                <input type="number" id="min_price" name="min_price" min="0" step="0.01" value="<?php echo isset($_POST['min_price']) ? htmlspecialchars($_POST['min_price']) : ''; ?>">
-
-                <label for="max_price">Max Price:</label>
-                <input type="number" id="max_price" name="max_price" min="0" step="0.01" value="<?php echo isset($_POST['max_price']) ? htmlspecialchars($_POST['max_price']) : ''; ?>">
-            </div>
-            <!-- genre box, if there are more add them here just follow the format of the others -->
-            <div class="filters-right">
-                <label>Filter by Genre:</label>
-                <div class="checkbox-group">
-                    <input type="checkbox" id="engine" name="genre[]" value="Engine" <?php echo in_array('Engine', $genre_filter) ? 'checked' : ''; ?>>
-                    <label for="engine">Engine</label>
-
-                    <input type="checkbox" id="exhaust" name="genre[]" value="Exhaust" <?php echo in_array('Exhaust', $genre_filter) ? 'checked' : ''; ?>>
-                    <label for="exhaust">Exhaust</label>
-
-                    <input type="checkbox" id="body" name="genre[]" value="Body" <?php echo in_array('Body', $genre_filter) ? 'checked' : ''; ?>>
-                    <label for="body">Body</label>
-
-                    <input type="checkbox" id="brakes" name="genre[]" value="Brakes" <?php echo in_array('Brakes', $genre_filter) ? 'checked' : ''; ?>>
-                    <label for="brakes">Brakes</label>
-
-                    <input type="checkbox" id="transmission" name="genre[]" value="Transmission" <?php echo in_array('Transmission', $genre_filter) ? 'checked' : ''; ?>>
-                    <label for="transmission">Transmission</label>
-
-                    <input type="checkbox" id="suspension" name="genre[]" value="Suspension" <?php echo in_array('Suspension', $genre_filter) ? 'checked' : ''; ?>>
-                    <label for="suspension">Suspension</label>
-
-                    <input type="checkbox" id="electrical" name="genre[]" value="Electrical" <?php echo in_array('Electrical', $genre_filter) ? 'checked' : ''; ?>>
-                    <label for="electrical">Electrical</label>
-
-                    <input type="checkbox" id="cooling" name="genre[]" value="Cooling" <?php echo in_array('Cooling', $genre_filter) ? 'checked' : ''; ?>>
-                    <label for="cooling">Cooling</label>
-
-                    <input type="checkbox" id="fuel" name="genre[]" value="Fuel" <?php echo in_array('Fuel', $genre_filter) ? 'checked' : ''; ?>>
-                    <label for="fuel">Fuel</label>
-
-                    <input type="checkbox" id="Accessories" name="genre[]" value="Accessories" <?php echo in_array('Accessories', $genre_filter) ? 'checked' : ''; ?>>
-                    <label for="Accessories">Accessories</label>
-
-                    <input type="checkbox" id="interior" name="genre[]" value="Interior" <?php echo in_array('Interior', $genre_filter) ? 'checked' : ''; ?>>
-                    <label for="interior">Interior</label>
+        <!-- Filter Section -->
+        <div class="form-container">
+            <form action="inventory.php" method="POST" class="adding-form">
+                <h3>Filter Parts</h3>
+                <div class="form-columns">
+                    <div class="left-column">
+                        <div class="form-box">
+                            <label for="genres">Genres:</label>
+                            <select id="genres" name="genres[]" multiple>
+                                <option value="">All Genres</option>
+                                <?php foreach ($genres as $genre): ?>
+                                    <option value="<?php echo htmlspecialchars($genre); ?>" <?php echo in_array($genre, $selected_genres) ? 'selected' : ''; ?>><?php echo htmlspecialchars($genre); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="right-column">
+                        <div class="form-box">
+                            <label for="branch">Branch:</label>
+                            <select id="branch" name="branch">
+                                <option value="">All Branches</option>
+                                <?php foreach ($branches as $branch): ?>
+                                    <option value="<?php echo htmlspecialchars($branch['branch_id']); ?>" <?php echo ($branch_filter == $branch['branch_id']) ? 'selected' : ''; ?>><?php echo htmlspecialchars($branch['branch_name']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="form-box">
+                            <label for="min_price">Min Price:</label>
+                            <input type="number" step="0.01" id="min_price" name="min_price" value="<?php echo htmlspecialchars($min_price); ?>">
+                        </div>
+                        <div class="form-box">
+                            <label for="max_price">Max Price:</label>
+                            <input type="number" step="0.01" id="max_price" name="max_price" value="<?php echo htmlspecialchars($max_price); ?>">
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <!-- branch filter section -->
-            <div class="filters-branch">
-                <label for="branch">Filter by Branch:</label>
-                <select id="branch" name="branch">
-                    <option value="">All Branches</option>
-                    <?php foreach ($branches as $branch): ?>
-                        <option value="<?php echo htmlspecialchars($branch['branch_id']); ?>" <?php echo (isset($_POST['branch']) && $_POST['branch'] == $branch['branch_id']) ? 'selected' : ''; ?>>
-                            <?php echo htmlspecialchars($branch['branch_name']); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <!-- a search box section -->
-            <div class="filters-search">
-                <label for="search">Search:</label>
-                <input type="text" id="search" name="search" placeholder="Search parts..." value="<?php echo isset($_POST['search']) ? htmlspecialchars($_POST['search']) : ''; ?>">
-            </div>
-
-            <!-- apply filter button/ this is disabled by default but is enabled by js when the user actually selects a filter to apply, this is cause it kept breaking -->
-            <button type="submit" id="apply-filters">Apply Filters</button> 
-        </form>
+                <button type="submit" class="save-btn">Apply Filters</button>
+            </form>
+        </div>
 
         <!-- Add a Part Button -->
         <div id="add-part-button-container" class="button-container">
             <a href="adding_new_parts.php" class="add-part-btn">Add Part</a> 
         </div>
 
-        <!-- table bit -->
+        <!-- Inventory Table -->
         <div class="table-container">
             <table class="inventory-list">
                 <thead>
                     <tr>
-                        <!-- here are the table headers with the the next sort order button in there aswell so if they click it then the order will change -->
                         <th><a href="?sort_column=part_id&sort_order=<?php echo $next_sort_order; ?>">Part ID</a></th>
                         <th><a href="?sort_column=part_name&sort_order=<?php echo $next_sort_order; ?>">Part Name</a></th>
                         <th><a href="?sort_column=description&sort_order=<?php echo $next_sort_order; ?>">Description</a></th>
@@ -218,7 +191,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- actually fill the table with each row of data the sql fetches from the db -->
                     <?php
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {

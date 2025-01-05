@@ -160,38 +160,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['refresh_price'])) {
     </script>
 </head>
 <body>
-    <?php include('include/header.php'); ?>
-    <!-- form to create new order -->
-    <div class="create-order-form">
-        <h3>Create New Order</h3>
-        <form method="POST">
-            <label for="user_id">Select User:</label>
-            <select name="user_id" id="user_id" required>
-                <option value="" disabled selected>Select a User</option>
-                <?php
-                //populate dropdown with available users
-                while ($user = $users_result->fetch_assoc()) {
-                    echo "<option value='" . $user['user_id'] . "'>" . htmlspecialchars($user['username']) . "</option>";
-                }
-                ?>
-            </select>
-            <label for="recipient_name">Recipient Name:</label>
-            <input type="text" name="recipient_name" id="recipient_name" required>
-
-            <label for="order_date">Order Date:</label>
-            <input type="date" name="order_date" id="order_date" required>
-
-            <label for="order_time">Order Time:</label>
-            <input type="time" name="order_time" id="order_time" required>
-
-            <label for="order_status">Order Status:</label>
-            <select name="order_status" id="order_status" required>
-                <option value="Pending">Pending</option>
-                <option value="Processing">Processing</option>
-                <option value="Completed">Completed</option>
-            </select>
-
-            <button type="submit" name="create_order">Create Order</button>
+<?php include('include/header.php'); ?>
+    <div class="page-container">
+        <h2 class="page-title">Orders</h2>
+        <!-- Add Order -->
+        <form action="view_orders.php" method="POST" class="adding-form">
+            <h3>Add New Order</h3>
+            <?php if (isset($error_message)): ?>
+                <p class="error-message"><?php echo htmlspecialchars($error_message); ?></p>
+            <?php endif; ?>
+            <div class="form-columns">
+                <div class="left-column">
+                    <div class="form-box">
+                        <label for="order_date">Order Date:</label>
+                        <input type="date" id="order_date" name="order_date" required>
+                    </div>
+                    <div class="form-box">
+                        <label for="order_time">Order Time:</label>
+                        <input type="time" id="order_time" name="order_time" required>
+                    </div>
+                    <div class="form-box">
+                        <label for="total_cost">Total Cost:</label>
+                        <input type="number" step="0.01" id="total_cost" name="total_cost" required>
+                    </div>
+                </div>
+                <div class="right-column">
+                    <div class="form-box">
+                        <label for="recipient">Recipient:</label>
+                        <input type="text" id="recipient" name="recipient" required>
+                    </div>
+                    <div class="form-box">
+                        <label for="order_status">Order Status:</label>
+                        <select id="order_status" name="order_status" required>
+                            <option value="Pending">Pending</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="save-btn">Add Order</button>
         </form>
     </div>
     <div class="page-container">

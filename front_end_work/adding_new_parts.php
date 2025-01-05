@@ -1,140 +1,139 @@
 <?php
-include('include/init.php'); //initialise everything like user data
+include('include/init.php'); // Initialise, includes the database connection
+checkAdmin(); // Verifying admin
 
-//adding new parts
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_part'])) {
+// Handle the form submission for adding a new part
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get form inputs
     $part_name = $_POST['part_name'];
-    $genre = $_POST['genre'];
-    $manufacturer = $_POST['manufacturer'];
     $supplier_id = $_POST['supplier_id'];
+    $branch_id = $_POST['branch_id'];
     $unit_price = $_POST['unit_price'];
     $quantity_in_stock = $_POST['quantity_in_stock'];
-    $reorder_level = $_POST['reorder_level'];
     $description = $_POST['description'];
-    $branch_id = $_POST['branch_id'];
+    $manufacturer = $_POST['manufacturer'];
+    $genre = $_POST['genre'];
+    $reorder_level = $_POST['reorder_level'];
 
-    //preparing SQL statement
-    $stmt = $con->prepare("INSERT INTO parts (part_name, genre, manufacturer, supplier_id, unit_price, quantity_in_stock, reorder_level, description, branch_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssiddisi", $part_name, $genre, $manufacturer, $supplier_id, $unit_price, $quantity_in_stock, $reorder_level, $description, $branch_id); // Binding params for preventing SQL attacks
-
-    //execute and handle results
-    if ($stmt->execute()) {
-        //success, redirect to inventory.php
-        logAction($user_data['user_id'], $user_data['username'], 'CREATE', "Added an item with part ID: $part_id"); // Log the action here
-
-        header('Location: inventory.php');
-        exit;
-    } else {
-        $error_message = "Error: " . $stmt->error;
+    // Validate that none of the required fields are empty
+    if (empty($part_name) || empty($supplier_id) || empty($branch_id) || empty($unit_price) || empty($quantity_in_stock) || empty($description) || empty($manufacturer) || empty($genre) || empty($reorder_level)) {
+        die("All fields are required.");
     }
-    $stmt->close();
+
+    // Insert the new part into the database
+    $insert_sql = "INSERT INTO parts (part_name, supplier_id, branch_id, unit_price, quantity_in_stock, description, manufacturer, genre, reorder_level) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $insert_stmt = $con->prepare($insert_sql);
+    $insert_stmt->bind_param('siidssssi', $part_name, $supplier_id, $branch_id, $unit_price, $quantity_in_stock, $description, $manufacturer, $genre, $reorder_level);
+    $insert_stmt->execute();
+
+    logAction($user_data['user_id'], $user_data['username'], 'INSERT', "Added a new part"); // Log the action here
+    // Redirect to the parts table after adding the new part
+    header('Location: inventory.php');
+    exit;
 }
 
-//fetch all suppliers for the dropdown
-$supplier_sql = "SELECT supplier_id, supplier_name FROM suppliers";
+// Fetch all genres for the dropdown
+$genre_sql = "SELECT DISTINCT genre FROM parts";
+$genre_result = $con->query($genre_sql);
+$genres = [];
+while ($row = $genre_result->fetch_assoc()) {
+    $genres[] = $row['genre'];
+}
+
+// Fetch only active suppliers for the dropdown
+$supplier_sql = "SELECT supplier_id, supplier_name FROM suppliers WHERE active = 1";
 $supplier_result = $con->query($supplier_sql);
 $suppliers = [];
 while ($row = $supplier_result->fetch_assoc()) {
     $suppliers[] = $row;
 }
 
-//fetch all branches for the dropdown
-$branches_sql = "SELECT branch_id, branch_name FROM branches";
-$branches_result = $con->query($branches_sql);
+// Fetch all branches for the dropdown
+$branch_sql = "SELECT branch_id, branch_name FROM branches";
+$branch_result = $con->query($branch_sql);
 $branches = [];
-while ($row = $branches_result->fetch_assoc()) {
+while ($row = $branch_result->fetch_assoc()) {
     $branches[] = $row;
 }
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adding New Part</title>
-    <link rel="stylesheet" href="style/new_part.css">
     <link rel="stylesheet" href="style/base.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Part</title>
 </head>
 <body>
     <?php include('include/header.php'); ?>
     <div class="page-container">
-        
-        <!-- Display Messages -->
-        <?php if (isset($error_message)): ?>
-            <div class="error-message"><?php echo htmlspecialchars($error_message); ?></div>
-        <?php endif; ?>
-
-        <!-- Add New Part Form -->
-        <div class="add-part-container">
-            <h3>Add New Part</h3>
-            <form method="POST" id="add-part-form">
-                <div class="form-group">
-                    <label for="part_name">Part Name:</label>
-                    <input type="text" id="part_name" name="part_name" required>
-                </div>
-                <div class="form-group">
-                    <label for="genre">Type:</label>
-                    <select id="genre" name="genre" required>
-                        <option value="Engine">Engine</option>
-                        <option value="Exhaust">Exhaust</option>
-                        <option value="Body">Body</option>
-                        <option value="Brakes">Brakes</option>
-                        <option value="Transmission">Transmission</option>
-                        <option value="Suspension">Suspension</option>
-                        <option value="Electrical">Electrical</option>
-                        <option value="Cooling">Cooling</option>
-                        <option value="Accessories">Accessories</option>
-                        <option value="Fuel">Fuel</option>
-                        <option value="Interior">Interior</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="manufacturer">Manufacturer:</label>
-                    <input type="text" id="manufacturer" name="manufacturer" required>
-                </div>
-                <div class="form-group">
-                    <label for="supplier_id">Supplier ID:</label>
-                    <select id="supplier_id" name="supplier_id" required>
-                        <option value="">Select Supplier</option>
-                        <?php foreach ($suppliers as $supplier): ?>
-                            <option value="<?php echo htmlspecialchars($supplier['supplier_id']); ?>">
-                                <?php echo htmlspecialchars($supplier['supplier_id']) . ' - ' . htmlspecialchars($supplier['supplier_name']); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="branch_id">Branch:</label>
-                    <select id="branch_id" name="branch_id" required>
-                        <option value="">Select Branch</option>
-                        <?php foreach ($branches as $branch): ?>
-                            <option value="<?php echo htmlspecialchars($branch['branch_id']); ?>">
-                                <?php echo htmlspecialchars($branch['branch_name']); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="unit_price">Unit Price:</label>
-                    <input type="number" step="0.01" id="unit_price" name="unit_price" required>
-                </div>
-                <div class="form-group">
-                    <label for="quantity_in_stock">Quantity in Stock:</label>
-                    <input type="number" id="quantity_in_stock" name="quantity_in_stock" required>
-                </div>
-                <div class="form-group">
-                    <label for="reorder_level">Reorder Level:</label>
-                    <input type="number" id="reorder_level" name="reorder_level" required>
-                </div>
-                <div class="form-group">
-                    <label for="description">Description:</label>
-                    <textarea id="description" name="description" rows="3" required></textarea>
-                </div>
-                <button type="submit" name="add_part" class="submit-btn">Add Part</button>
-            </form>
+        <h2 class="page-title">Add New Part</h2>
+        <!-- Container that contains all of the boxes -->
+            <!-- Back Button -->
+        <div class="back-button-container">
+            <a href="inventory.php" class="back-btn">Back</a>
         </div>
+        <form action="adding_new_parts.php" method="POST" class="adding-form">
+            <div class="form-columns">
+                <div class="left-column">
+                    <div class="form-box">
+                        <label for="part_name">Part Name:</label>
+                        <input type="text" id="part_name" name="part_name" required>
+                    </div>
+                    <div class="form-box">
+                        <label for="genre">Genre:</label>
+                        <select id="genre" name="genre" required>
+                            <option value="">Select Genre</option>
+                            <?php foreach ($genres as $genre): ?>
+                                <option value="<?php echo htmlspecialchars($genre); ?>"><?php echo htmlspecialchars($genre); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-box">
+                        <label for="manufacturer">Manufacturer:</label>
+                        <input type="text" id="manufacturer" name="manufacturer" required>
+                    </div>
+                    <div class="form-box">
+                        <label for="supplier_id">Supplier:</label>
+                        <select id="supplier_id" name="supplier_id" required>
+                            <option value="">Select Supplier</option>
+                            <?php foreach ($suppliers as $supplier): ?>
+                                <option value="<?php echo htmlspecialchars($supplier['supplier_id']); ?>"><?php echo htmlspecialchars($supplier['supplier_name']); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="right-column">
+                    <div class="form-box">
+                        <label for="branch_id">Branch:</label>
+                        <select id="branch_id" name="branch_id" required>
+                            <option value="">Select Branch</option>
+                            <?php foreach ($branches as $branch): ?>
+                                <option value="<?php echo htmlspecialchars($branch['branch_id']); ?>"><?php echo htmlspecialchars($branch['branch_name']); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-box">
+                        <label for="unit_price">Unit Price:</label>
+                        <input type="number" step="0.01" id="unit_price" name="unit_price" required>
+                    </div>
+                    <div class="form-box">
+                        <label for="quantity_in_stock">Quantity in Stock:</label>
+                        <input type="number" id="quantity_in_stock" name="quantity_in_stock" required>
+                    </div>
+                    <div class="form-box">
+                        <label for="reorder_level">Reorder Level:</label>
+                        <input type="number" id="reorder_level" name="reorder_level" required>
+                    </div>
+                    <div class="form-box">
+                        <label for="description">Description:</label>
+                        <textarea id="description" name="description" required></textarea>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="save-btn">Add Part</button>
+        </form>
     </div>
 </body>
 </html>

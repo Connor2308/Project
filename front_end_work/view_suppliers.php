@@ -58,7 +58,6 @@ if (!$result) {
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style/base.css">
-    <link rel="stylesheet" href="style/suppliers.css">
     <link rel="stylesheet" href="style/tablelist.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suppliers</title>
@@ -67,46 +66,40 @@ if (!$result) {
     <?php include('include/header.php')?>
     <div class="page-container">
         <h2 class="page-title">Suppliers</h2>
-        
         <!-- Add Supplier Form -->
-        <form action="view_suppliers.php" method="POST" class="supplier-form">
+        <form action="view_suppliers.php" method="POST" class="adding-form">
             <h3>Add New Supplier</h3>
             <?php if (isset($error_message)): ?>
                 <p class="error-message"><?php echo htmlspecialchars($error_message); ?></p>
             <?php endif; ?>
-            <div class="supplier-form-columns">
+            <div class="form-columns">
                 <div class="left-column">
-                    <div class="form-group">
+                    <div class="form-box">
                         <label for="supplier_name">Supplier Name:</label>
                         <input type="text" id="supplier_name" name="supplier_name" required>
                     </div>
-
-                    <div class="form-group">
+                    <div class="form-box">
                         <label for="contact_name">Contact Name:</label>
                         <input type="text" id="contact_name" name="contact_name" required>
                     </div>
-
-                    <div class="form-group">
+                    <div class="form-box">
                         <label for="contact_phone">Contact Phone:</label>
                         <input type="text" id="contact_phone" name="contact_phone" required>
                     </div>
                 </div>
-
                 <div class="right-column">
-                    <div class="form-group">
+                    <div class="form-box">
                         <label for="contact_email">Contact Email:</label>
                         <input type="email" id="contact_email" name="contact_email" required>
                     </div>
-
-                    <div class="form-group">
+                    <div class="form-box">
                         <label for="address">Address:</label>
                         <input type="text" id="address" name="address" required>
                     </div>
                 </div>
             </div>
-            <button type="submit" name="add_supplier" class="submit-btn">Add Supplier</button>
+            <button type="submit" name="add_supplier" class="save-btn">Add Supplier</button>
         </form>
-
         <!-- Supplier Table -->
         <div class="table-container">
             <table class="inventory-list">

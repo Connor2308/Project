@@ -1,7 +1,6 @@
 <?php
 include('include/init.php'); // Initialise, this includes the database connection
-// Verifying admin?
-checkAdmin();
+checkAdmin(); // Verify admin access
 
 // Getting supplier id from the URL, defaults to 0 to ensure it doesn't break
 $supplier_id = isset($_GET['supplier_id']) ? $_GET['supplier_id'] : 0;
@@ -59,56 +58,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style/supplier.css">
     <link rel="stylesheet" href="style/base.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Supplier</title>
 </head>
 <body>
     <?php include('include/header.php'); ?>
-    <h2 class="page-title">Edit Supplier Details</h2>
-    <!-- Container that contains all of the boxes -->
     <div class="page-container">
-        <!-- Back Button -->
-        <div class="back-button-container">
-            <a href="view_suppliers.php" class="back-btn">Back</a>
+        <h2 class="page-title">Edit Supplier Details</h2>
+        <!-- Container that contains all of the boxes -->
+        <div class="form-container">
+            <!-- Back Button -->
+            <div class="back-button-container">
+                <a href="view_suppliers.php" class="back-btn">Back</a>
+            </div>
+            <form action="manage_supplier.php?supplier_id=<?php echo htmlspecialchars($supplier['supplier_id']); ?>" method="POST" class="form">
+                <div class="form-columns">
+                    <div class="left-column">
+                        <div class="form-box">
+                            <label for="supplier_name">Supplier Name:</label>
+                            <input type="text" id="supplier_name" name="supplier_name" value="<?php echo htmlspecialchars($supplier['supplier_name']); ?>" required>
+                        </div>
+
+                        <div class="form-box">
+                            <label for="contact_name">Contact Name:</label>
+                            <input type="text" id="contact_name" name="contact_name" value="<?php echo htmlspecialchars($supplier['contact_name']); ?>" required>
+                        </div>
+
+                        <div class="form-box">
+                            <label for="contact_email">Contact Email:</label>
+                            <input type="email" id="contact_email" name="contact_email" value="<?php echo htmlspecialchars($supplier['contact_email']); ?>" required>
+                        </div>
+
+                        <div class="form-box">
+                            <label for="contact_phone">Contact Phone:</label>
+                            <input type="text" id="contact_phone" name="contact_phone" value="<?php echo htmlspecialchars($supplier['contact_phone']); ?>" required>
+                        </div>
+                    </div>
+                    <div class="right-column">
+                        <div class="form-box">
+                            <label for="address">Address:</label>
+                            <textarea id="address" name="address" required><?php echo htmlspecialchars($supplier['address']); ?></textarea>
+                        </div>
+
+                        <div class="form-box">
+                            <label for="active">Active:</label>
+                            <select id="active" name="active" required>
+                                <option value="1" <?php echo ($supplier['active'] == '1' ? 'selected' : ''); ?>>Active</option>
+                                <option value="0" <?php echo ($supplier['active'] == '0' ? 'selected' : ''); ?>>Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="save-btn">Save Changes</button>
+            </form>
         </div>
-        <form action="manage_supplier.php?supplier_id=<?php echo htmlspecialchars($supplier['supplier_id']); ?>" method="POST" class="manage-supplier-form">
-            <div class="form-box">
-                <label for="supplier_name">Supplier Name:</label>
-                <input type="text" id="supplier_name" name="supplier_name" value="<?php echo htmlspecialchars($supplier['supplier_name']); ?>" required>
-            </div>
-
-            <div class="form-box">
-                <label for="contact_name">Contact Name:</label>
-                <input type="text" id="contact_name" name="contact_name" value="<?php echo htmlspecialchars($supplier['contact_name']); ?>" required>
-            </div>
-
-            <div class="form-box">
-                <label for="contact_email">Contact Email:</label>
-                <input type="email" id="contact_email" name="contact_email" value="<?php echo htmlspecialchars($supplier['contact_email']); ?>" required>
-            </div>
-
-            <div class="form-box">
-                <label for="contact_phone">Contact Phone:</label>
-                <input type="text" id="contact_phone" name="contact_phone" value="<?php echo htmlspecialchars($supplier['contact_phone']); ?>" required>
-            </div>
-
-            <div class="form-box">
-                <label for="address">Address:</label>
-                <textarea id="address" name="address" required><?php echo htmlspecialchars($supplier['address']); ?></textarea>
-            </div>
-
-            <div class="form-box">
-                <label for="active">Active:</label>
-                <select id="active" name="active" required>
-                    <option value="1" <?php echo ($supplier['active'] == '1' ? 'selected' : ''); ?>>Active</option>
-                    <option value="0" <?php echo ($supplier['active'] == '0' ? 'selected' : ''); ?>>Inactive</option>
-                </select>
-            </div>
-
-            <button type="submit">Save Changes</button>
-        </form>
     </div>
 </body>
 </html>

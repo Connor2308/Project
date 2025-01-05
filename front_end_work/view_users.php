@@ -128,7 +128,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style/base.css">
     <link rel="stylesheet" href="style/tablelist.css">
-    <link rel="stylesheet" href="style/useradd.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin View Users</title>
 </head>
@@ -137,42 +136,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
     <div class="page-container">
         <h2 class="page-title">System's Users</h2>
         <!-- User creation form -->
-        <form action="view_users.php" method="POST" class="user-form">
+        <form action="view_users.php" method="POST" class="adding-form">
             <h3>Create New User</h3>
             <div class="form-columns">
                 <div class="right-column">
-                    <div class="form-group">
+                    <div class="form-box">
                         <label for="first_name">First Name:</label>
                         <input type="text" id="first_name" name="first_name">
                     </div>
-
-                    <div class="form-group">
+                    <div class="form-box">
                         <label for="last_name">Last Name:</label>
                         <input type="text" id="last_name" name="last_name">
                     </div>
-
-                    <div class="form-group">
+                    <div class="form-box">
                         <label for="email">Email:</label>
                         <input type="email" id="email" name="email" required>
                     </div>
-
-                    <div class="form-group">
+                    <div class="form-box">
                         <label for="phone_number">Phone Number:</label>
                         <input type="text" id="phone_number" name="phone_number">
                     </div>
                 </div>
                 <div class="left-column">
-                    <div class="form-group">
+                    <div class="form-box">
                         <label for="username">Username:</label>
                         <input type="text" id="username" name="username" required>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-box">
                         <label for="password">Password:</label>
                         <input type="password" id="password" name="password" required>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-box">
                         <label for="role">Role:</label>
                         <select id="role" name="role">
                             <option value="admin">Admin</option>
@@ -181,9 +177,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
                     </div>
                 </div>
             </div>
-
-
-            <button type="submit" name="create_user" class="submit-btn">Create User</button>
+            <button type="submit" name="create_user" class="save-btn">Create User</button>
         </form>
 
         <!-- User table -->
