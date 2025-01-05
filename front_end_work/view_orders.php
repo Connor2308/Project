@@ -1,6 +1,6 @@
 <?php
 include('include/init.php'); 
-checkAdmin();
+
 //sorting section
 $sort_column = $_GET['sort_column'] ?? 'order_id'; 
 $sort_order = $_GET['sort_order'] ?? 'ASC';

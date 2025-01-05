@@ -1,6 +1,6 @@
 <?php
 include('include/init.php'); // Initialise, this includes the database connection
-checkAdmin();
+checkAdmin();  //Admin only page
 
 // Getting branch id from the URL, defaults to 0 to ensure it doesn't break
 $branch_id = isset($_GET['branch_id']) ? $_GET['branch_id'] : 0;
@@ -64,36 +64,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include('include/header.php'); ?>
     <div class="page-container">
         <h2 class="page-title">Edit Branch Details</h2>
-        <!-- Container that contains all of the boxes -->
-        <div class="form-container">
-            <!-- Back Button -->
-            <div class="back-button-container">
-                <a href="view_branches.php" class="back-btn">Back</a>
-            </div>
-            <form action="manage_branches.php?branch_id=<?php echo htmlspecialchars($branch['branch_id']); ?>" method="POST" class="form">
-                <div class="form-box">
-                    <label for="branch_name">Branch Name:</label>
-                    <input type="text" id="branch_name" name="branch_name" value="<?php echo htmlspecialchars($branch['branch_name']); ?>" required>
-                </div>
-
-                <div class="form-box">
-                    <label for="branch_phone">Contact Phone:</label>
-                    <input type="text" id="branch_phone" name="branch_phone" value="<?php echo htmlspecialchars($branch['branch_phone']); ?>" required>
-                </div>
-
-                <div class="form-box">
-                    <label for="branch_email">Contact Email:</label>
-                    <input type="email" id="branch_email" name="branch_email" value="<?php echo htmlspecialchars($branch['branch_email']); ?>" required>
-                </div>
-
-                <div class="form-box">
-                    <label for="branch_address">Address:</label>
-                    <textarea id="branch_address" name="branch_address" required><?php echo htmlspecialchars($branch['branch_address']); ?></textarea>
-                </div>
-
-                <button type="submit" class="save-btn">Save Changes</button>
-            </form>
+        `<!-- Back Button -->
+        <div class="back-button-container">
+            <a href="view_branches.php" class="back-btn">Back</a>
         </div>
+        <!-- Manage Branch Section -->
+        <form action="manage_branches.php?branch_id=<?php echo htmlspecialchars($branch['branch_id']); ?>" method="POST" class="form">
+            <div class="form-box">
+                <label for="branch_name">Branch Name:</label>
+                <input type="text" id="branch_name" name="branch_name" value="<?php echo htmlspecialchars($branch['branch_name']); ?>" required>
+            </div>
+
+            <div class="form-box">
+                <label for="branch_phone">Contact Phone:</label>
+                <input type="text" id="branch_phone" name="branch_phone" value="<?php echo htmlspecialchars($branch['branch_phone']); ?>" required>
+            </div>
+
+            <div class="form-box">
+                <label for="branch_email">Contact Email:</label>
+                <input type="email" id="branch_email" name="branch_email" value="<?php echo htmlspecialchars($branch['branch_email']); ?>" required>
+            </div>
+
+            <div class="form-box">
+                <label for="branch_address">Address:</label>
+                <textarea id="branch_address" name="branch_address" required><?php echo htmlspecialchars($branch['branch_address']); ?></textarea>
+            </div>
+
+            <button type="submit" class="save-btn">Save Changes</button>
+        </form>
     </div>
 </body>
 </html>

@@ -1,6 +1,7 @@
 <?php
 include('include/init.php'); // Initialise, includes the database connection
-checkAdmin(); // Verifying admin
+checkAdmin(); // Admin only page
+
 
 // Get the part_id from the URL, default to 0 to avoid errors
 $part_id = isset($_GET['part_id']) ? $_GET['part_id'] : 0;
@@ -44,16 +45,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt_name->execute();
     $stmt_name->bind_result($name_exists);
     $stmt_name->fetch();
-    $stmt_name->free_result(); // Fix for potential sync errors
+    $stmt_name->free_result(); // Fix for potential sync errors that kept happening
 
     if ($name_exists > 0) {
         die("Part name already exists.");
     }
 
-    // The 'bind_param' line needs to match the number of placeholders (?).
+    // The 'bind_param' line needs to match the number of placeholders in the SQL query
     $update_sql = "UPDATE parts SET part_name = ?, supplier_id = ?, branch_id = ?, unit_price = ?, quantity_in_stock = ?, genre = ?, manufacturer = ?, reorder_level = ? WHERE part_id = ?";
     $update_stmt = $con->prepare($update_sql);
-    $update_stmt->bind_param('siidssssi', 
+    $update_stmt->bind_param('siidssssi', //make sure that all the data types are correct as to what they are in sql
         $part_name,      // part_name (string)
         $supplier_id,    // supplier_id (integer)
         $branch_id,      // branch_id (integer)
@@ -81,7 +82,7 @@ while ($row = $genre_result->fetch_assoc()) {
     $genres[] = $row['genre'];
 }
 
-// Fetch only active suppliers for the dropdown
+// Fetch only active suppliers for the dropdown, as we dont delete suppliers, we just deactivate them so we can still use them
 $supplier_sql = "SELECT supplier_id, supplier_name FROM suppliers WHERE active = 1";
 $supplier_result = $con->query($supplier_sql);
 $suppliers = [];

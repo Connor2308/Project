@@ -1,7 +1,6 @@
 <?php
 require('libs/fpdf/fpdf186/fpdf.php');
 include('include/init.php'); 
-checkAdmin();
 
 // Get the order_id from the URL
 $order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : 0;
@@ -37,7 +36,7 @@ $order = $order_result->fetch_assoc();
 
 // Fetch invoice details
 $invoice_sql = "SELECT * FROM invoices WHERE order_id = ?";
-$invoice_stmt = $con->prepare($invoice_sql);
+$invoice_stmt = $con->prepare($invoice_sql); 
 $invoice_stmt->bind_param('i', $order_id);
 $invoice_stmt->execute();
 $invoice_result = $invoice_stmt->get_result();

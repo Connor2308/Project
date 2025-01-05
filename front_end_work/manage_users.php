@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     logAction($user_data['user_id'], $user_data['username'], 'UPDATE', 'Updated a user'); // Log the action here
     // Once the action is completed, redirect to view users page
-    header('Location: view_users.php');
+    header('Location: view_users.php'); 
     exit;
 }
 ?>
@@ -114,63 +114,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include('include/header.php'); ?>
     <div class="page-container">
         <h2 class="page-title">Edit User Details</h2>
-        <!-- Container that contains all of the boxes -->
-        <div class="form-container">
-            <!-- Back Button -->
-            <div class="back-button-container">
-                <a href="view_users.php" class="back-btn">Back</a>
-            </div>
-            <form action="manage_users.php?user_id=<?php echo htmlspecialchars($user['user_id']); ?>" method="POST" class="form">
-                <div class="form-columns">
-                    <div class="left-column">
-                        <div class="form-box">
-                            <label for="username">Username:</label>
-                            <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['username']); ?>" required>
-                        </div>
-
-                        <div class="form-box">
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
-                        </div>
-
-                        <div class="form-box">
-                            <label for="role">Role:</label>
-                            <select id="role" name="role" required>
-                                <option value="Admin" <?php echo ($user['role'] === 'Admin' ? 'selected' : ''); ?>>Admin</option>
-                                <option value="User" <?php echo ($user['role'] === 'User' ? 'selected' : ''); ?>>User</option>
-                            </select>
-                        </div>
-
-                        <div class="form-box">
-                            <label for="first_name">First Name:</label>
-                            <input type="text" id="first_name" name="first_name" value="<?php echo htmlspecialchars($user['first_name']); ?>" required>
-                        </div>
+        <!-- Back Button -->
+        <div class="back-button-container">
+            <a href="view_users.php" class="back-btn">Back</a>
+        </div>
+        <form action="manage_users.php?user_id=<?php echo htmlspecialchars($user['user_id']); ?>" method="POST" class="form">
+            <div class="form-columns">
+                <div class="left-column">
+                    <div class="form-box">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['username']); ?>" required>
                     </div>
-                    <div class="right-column">
-                        <div class="form-box">
-                            <label for="last_name">Last Name:</label>
-                            <input type="text" id="last_name" name="last_name" value="<?php echo htmlspecialchars($user['last_name']); ?>" required>
-                        </div>
 
-                        <div class="form-box">
-                            <label for="phone_number">Phone Number:</label>
-                            <input type="text" id="phone_number" name="phone_number" value="<?php echo htmlspecialchars($user['phone_number']); ?>" required>
-                        </div>
+                    <div class="form-box">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+                    </div>
 
-                        <!-- Changing password section -->
-                        <div class="form-box">
-                            <label for="new_password">New Password:</label>
-                            <input type="password" id="new_password" name="new_password">
-                        </div>
-                        <div class="form-box">
-                            <label for="confirm_password">Confirm Password:</label>
-                            <input type="password" id="confirm_password" name="confirm_password">
-                        </div>
+                    <div class="form-box">
+                        <label for="role">Role:</label>
+                        <select id="role" name="role" required>
+                            <option value="Admin" <?php echo ($user['role'] === 'Admin' ? 'selected' : ''); ?>>Admin</option>
+                            <option value="User" <?php echo ($user['role'] === 'User' ? 'selected' : ''); ?>>User</option>
+                        </select>
+                    </div>
+
+                    <div class="form-box">
+                        <label for="first_name">First Name:</label>
+                        <input type="text" id="first_name" name="first_name" value="<?php echo htmlspecialchars($user['first_name']); ?>" required>
                     </div>
                 </div>
-                <button type="submit" class="save-btn">Save Changes</button>
-            </form>
-        </div>
+                <div class="right-column">
+                    <div class="form-box">
+                        <label for="last_name">Last Name:</label>
+                        <input type="text" id="last_name" name="last_name" value="<?php echo htmlspecialchars($user['last_name']); ?>" required>
+                    </div>
+
+                    <div class="form-box">
+                        <label for="phone_number">Phone Number:</label>
+                        <input type="text" id="phone_number" name="phone_number" value="<?php echo htmlspecialchars($user['phone_number']); ?>" required>
+                    </div>
+
+                    <!-- Changing password section -->
+                    <div class="form-box">
+                        <label for="new_password">New Password:</label>
+                        <input type="password" id="new_password" name="new_password">
+                    </div>
+                    <div class="form-box">
+                        <label for="confirm_password">Confirm Password:</label>
+                        <input type="password" id="confirm_password" name="confirm_password">
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="save-btn">Save Changes</button>
+        </form>
     </div>
 </body>
 </html>

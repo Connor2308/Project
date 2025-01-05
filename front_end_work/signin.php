@@ -3,6 +3,7 @@ session_start();
 include("include/connection.php");
 include("include/functions.php");
 
+// Handle the form submission for signing in
 if (isset($_POST['username'], $_POST['password'])) { 
     $entered_username = $_POST['username']; 
     $entered_password = $_POST['password'];

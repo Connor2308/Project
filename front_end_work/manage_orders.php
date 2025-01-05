@@ -1,6 +1,6 @@
 <?php
 include('include/init.php'); // Initialise, this includes the database connection
-checkAdmin(); // Verify admin access
+checkAdmin(); // Admin only page
 
 // Get order ID from the URL
 $order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : 0;
@@ -56,58 +56,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include('include/header.php'); ?>
     <div class="page-container">
         <h2 class="page-title">Edit Order Details</h2>
-        <!-- Container that contains all of the boxes -->
-        <div class="form-container">
-            <!-- Back Button -->
-            <div class="back-button-container">
-                <a href="view_orders.php" class="back-btn">Back</a>
-            </div>
-            <form action="manage_orders.php?order_id=<?php echo htmlspecialchars($order['order_id']); ?>" method="POST" class="form">
-                <div class="form-columns">
-                    <div class="left-column">
-                        <div class="form-box">
-                            <label for="order_id">Order ID:</label>
-                            <input type="text" id="order_id" value="<?php echo htmlspecialchars($order['order_id']); ?>" readonly>
-                        </div>
-
-                        <div class="form-box">
-                            <label for="username">Username:</label>
-                            <input type="text" id="username" value="<?php echo htmlspecialchars($order['username']); ?>" readonly>
-                        </div>
-
-                        <div class="form-box">
-                            <label for="recipient">Recipient:</label>
-                            <input type="text" id="recipient" name="recipient" value="<?php echo htmlspecialchars($order['recipient_name']); ?>" required>
-                        </div>
-
-                        <div class="form-box">
-                            <label for="order_date">Order Date:</label>
-                            <input type="date" id="order_date" name="order_date" value="<?php echo htmlspecialchars($order['order_date']); ?>" required>
-                        </div>
+        <!-- Back Button -->
+        <div class="back-button-container">
+            <a href="view_orders.php" class="back-btn">Back</a>
+        </div>
+        <form action="manage_orders.php?order_id=<?php echo htmlspecialchars($order['order_id']); ?>" method="POST" class="form">
+            <div class="form-columns">
+                <div class="left-column">
+                    <div class="form-box">
+                        <label for="order_id">Order ID:</label>
+                        <input type="text" id="order_id" value="<?php echo htmlspecialchars($order['order_id']); ?>" readonly>
                     </div>
-                    <div class="right-column">
-                        <div class="form-box">
-                            <label for="order_time">Order Time:</label>
-                            <input type="time" id="order_time" name="order_time" value="<?php echo htmlspecialchars($order['order_time']); ?>" required>
-                        </div>
 
-                        <div class="form-box">
-                            <label for="total_cost">Total Cost:</label>
-                            <input type="number" id="total_cost" name="total_cost" step="0.01" value="<?php echo htmlspecialchars($order['total_cost']); ?>" required>
-                        </div>
+                    <div class="form-box">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" value="<?php echo htmlspecialchars($order['username']); ?>" readonly>
+                    </div>
 
-                        <div class="form-box">
-                            <label for="order_status">Order Status:</label>
-                            <select id="order_status" name="order_status" required>
-                                <option value="Pending" <?php echo ($order['order_status'] === 'Pending' ? 'selected' : ''); ?>>Pending</option>
-                                <option value="Completed" <?php echo ($order['order_status'] === 'Completed' ? 'selected' : ''); ?>>Completed</option>
-                            </select>
-                        </div>
+                    <div class="form-box">
+                        <label for="recipient">Recipient:</label>
+                        <input type="text" id="recipient" name="recipient" value="<?php echo htmlspecialchars($order['recipient_name']); ?>" required>
+                    </div>
+
+                    <div class="form-box">
+                        <label for="order_date">Order Date:</label>
+                        <input type="date" id="order_date" name="order_date" value="<?php echo htmlspecialchars($order['order_date']); ?>" required>
                     </div>
                 </div>
-                <button type="submit" class="save-btn">Save Changes</button>
-            </form>
-        </div>
+                <div class="right-column">
+                    <div class="form-box">
+                        <label for="order_time">Order Time:</label>
+                        <input type="time" id="order_time" name="order_time" value="<?php echo htmlspecialchars($order['order_time']); ?>" required>
+                    </div>
+
+                    <div class="form-box">
+                        <label for="total_cost">Total Cost:</label>
+                        <input type="number" id="total_cost" name="total_cost" step="0.01" value="<?php echo htmlspecialchars($order['total_cost']); ?>" required>
+                    </div>
+
+                    <div class="form-box">
+                        <label for="order_status">Order Status:</label>
+                        <select id="order_status" name="order_status" required>
+                            <option value="Pending" <?php echo ($order['order_status'] === 'Pending' ? 'selected' : ''); ?>>Pending</option>
+                            <option value="Completed" <?php echo ($order['order_status'] === 'Completed' ? 'selected' : ''); ?>>Completed</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="save-btn">Save Changes</button>
+        </form>
     </div>
 </body>
 </html>

@@ -28,10 +28,15 @@ $sql = "SELECT
         FROM parts 
         INNER JOIN suppliers ON parts.supplier_id = suppliers.supplier_id
         LEFT JOIN branches ON parts.branch_id = branches.branch_id
+<<<<<<< HEAD
         WHERE parts.quantity_in_stock < parts.reorder_level
         AND (parts.part_name LIKE ? OR suppliers.supplier_name LIKE ?)
         ORDER BY $order_by $order_dir
         LIMIT $start_from, $records_per_page";
+=======
+        WHERE parts.quantity_in_stock < parts.reorder_level"; // Select parts with stock levels below the reorder level
+$result = $con->query($sql);
+>>>>>>> 4e6f348 (More CSS Fixes)
 
 $stmt = $con->prepare($sql);
 $stmt->bind_param('ss', $search_term, $search_term);
@@ -91,22 +96,22 @@ if (isset($_GET['export'])) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if ($result->num_rows > 0): ?>
-                        <?php while ($row = $result->fetch_assoc()): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($row['part_id']); ?></td>
-                                <td><?php echo htmlspecialchars($row['part_name']); ?></td>
-                                <td><?php echo htmlspecialchars($row['quantity_in_stock']); ?></td>
-                                <td><?php echo htmlspecialchars($row['reorder_level']); ?></td>
-                                <td><?php echo htmlspecialchars($row['supplier_name']); ?></td>
-                                <td><?php echo htmlspecialchars($row['branch_name']); ?></td>
-                            </tr>
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="6">No stock alerts found.</td>
-                        </tr>
-                    <?php endif; ?>
+                    <?php
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td>" . htmlspecialchars($row['part_id']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['part_name']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['quantity_in_stock']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['reorder_level']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['supplier_name']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['branch_name']) . "</td>";
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='6'>No stock alerts found.</td></tr>";
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>

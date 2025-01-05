@@ -1,6 +1,5 @@
 <?php
 include('include/init.php');
-checkAdmin();
 
 //getting the order ID from the URL
 $order_id = $_GET['order_id'] ?? null;

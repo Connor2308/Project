@@ -2,6 +2,7 @@
 include('include/init.php'); 
 checkAdmin();
 
+// Handle the form submission for updating the total paid in the invoices table
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $order_id = isset($_POST['order_id']) ? intval($_POST['order_id']) : 0;
     $total_paid = isset($_POST['total_paid']) ? floatval($_POST['total_paid']) : 0.00;

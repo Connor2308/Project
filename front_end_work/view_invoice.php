@@ -1,6 +1,5 @@
 <?php
 include('include/init.php'); 
-checkAdmin();
 
 // Get the order_id from the URL
 $order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : 0;

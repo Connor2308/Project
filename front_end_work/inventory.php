@@ -1,7 +1,5 @@
 <?php
 include('include/init.php'); // Initialise, includes the database connection
-checkAdmin(); // Verifying admin
-
 
 // Sorting Section
 $sort_column = isset($_GET['sort_column']) ? $_GET['sort_column'] : 'part_id'; // Default sort column
@@ -9,17 +7,17 @@ $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'ASC'; // Defau
 $next_sort_order = ($sort_order == 'ASC') ? 'DESC' : 'ASC'; // Toggle sort order
 
 // Handling filters
-$selected_genres = isset($_POST['genres']) ? $_POST['genres'] : [];
+$selected_genres = isset($_POST['genres']) ? $_POST['genres'] : []; 
 $min_price = isset($_POST['min_price']) && is_numeric($_POST['min_price']) ? $_POST['min_price'] : null;
 $max_price = isset($_POST['max_price']) && is_numeric($_POST['max_price']) ? $_POST['max_price'] : null;
 $branch_filter = isset($_POST['branch']) ? $_POST['branch'] : '';
 
 // Fetch all genres for the dropdown
-$genre_sql = "SELECT DISTINCT genre FROM parts";
+$genre_sql = "SELECT DISTINCT genre FROM parts"; //https://www.w3schools.com/sql/sql_distinct.asp here is the documentation for DISTINCT
 $genre_result = $con->query($genre_sql);
 $genres = [];
 while ($row = $genre_result->fetch_assoc()) {
-    $genres[] = $row['genre'];
+    $genres[] = $row['genre']; //saving the genre in the genres array
 }
 
 // Fetch branches for the dropdown
@@ -27,7 +25,7 @@ $branches_sql = "SELECT branch_id, branch_name FROM branches";
 $branches_result = $con->query($branches_sql);
 $branches = [];
 while ($row = $branches_result->fetch_assoc()) {
-    $branches[] = $row;
+    $branches[] = $row; //saving the branch_id and branch_name in the branches array 
 }
 
 // Build the query based on the filters
@@ -68,6 +66,7 @@ if (!empty($conditions)) {
 
 $sql .= " ORDER BY $sort_column $sort_order";
 
+//
 $result = $con->query($sql);
 
 // Delete part
@@ -103,11 +102,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
         // Rollback in case of error
         $con->rollback();
         echo "<p>Error removing part: " . $e->getMessage() . "</p>";
-    }
-    
+    } 
 }
 ?>
-
 <!-- HTML -->
 <!DOCTYPE html>
 <html lang="en">
