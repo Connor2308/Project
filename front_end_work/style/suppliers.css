@@ -1,0 +1,74 @@
+/*Supplier-Columns*/
+.supplier-form {
+    background-color: #f9f9f9;
+    padding: 40px;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: space-between;
+    min-height: 400px; 
+}
+.supplier-form-columns {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+.supplier-form h3 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #79B7AC;
+    text-align: center;
+}
+.supplier-form-columns .left-column,
+.supplier-form-columns .right-column {
+    width: 48%; 
+}
+.supplier-form-columns .form-group {
+    margin-bottom: 15px;
+}
+.supplier-form-columns .form-group label {
+    font-weight: bold;
+}
+.supplier-form-columns label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #555;
+}
+.supplier-form-columns .form-group input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+.supplier-form .submit-btn {
+    background-color: #79B7AC;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px; 
+    width: 100%; 
+    max-width: 200px; 
+    align-self: center; 
+}
+.supplier-form .submit-btn:hover {
+    background-color: #405954;
+}
+
+.error-message {
+    color: #d9534f;
+    font-size: 13px;
+    margin-bottom: 12px;
+    text-align: center;
+}
