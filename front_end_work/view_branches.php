@@ -69,6 +69,7 @@ if (!$result) {
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style/base.css">
+   
     <!-- uses same style as supplier form -->
     <link rel="stylesheet" href="style/suppliers.css"> 
     <link rel="stylesheet" href="style/tablelist.css">

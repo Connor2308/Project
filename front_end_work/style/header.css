@@ -14,6 +14,7 @@ header .logo {
   max-height: 80px;
   display: flex;
   align-items: center;
+  color: white;
 }
 
 header .navbar {
@@ -51,6 +52,10 @@ header ul li a {
   border-radius: 4px;
 }
 
+header .logo-text a:hover {
+  background: #bcddd4;
+  transition: background 0.5s;
+}
 header ul li a:hover {
   background: #bcddd4;
   transition: background 0.5s;
