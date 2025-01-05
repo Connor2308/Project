@@ -103,8 +103,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
         $con->rollback();
         echo "<p>Error removing part: " . $e->getMessage() . "</p>";
     }
+    
 }
 ?>
+
 <!-- HTML -->
 <!DOCTYPE html>
 <html lang="en">
