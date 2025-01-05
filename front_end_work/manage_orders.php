@@ -56,6 +56,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include('include/header.php'); ?>
     <h2 class="page-title">Edit Order Details</h2>
     <div class="page-container">
+        <!-- Back Button -->
+        <div class="back-button-container">
+            <a href="view_orders.php" class="back-btn">Back</a>
+        </div>
         <form action="manage_orders.php?order_id=<?php echo htmlspecialchars($order['order_id']); ?>" method="POST" class="manage-order-form">
             <div class="form-box">
                 <label for="order_id">Order ID:</label>

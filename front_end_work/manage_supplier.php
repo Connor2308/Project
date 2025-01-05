@@ -69,6 +69,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h2 class="page-title">Edit Supplier Details</h2>
     <!-- Container that contains all of the boxes -->
     <div class="page-container">
+        <!-- Back Button -->
+        <div class="back-button-container">
+            <a href="view_suppliers.php" class="back-btn">Back</a>
+        </div>
         <form action="manage_supplier.php?supplier_id=<?php echo htmlspecialchars($supplier['supplier_id']); ?>" method="POST" class="manage-supplier-form">
             <div class="form-box">
                 <label for="supplier_name">Supplier Name:</label>

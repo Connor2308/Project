@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
     <div class="page-container">
         <h2 class="page-title">Car Parts Inventory</h2>
 
-        <!-- Filter Form (This is split into 3 sections, filters left which is price filtering, filters right which is genre check boxes and a search box, also a search button  to execute the filters) -->
+        <!-- Filter Form -->
         <form id="filter-form" method="POST">
             <!-- price filter section -->
             <div class="filters-left">

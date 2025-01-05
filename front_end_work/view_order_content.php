@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_part'])) {
             logAction($user_data['user_id'], $user_data['username'], 'ADD', "Added an item with part ID: $part_id to order ID: $order_id"); // Log the action here
 
             //redirect to the current order details page after inserting the new part
-            header("Location: view_order_details.php?order_id=$order_id");
+            header("Location: view_order_content.php?order_id=$order_id");
             exit;
         } else {
             echo "<p>Error adding part to order. Please try again.</p>";
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
         updateOrderTotal($con, $order_id);
         //redirect to the current order details page after removing the part
         logAction($user_data['user_id'], $user_data['username'], 'DELETE', "Removed an item with part ID: $part_id from order ID: $order_id"); // Log the action here
-        header("Location: view_order_details.php?order_id=$order_id");
+        header("Location: view_order_content.php?order_id=$order_id");
         exit;
     } else {
         echo "<p>Error removing part from order. Please try again.</p>";
@@ -104,8 +104,11 @@ $parts_result = $con->query($parts_query);
 <body>
     <?php include('include/header.php'); ?>
     <div class="page-container">
-        <h2 class="page-title">Order #<?php echo htmlspecialchars($order_id); ?> - Items</h2>
-
+        <!-- Back Button -->
+        <div class="back-button-container">
+            <a href="view_orders.php" class="back-btn">Back</a>
+        </div>
+        <h2 class="page-title">Order #<?php echo htmlspecialchars($order_id); ?> - Items</h2>  
         <div class="table-container">
             <table class="inventory-list">
                 <thead>

@@ -244,7 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['refresh_price'])) {
                             //manage order details
                             echo "<td><a href='manage_orders.php?order_id=" . htmlspecialchars($row['order_id']) . "' class='manage-btn'>Manage Order Details</a></td>";
                             //view order content
-                            echo "<td><a href='view_order_details.php?order_id=" . htmlspecialchars($row['order_id']) . "' class='manage-btn'>View Order Content</a></td>";
+                            echo "<td><a href='view_order_content.php?order_id=" . htmlspecialchars($row['order_id']) . "' class='manage-btn'>View Order Content</a></td>";
                             //view invoice
                             echo "<td><a href='view_invoice.php?order_id=" . htmlspecialchars($row['order_id']) . "' class='manage-btn'>View Invoice</a></td>";
                             // remove order button

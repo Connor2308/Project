@@ -112,6 +112,10 @@ while ($row = $branch_result->fetch_assoc()) {
     <?php include('include/header.php'); ?>
     <h2 class="page-title">Edit Part Details</h2>
     <div class="page-container">
+        <!-- Back Button -->
+        <div class="back-button-container">
+            <a href="inventory.php" class="back-btn">Back</a>
+        </div>
         <form action="manage_part.php?part_id=<?php echo htmlspecialchars($part['part_id']); ?>" method="POST" class="manage-part-form">
             <div class="form-box">
                 <label for="part_name">Part Name:</label>

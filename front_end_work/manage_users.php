@@ -117,6 +117,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h2 class="page-title">Edit User Details</h2>
     <!-- container that contains all of the boxes -->
     <div class="page-container">
+        <!-- Back Button -->
+        <div class="back-button-container">
+            <a href="view_users.php" class="back-btn">Back</a>
+        </div>
         <form action="manage_users.php?user_id=<?php echo htmlspecialchars($user['user_id']); ?>" method="POST" class="manage-user-form">
             <div class="form-box">
                 <label for="username">Username:</label>

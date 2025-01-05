@@ -1,10 +1,10 @@
 *{
-    font-family:'Poppins', sans-serif;
-    margin:0;
-    padding:0;
-    box-sizing: border-box;
-    text-decoration: none;
-  }
+  font-family:'Poppins', sans-serif;
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+  text-decoration: none;
+}
   
 .page-container {
   min-height: 75vh;
@@ -17,4 +17,29 @@
   padding-top: 0px;
   justify-content: center; 
   align-items: center;
+}
+
+/* Back Button */
+.back-button-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.back-btn {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.back-btn:hover {
+  background-color: #45a049;
 }
