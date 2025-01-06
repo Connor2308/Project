@@ -1,20 +1,24 @@
-Car Repair Website (Sheffield Auto Parts)
+Car Parts Website (Sheffield Auto Parts)
 
-<<<<<<< HEAD
 Overview
-This project is an Inventory Management System for a car repair business. The website is designed to help manage the car parts inventory, repair schedules, customer data, and staff involvement. The system is built with PHP, CSS, JavaScript, and SQL.
+This project is an Inventory Management System for a Car Parts business. The website is designed to help manage the car parts inventory, company orders, export invoices and stock reports and manage user accounts. The system is built with PHP, CSS, JavaScript, HTML5, and MySQL.
+===
+Setup
+---
+To first set up the system please first have XAMPP installed, Start Apache and MySQL, when installed, go on PHPMyAdmin (Click admin on MySQL), then import the database with all the mock data into it this can be found in the GitHub repo under SQL in the Sheffield Auto Spares Folder.
 
-=======
->>>>>>> 269357e (.)
-Features
-Admin Panel: The admin can manage users, view inventory data, and control system access.
-Inventory Management: The ability to manage and track car parts inventory, including adding new parts, updating stock levels, and reordering parts.
-Usage
-Admin Login
-Username: 1
-<<<<<<< HEAD
-Password: 2
-=======
-Password: 1
->>>>>>> 269357e (.)
-The admin will have access to all functionalities, including managing users and inventory.
+Then click the admin on apache and insert this link to access the page, http://localhost/Project/Sheffield_Auto_Parts/signin.php
+
+Accounts you can use to access the system are below
+---
+Admin Account
+Username: Admin1
+Password: Password1
+---
+General User (Keep in mind this account won't have access to all the pages)
+Username: User1
+Password: Password1
+---
+
+Now you should be able to access our system.
+

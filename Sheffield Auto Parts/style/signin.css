@@ -1,3 +1,11 @@
+* {
+   font-family: 'Poppins', sans-serif;
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+   text-decoration: none;
+ }
+ 
 .form-container {
    min-height: 100vh;
    display: flex;

@@ -13,15 +13,16 @@ $sql = "SELECT
             parts.quantity_in_stock, 
             parts.reorder_level, 
             suppliers.supplier_name,
-            branches.branch_name
+            branches.branch_name,
+            branches.active AS branch_active
         FROM parts 
         INNER JOIN suppliers ON parts.supplier_id = suppliers.supplier_id
         LEFT JOIN branches ON parts.branch_id = branches.branch_id
         ORDER BY parts.part_id";
 $result = $con->query($sql);
 
-// Create a new PDF document
-$pdf = new FPDF();
+// Create a new PDF document in landscape orientation
+$pdf = new FPDF('L', 'mm', 'A4');
 $pdf->AddPage();
 
 // Set font
@@ -39,18 +40,22 @@ $pdf->Cell(30, 10, 'Manufacturer', 1);
 $pdf->Cell(20, 10, 'Price', 1);
 $pdf->Cell(20, 10, 'Stock', 1);
 $pdf->Cell(30, 10, 'Reorder Level', 1);
+$pdf->Cell(40, 10, 'Branch', 1);
 $pdf->Ln();
 
 // Add table rows
 $pdf->SetFont('Arial', '', 12);
 while ($row = $result->fetch_assoc()) {
+    $branch_status = $row['branch_active'] ? '' : ' (Closed)';
+    $branch_name = $row['branch_name'] . $branch_status;
+
     $pdf->Cell(20, 10, $row['part_id'], 1);
     $pdf->Cell(40, 10, $row['part_name'], 1);
     $pdf->Cell(30, 10, $row['genre'], 1);
     $pdf->Cell(30, 10, $row['manufacturer'], 1);
     $pdf->Cell(20, 10, iconv('UTF-8', 'ISO-8859-1', '£' . number_format($row['unit_price'], 2)), 1);
 
-    //Set color based on stock level
+    // Set color based on stock level
     if ($row['quantity_in_stock'] < $row['reorder_level']) {
         $pdf->SetTextColor(255, 0, 0); // Red
     } elseif ($row['quantity_in_stock'] <= $row['reorder_level'] + 3) {
@@ -60,13 +65,14 @@ while ($row = $result->fetch_assoc()) {
     }
     $pdf->Cell(20, 10, $row['quantity_in_stock'], 1);
 
-    //Reset text color
+    // Reset text color
     $pdf->SetTextColor(0, 0, 0);
 
     $pdf->Cell(30, 10, $row['reorder_level'], 1);
+    $pdf->Cell(40, 10, $branch_name, 1);
     $pdf->Ln();
 }
 
-//Output the PDF
+// Output the PDF
 $pdf->Output('I', 'Inventory_Report.pdf');
 ?>

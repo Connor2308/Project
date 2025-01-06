@@ -1,5 +1,6 @@
 <?php
 include('include/init.php'); // Initialise, includes the database connection
+checkAdmin(); // Verifying admin
 
 // Sorting Section
 $sort_column = isset($_GET['sort_column']) ? $_GET['sort_column'] : 'part_id'; // Default sort column
@@ -7,25 +8,25 @@ $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'ASC'; // Defau
 $next_sort_order = ($sort_order == 'ASC') ? 'DESC' : 'ASC'; // Toggle sort order
 
 // Handling filters
-$selected_genres = isset($_POST['genres']) ? $_POST['genres'] : []; 
+$selected_genres = isset($_POST['genres']) ? $_POST['genres'] : [];
 $min_price = isset($_POST['min_price']) && is_numeric($_POST['min_price']) ? $_POST['min_price'] : null;
 $max_price = isset($_POST['max_price']) && is_numeric($_POST['max_price']) ? $_POST['max_price'] : null;
 $branch_filter = isset($_POST['branch']) ? $_POST['branch'] : '';
 
 // Fetch all genres for the dropdown
-$genre_sql = "SELECT DISTINCT genre FROM parts"; //https://www.w3schools.com/sql/sql_distinct.asp here is the documentation for DISTINCT
+$genre_sql = "SELECT DISTINCT genre FROM parts"; // where i learnt about distinct is here https://www.w3schools.com/sql/sql_distinct.asp
 $genre_result = $con->query($genre_sql);
 $genres = [];
 while ($row = $genre_result->fetch_assoc()) {
-    $genres[] = $row['genre']; //saving the genre in the genres array
+    $genres[] = $row['genre'];
 }
 
 // Fetch branches for the dropdown
-$branches_sql = "SELECT branch_id, branch_name FROM branches";
+$branches_sql = "SELECT branch_id, branch_name, active FROM branches";
 $branches_result = $con->query($branches_sql);
 $branches = [];
 while ($row = $branches_result->fetch_assoc()) {
-    $branches[] = $row; //saving the branch_id and branch_name in the branches array 
+    $branches[] = $row;
 }
 
 // Build the query based on the filters
@@ -39,7 +40,9 @@ $sql = "SELECT
             parts.quantity_in_stock, 
             parts.reorder_level, 
             suppliers.supplier_name,
-            branches.branch_name
+            suppliers.active AS supplier_active,
+            branches.branch_name,
+            branches.active AS branch_active
         FROM parts 
         INNER JOIN suppliers ON parts.supplier_id = suppliers.supplier_id
         LEFT JOIN branches ON parts.branch_id = branches.branch_id";
@@ -66,7 +69,6 @@ if (!empty($conditions)) {
 
 $sql .= " ORDER BY $sort_column $sort_order";
 
-//
 $result = $con->query($sql);
 
 // Delete part
@@ -102,9 +104,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
         // Rollback in case of error
         $con->rollback();
         echo "<p>Error removing part: " . $e->getMessage() . "</p>";
-    } 
+    }
+
 }
 ?>
+
 <!-- HTML -->
 <!DOCTYPE html>
 <html lang="en">
@@ -117,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
 </head>
 <body>
     <?php include('include/header.php'); ?>
-    
+
     <div class="page-container">
         <h2 class="page-title">Car Parts Inventory</h2>
 
@@ -127,44 +131,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
         </div>
 
         <!-- Filter Section -->
-        <div class="form-container">
-            <form action="inventory.php" method="POST" class="adding-form">
-                <h3>Filter Parts</h3>
-                <div class="form-columns">
-                    <div class="left-column">
-                        <div class="form-box">
-                            <label for="genres">Genres:</label>
-                            <select id="genres" name="genres[]" multiple>
-                                <option value="">All Genres</option>
-                                <?php foreach ($genres as $genre): ?>
-                                    <option value="<?php echo htmlspecialchars($genre); ?>" <?php echo in_array($genre, $selected_genres) ? 'selected' : ''; ?>><?php echo htmlspecialchars($genre); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="right-column">
-                        <div class="form-box">
-                            <label for="branch">Branch:</label>
-                            <select id="branch" name="branch">
-                                <option value="">All Branches</option>
-                                <?php foreach ($branches as $branch): ?>
-                                    <option value="<?php echo htmlspecialchars($branch['branch_id']); ?>" <?php echo ($branch_filter == $branch['branch_id']) ? 'selected' : ''; ?>><?php echo htmlspecialchars($branch['branch_name']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="form-box">
-                            <label for="min_price">Min Price:</label>
-                            <input type="number" step="0.01" id="min_price" name="min_price" value="<?php echo htmlspecialchars($min_price); ?>">
-                        </div>
-                        <div class="form-box">
-                            <label for="max_price">Max Price:</label>
-                            <input type="number" step="0.01" id="max_price" name="max_price" value="<?php echo htmlspecialchars($max_price); ?>">
-                        </div>
+        <form action="inventory.php" method="POST" class="adding-form">
+            <h3>Filter Parts</h3>
+            <div class="form-columns">
+                <div class="left-column">
+                    <div class="form-box">
+                        <label for="genres">Genres:</label>
+                        <select id="genres" name="genres[]" multiple>
+                            <option value="">All Genres</option>
+                            <?php foreach ($genres as $genre): ?>
+                                <option value="<?php echo htmlspecialchars($genre); ?>" <?php echo in_array($genre, $selected_genres) ? 'selected' : ''; ?>><?php echo htmlspecialchars($genre); ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
-                <button type="submit" class="save-btn">Apply Filters</button>
-            </form>
-        </div>
+                <div class="right-column">
+                    <div class="form-box">
+                        <label for="branch">Branch:</label>
+                        <select id="branch" name="branch">
+                            <option value="">All Branches</option>
+                            <?php foreach ($branches as $branch): ?>
+                                <?php $branch_status = $branch['active'] ? '' : ' (Closed)'; ?>
+                                <option value="<?php echo htmlspecialchars($branch['branch_id']); ?>" <?php echo ($branch_filter == $branch['branch_id']) ? 'selected' : ''; ?>><?php echo htmlspecialchars($branch['branch_name']) . $branch_status; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-box">
+                        <label for="min_price">Min Price:</label>
+                        <input type="number" step="0.01" id="min_price" name="min_price" value="<?php echo htmlspecialchars($min_price); ?>">
+                    </div>
+                    <div class="form-box">
+                        <label for="max_price">Max Price:</label>
+                        <input type="number" step="0.01" id="max_price" name="max_price" value="<?php echo htmlspecialchars($max_price); ?>">
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="save-btn">Apply Filters</button>
+        </form>
 
         <!-- Add a Part Button -->
         <div id="add-part-button-container" class="button-container">
@@ -195,6 +198,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
                     <?php
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
+                            $branch_status = $row['branch_active'] ? '' : ' (Closed)';
+                            $supplier_status = $row['supplier_active'] ? '' : ' (Old)';
                             echo "<tr id='row-{$row['part_id']}'>";
                             echo "<td>" . htmlspecialchars($row['part_id']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['part_name']) . "</td>";
@@ -202,8 +207,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
                             echo "<td>" . htmlspecialchars($row['genre']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['manufacturer']) . "</td>";
                             echo "<td>£" . number_format($row['unit_price'], 2) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['supplier_name']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['branch_name']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['supplier_name']) . $supplier_status . "</td>";
+                            echo "<td>" . htmlspecialchars($row['branch_name']) . $branch_status . "</td>";
                             echo "<td>" . htmlspecialchars($row['reorder_level']) . "</td>";
                             echo "<td class='quantity'>" . htmlspecialchars($row['quantity_in_stock']) . "</td>";
                             echo "<td>
@@ -233,4 +238,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="js/update_stock.js"></script>
 </body>
-</html> 
+</html>

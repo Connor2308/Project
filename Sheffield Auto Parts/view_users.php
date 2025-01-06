@@ -167,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
                     <div class="form-box">
                         <label for="role">Role:</label>
                         <select id="role" name="role">
-                            <option value="admin">Admin</option>
+                            <option value="Admin">Admin</option>
                             <option value="user">User</option>
                         </select>
                     </div>

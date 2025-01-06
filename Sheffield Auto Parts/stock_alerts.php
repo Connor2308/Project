@@ -1,22 +1,23 @@
 <?php
 include('include/init.php');
 
-$records_per_page = 10; 
+$records_per_page = 10; // Number of records to display per page
 
-$sql_count = "SELECT COUNT(*) AS total FROM parts WHERE quantity_in_stock < reorder_level";
-$result_count = $con->query($sql_count);
-$total_records = $result_count->fetch_assoc()['total'];
+$sql_count = "SELECT COUNT(*) AS total FROM parts WHERE quantity_in_stock < reorder_level"; // Count total records whre quantity_in_stock is less than reorder_level
+$result_count = $con->query($sql_count); // Execute the query
+$total_records = $result_count->fetch_assoc()['total']; // Get the total records
 
-$total_pages = ceil($total_records / $records_per_page);
+$total_pages = ceil($total_records / $records_per_page); // Calculate total pages
 
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$start_from = ($page - 1) * $records_per_page;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Get the current page number
+$start_from = ($page - 1) * $records_per_page; // Calculate the starting record for the query
 
+// Ordering section
 $order_by = isset($_GET['sort_by']) ? $_GET['sort_by'] : 'part_id';
 $order_dir = isset($_GET['order']) ? $_GET['order'] : 'ASC';
 $order_dir = ($order_dir === 'ASC') ? 'DESC' : 'ASC';
 
-$search_term = isset($_GET['search']) ? "%" . $_GET['search'] . "%" : "%";
+$search_term = isset($_GET['search']) ? "%" . $_GET['search'] . "%" : "%"; //when the search term is empty, it will return all the results
 
 // Correcting the SQL query
 $sql = "SELECT 
@@ -33,25 +34,14 @@ $sql = "SELECT
         AND (parts.part_name LIKE ? OR suppliers.supplier_name LIKE ?)
         ORDER BY $order_by $order_dir
         LIMIT $start_from, $records_per_page";
+        // Added the search term to the WHERE clause also added the ORDER BY clause.
+        // Also added the LIMIT clause to limit the number of records per page
 
 // Prepare and bind parameters
 $stmt = $con->prepare($sql);
 $stmt->bind_param('ss', $search_term, $search_term);
 $stmt->execute();
 $result = $stmt->get_result();
-
-if (isset($_GET['export'])) {
-    header('Content-Type: text/csv');
-    header('Content-Disposition: attachment; filename="stock_alerts.csv"');
-    $output = fopen('php://output', 'w');
-    fputcsv($output, ['Part ID', 'Part Name', 'Quantity in Stock', 'Reorder Level', 'Supplier', 'Branch']);
-
-    while ($row = $result->fetch_assoc()) {
-        fputcsv($output, $row);
-    }
-    fclose($output);
-    exit;
-}
 ?>
 
 <!DOCTYPE html>

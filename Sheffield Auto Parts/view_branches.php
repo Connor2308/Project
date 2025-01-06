@@ -5,7 +5,7 @@ include('include/init.php');
 if (isset($_GET['deactivate_branch_id'])) {
     $deactivate_branch_id = intval($_GET['deactivate_branch_id']);
     
-    // Fetch branch details before deletion
+    // Fetch branch details before deactivation
     $fetch_sql = "SELECT branch_name FROM branches WHERE branch_id = ?";
     $stmt = $con->prepare($fetch_sql);
     $stmt->bind_param('i', $deactivate_branch_id);
@@ -14,16 +14,16 @@ if (isset($_GET['deactivate_branch_id'])) {
     $stmt->fetch();
     $stmt->close();
 
-    // Delete the branch
-    $deactivate_sql = "DELETE FROM branches WHERE branch_id = ?";
+    // Deactivate the branch
+    $deactivate_sql = "UPDATE branches SET active = 0 WHERE branch_id = ?";
     $stmt = $con->prepare($deactivate_sql);
     $stmt->bind_param('i', $deactivate_branch_id);
     if ($stmt->execute()) {
-        logAction($user_data['user_id'], $user_data['username'], 'DELETE',  ); // Log the action here
-        header('Location: view_branches.php'); // Redirect to the branches page after successful deletion
+        logAction($user_data['user_id'], $user_data['username'], 'DEACTIVATE', "Deactivated branch: $branch_name"); // Log the action here
+        header('Location: view_branches.php'); // Redirect to the branches page after successful deactivation
         exit;
     } else {
-        $error_message = "Error deleting branch. Please try again.";
+        $error_message = "Error deactivating branch. Please try again.";
     }
 }
 
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_branch'])) {
     $branch_email = $_POST['branch_email'];
 
     // Insert new branch into the database
-    $insert_sql = "INSERT INTO branches (branch_name, branch_address, branch_phone, branch_email) VALUES (?, ?, ?, ?)";
+    $insert_sql = "INSERT INTO branches (branch_name, branch_address, branch_phone, branch_email, active) VALUES (?, ?, ?, ?, 1)";
     $stmt = $con->prepare($insert_sql);
     $stmt->bind_param('ssss', $branch_name, $branch_address, $branch_phone, $branch_email);
 
@@ -56,6 +56,7 @@ $next_sort_order = $sort_order === 'asc' ? 'desc' : 'asc';
 
 // Fetch branches from the database
 $sql = "SELECT branch_id, branch_name, branch_address, branch_phone, branch_email FROM branches 
+        WHERE active = 1
         ORDER BY $sort_column $sort_order";
 $result = $con->query($sql);
 
@@ -123,23 +124,24 @@ if (!$result) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if ($result->num_rows > 0): ?>
-                        <?php while ($row = $result->fetch_assoc()): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($row['branch_id']); ?></td>
-                                <td><?php echo htmlspecialchars($row['branch_name']); ?></td>
-                                <td><?php echo htmlspecialchars($row['branch_address']); ?></td>
-                                <td><?php echo htmlspecialchars($row['branch_phone']); ?></td>
-                                <td><?php echo htmlspecialchars($row['branch_email']); ?></td>
-                                <td><a href="manage_branches.php?branch_id=<?php echo $row['branch_id']; ?>" class="manage-btn">Manage Branch</a></td>
-                                <td><a href="view_branches.php?deactivate_branch_id=<?php echo $row['branch_id']; ?>" class="remove-btn" onclick="return confirm('Are you sure you want to deactivate this branch?');">Deactivate Branch</a></td>
-                            </tr>
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="7">No branches found.</td>
-                        </tr>
-                    <?php endif; ?>
+                    <?php
+                    // Fill table rows with data from the query
+                    if ($result && $result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td>" . htmlspecialchars($row['branch_id']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['branch_name']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['branch_address']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['branch_phone']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['branch_email']) . "</td>";
+                            echo "<td><a href='manage_branches.php?branch_id=" . htmlspecialchars($row['branch_id']) . "' class='manage-btn'>Manage Branch</a></td>";
+                            echo "<td><a href='view_branches.php?deactivate_branch_id=" . htmlspecialchars($row['branch_id']) . "' class='remove-btn' onclick='return confirm(\"Are you sure you want to delete this branch?\");'>Delete Branch</a></td>";
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='7'>No branches found.</td></tr>";
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>

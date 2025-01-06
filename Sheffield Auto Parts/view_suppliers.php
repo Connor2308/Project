@@ -8,8 +8,20 @@ if (isset($_GET['deactivate_supplier_id'])) {
     $stmt = $con->prepare($deactivate_sql);
     $stmt->bind_param('i', $deactivate_supplier_id);
     $stmt->execute();
-    logAction($user_data['user_id'], $user_data['username'], 'DELETE', 'Deleted a supplier'); // Log the action here
-    header('Location: ' . $_SERVER['REQUEST_URI']);
+    logAction($user_data['user_id'], $user_data['username'], 'DELETE', 'Deactivated a supplier'); // Log the action here
+    header('Location: view_suppliers.php');
+    exit;
+}
+
+// Handle reactivating a supplier
+if (isset($_GET['reactivate_supplier_id'])) {
+    $reactivate_supplier_id = intval($_GET['reactivate_supplier_id']);
+    $reactivate_sql = "UPDATE suppliers SET active = 1 WHERE supplier_id = ?";
+    $stmt = $con->prepare($reactivate_sql);
+    $stmt->bind_param('i', $reactivate_supplier_id);
+    $stmt->execute();
+    logAction($user_data['user_id'], $user_data['username'], 'UPDATE', 'Reactivated a supplier'); // Log the action here
+    header('Location: view_suppliers.php');
     exit;
 }
 
@@ -42,9 +54,8 @@ $sort_column = isset($_GET['sort_column']) ? $_GET['sort_column'] : 'supplier_id
 $sort_order = isset($_GET['sort_order']) && $_GET['sort_order'] === 'desc' ? 'desc' : 'asc';
 $next_sort_order = $sort_order === 'asc' ? 'desc' : 'asc';
 
-// Fetch suppliers from the database, excluding inactive suppliers
+// Fetch suppliers from the database
 $sql = "SELECT supplier_id, supplier_name, contact_name, contact_phone, contact_email, address, active FROM suppliers 
-        WHERE active = 1 
         ORDER BY $sort_column $sort_order";
 $result = $con->query($sql);
 
@@ -112,29 +123,36 @@ if (!$result) {
                         <th><a href="?sort_column=contact_phone&sort_order=<?php echo $next_sort_order; ?>">Contact Phone</a></th>
                         <th><a href="?sort_column=contact_email&sort_order=<?php echo $next_sort_order; ?>">Contact Email</a></th>
                         <th><a href="?sort_column=address&sort_order=<?php echo $next_sort_order; ?>">Address</a></th>
+                        <th>Status</th>
                         <th>Manage Suppliers</th>
-                        <th>Delete Suppliers</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if ($result->num_rows > 0): ?>
-                        <?php while ($row = $result->fetch_assoc()): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($row['supplier_id']); ?></td>
-                                <td><?php echo htmlspecialchars($row['supplier_name']); ?></td>
-                                <td><?php echo htmlspecialchars($row['contact_name']); ?></td>
-                                <td><?php echo htmlspecialchars($row['contact_phone']); ?></td>
-                                <td><?php echo htmlspecialchars($row['contact_email']); ?></td>
-                                <td><?php echo htmlspecialchars($row['address']); ?></td>
-                                <td><a href="manage_supplier.php?supplier_id=<?php echo $row['supplier_id']; ?>" class="manage-btn">Manage Supplier</a></td>
-                                <td><a href="view_suppliers.php?deactivate_supplier_id=<?php echo $row['supplier_id']; ?>" class="remove-btn" onclick="return confirm('Are you sure you want to deactivate this supplier?');">Deactivate Supplier</a></td>
-                            </tr>
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="8">No suppliers found.</td>
-                        </tr>
-                    <?php endif; ?>
+                    <?php
+                    // Fill table rows with data from the query
+                    if ($result && $result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td>" . htmlspecialchars($row['supplier_id']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['supplier_name']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['contact_name']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['contact_phone']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['contact_email']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['address']) . "</td>";
+                            echo "<td>" . ($row['active'] ? 'Active' : 'Inactive') . "</td>";
+                            echo "<td><a href='manage_supplier.php?supplier_id=" . htmlspecialchars($row['supplier_id']) . "' class='manage-btn'>Manage Supplier</a></td>";
+                            if ($row['active']) {
+                                echo "<td><a href='view_suppliers.php?deactivate_supplier_id=" . htmlspecialchars($row['supplier_id']) . "' class='remove-btn' onclick='return confirm(\"Are you sure you want to deactivate this supplier?\");'>Deactivate Supplier</a></td>";
+                            } else {
+                                echo "<td><a href='view_suppliers.php?reactivate_supplier_id=" . htmlspecialchars($row['supplier_id']) . "' class='reactivate-btn' onclick='return confirm(\"Are you sure you want to reactivate this supplier?\");'>Reactivate Supplier</a></td>";
+                            }
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='9'>No suppliers found.</td></tr>";
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>

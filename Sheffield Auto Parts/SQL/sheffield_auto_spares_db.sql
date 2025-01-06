@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Jan 06, 2025 at 01:22 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Host: 127.0.0.1
+-- Generation Time: Jan 06, 2025 at 05:39 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -32,16 +32,19 @@ CREATE TABLE `branches` (
   `branch_name` varchar(255) NOT NULL,
   `branch_address` varchar(255) DEFAULT NULL,
   `branch_phone` varchar(20) DEFAULT NULL,
-  `branch_email` varchar(255) DEFAULT NULL
+  `branch_email` varchar(255) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `branches`
 --
 
-INSERT INTO `branches` (`branch_id`, `branch_name`, `branch_address`, `branch_phone`, `branch_email`) VALUES
-(1, 'Main Branch', NULL, NULL, NULL),
-(5, 'Test Branch Test', 'bsvjfdbfvdil', 'uigolhfvdohvfd', 'bkvfjdbhvfd@gmailc.om');
+INSERT INTO `branches` (`branch_id`, `branch_name`, `branch_address`, `branch_phone`, `branch_email`, `active`) VALUES
+(5, 'Rotherham Branch', 'Miller Street', '79824698454', 'rotherham@sap.com', 1),
+(6, 'Sheffield City Centre', 'City Street', '87939534785', 'citycentre@sap.com', 0),
+(7, 'Barnsley Branch', 'Barnsley Road', '809382098', 'barns@sap.com', 1),
+(8, 'Sheffield Branch', 'Sheffield Street', '0974504794', 'sheffield@sap.com', 1);
 
 -- --------------------------------------------------------
 
@@ -64,7 +67,9 @@ CREATE TABLE `invoices` (
 --
 
 INSERT INTO `invoices` (`invoice_id`, `order_id`, `invoice_date`, `invoice_time`, `total_due`, `status`, `total_paid`) VALUES
-(5000002, 6000002, '2024-11-02', '15:00:00', 87.75, 0, 200.00);
+(5000006, 6000011, '2025-01-06', '09:29:00', 0.00, 0, 0.00),
+(5000007, 6000012, '2025-01-06', '09:30:00', 0.00, 0, 0.00),
+(5000008, 6000013, '2025-01-06', '04:32:00', 0.00, 0, 0.00);
 
 -- --------------------------------------------------------
 
@@ -87,10 +92,9 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`order_id`, `order_date`, `order_time`, `order_status`, `recipient_name`, `total_cost`, `user_id`) VALUES
-(6000002, '2024-11-02', '14:30:00', 'Completed', 'John', 208.75, 1000003),
-(6000003, '2024-12-02', '15:47:00', 'Pending', '0', 0.00, 1000004),
-(6000006, '2024-12-04', '11:46:00', 'Pending', '0', 1264.45, 1000003),
-(6000007, '2024-12-09', '01:47:00', 'Pending', 'John Dale', 0.00, 1000004);
+(6000011, '2025-01-06', '09:29:00', 'Pending', 'Harry', 330.50, 1000026),
+(6000012, '2025-01-06', '09:30:00', 'Pending', 'Halifax', 343.50, 1000026),
+(6000013, '2025-01-06', '04:32:00', 'Pending', 'Johnsons', 200.00, 1000027);
 
 -- --------------------------------------------------------
 
@@ -111,9 +115,13 @@ CREATE TABLE `order_items` (
 --
 
 INSERT INTO `order_items` (`order_item_id`, `order_id`, `part_id`, `order_quantity`, `order_price`) VALUES
-(7000003, 6000002, 3000002, 15, 86.25),
-(7000008, 6000002, 3000004, 5, 12.50),
-(7000011, 6000006, 3000006, 55, 22.99);
+(7000022, 6000011, 3000021, 2, 80.50),
+(7000023, 6000011, 3000019, 3, 20.75),
+(7000024, 6000011, 3000012, 3, 35.75),
+(7000025, 6000012, 3000010, 2, 95.50),
+(7000026, 6000012, 3000029, 4, 12.50),
+(7000027, 6000012, 3000027, 5, 20.50),
+(7000028, 6000013, 3000031, 2, 100.00);
 
 -- --------------------------------------------------------
 
@@ -139,36 +147,32 @@ CREATE TABLE `parts` (
 --
 
 INSERT INTO `parts` (`part_id`, `part_name`, `description`, `genre`, `manufacturer`, `unit_price`, `quantity_in_stock`, `reorder_level`, `supplier_id`, `branch_id`) VALUES
-(3000001, 'Brake Pad', 'Standard brake pad for various models', 'Brakes', 'Brakes Inc.', 15.99, 14, 10, 8000004, 5),
-(3000002, 'Spark Plugs', 'High-performance spark plug', 'Engine', 'SparkWorks', 5.75, 120, 30, 8000004, 5),
-(3000003, 'Oil Filter', 'Premium oil filter', 'Engine', 'FilterMax', 8.25, 60, 15, 8000002, NULL),
-(3000004, 'Air Filter', 'Durable air filter for improved engine performance', 'Engine', 'FilterMax', 12.50, 75, 20, 8000002, NULL),
-(3000005, 'Fuel Pump', 'Reliable fuel pump for various car models', 'Fuel System', 'Auto Parts Co.', 45.75, 30, 5, 8000001, NULL),
-(3000006, 'Brake Disc', 'High-quality brake disc for enhanced braking', 'Brakes', 'Brakes Inc.', 22.99, 40, 10, 8000001, NULL),
-(3000007, 'Headlight Bulb', 'Long-lasting headlight bulb, compatible with most cars', 'Electrical', 'Engine Works', 9.95, 195, 50, 8000003, NULL),
-(3000008, 'Windshield Wiper', 'Premium wiper for clear visibility', 'Accessories', 'Auto Parts Co.', 7.25, 150, 30, 8000001, NULL),
-(3000009, 'Thermostat', 'Efficient thermostat for temperature regulation', 'Cooling System', 'Engine Works', 15.75, 60, 20, 8000003, NULL),
-(3000010, 'Radiator', 'Efficient radiator for engine cooling', 'Cooling System', 'Engine Works', 95.50, 20, 5, 8000003, NULL),
-(3000011, 'Battery', '12V car battery with long lifespan', 'Electrical', 'Auto Parts Co.', 120.00, 15, 3, 8000001, NULL),
-(3000012, 'Timing Belt', 'Durable timing belt for precise engine performance', 'Engine', 'SparkWorks', 35.75, 49, 10, 8000003, NULL),
-(3000013, 'Clutch Plate', 'High-performance clutch plate for smooth driving', 'Transmission', 'Brakes Inc.', 89.99, 25, 5, 8000001, NULL),
-(3000014, 'Exhaust Muffler', 'Premium muffler for noise reduction and performance', 'Exhaust', 'Fastenings Ltd.', 45.00, 30, 8, 8000002, NULL),
-(3000015, 'Fuel Injector', 'High-efficiency fuel injector for optimal combustion', 'Fuel System', 'Engine Works', 75.25, 40, 10, 8000003, NULL),
-(3000017, 'Starter Motor', 'Durable starter motor for consistent engine ignition', 'Electrical', 'SparkWorks', 110.00, 12, 2, 8000003, NULL),
-(3000018, 'CV Joint', 'High-quality CV joint for drive shaft durability', 'Transmission', 'Brakes Inc.', 72.50, 28, 10, 8000004, NULL),
-(3000019, 'Drive Belt', 'Flexible drive belt for various car models', 'Engine', 'Fastenings Ltd.', 20.75, 50, 12, 8000002, NULL),
-(3000020, 'Alternator', 'High-performance alternator for consistent charging', 'Electrical', 'PowerDrive Inc.', 150.00, 25, 5, 8000001, NULL),
-(3000021, 'Water Pump', 'Reliable water pump for efficient cooling', 'Cooling System', 'CoolFlow Ltd.', 80.50, 30, 10, 8000003, NULL),
-(3000022, 'Wheel Bearing', 'Durable wheel bearing for smooth rotation', 'Suspension', 'Auto Parts Co.', 35.00, 40, 12, 8000001, NULL),
-(3000023, 'Control Arm', 'High-strength control arm for steering stability', 'Suspension', 'Fastenings Ltd.', 60.00, 20, 8, 8000002, NULL),
-(3000024, 'Engine Mount', 'Sturdy engine mount to minimize vibrations', 'Engine', 'Engine Works', 45.75, 15, 3, 8000003, NULL),
-(3000025, 'Exhaust Pipe', 'High-grade exhaust pipe for durability', 'Exhaust', 'Fastenings Ltd.', 55.00, 10, 2, 8000002, NULL),
-(3000026, 'Timing Chain', 'Long-lasting timing chain for precise synchronization', 'Engine', 'SparkWorks', 70.00, 18, 6, 8000003, NULL),
-(3000027, 'Battery Cable', 'Durable cable for secure battery connections', 'Electrical', 'Engine Works', 20.50, 50, 15, 8000003, NULL),
-(3000028, 'Radiator Hose', 'Flexible radiator hose for efficient coolant flow', 'Cooling System', 'CoolFlow Ltd.', 18.99, 60, 20, 8000003, NULL),
-(3000029, 'Brake Fluid', 'High-performance brake fluid for safety', 'Brakes', 'Brakes Inc.', 12.50, 100, 25, 8000001, NULL),
-(3000037, 'Test Part 1', 'Description for Test Part 1', 'Genre 1', 'Manufacturer 1', 100.00, 5, 10, 8000001, 1),
-(3000038, 'Test Part 2', 'Description for Test Part 2', 'Genre 2', 'Manufacturer 2', 150.00, 2, 3, 8000002, 1);
+(3000002, 'Spark Plug', 'High-performance spark plug', 'Engine', 'SparkWorks', 5.76, 29, 30, 8000004, 5),
+(3000003, 'Oil Filter', 'Premium oil filter', 'Engine', 'FilterMax', 8.25, 14, 15, 8000002, 5),
+(3000005, 'Fuel Pump', 'Reliable fuel pump for various car models', 'Fuel System', 'Auto Parts Co.', 45.75, 2, 5, 8000001, 5),
+(3000007, 'Headlight Bulb', 'Long-lasting headlight bulb, compatible with most cars', 'Electrical', 'Engine Works', 9.95, 49, 50, 8000002, 5),
+(3000008, 'Windshield Wiper', 'Premium wiper for clear visibility', 'Accessories', 'Auto Parts Co.', 7.25, 29, 30, 8000001, 5),
+(3000009, 'Thermostat', 'Efficient thermostat for temperature regulation', 'Cooling System', 'Engine Works', 15.75, 60, 20, 8000004, 5),
+(3000010, 'Radiator', 'Efficient radiator for engine cooling', 'Cooling System', 'Engine Works', 95.50, 3, 5, 8000004, 5),
+(3000011, 'Battery', '12V car battery with long lifespan', 'Electrical', 'Auto Parts Co.', 120.00, 4, 3, 8000001, 5),
+(3000012, 'Timing Belt', 'Durable timing belt for precise engine performance', 'Engine', 'SparkWorks', 35.75, 49, 10, 8000003, 5),
+(3000013, 'Clutch Plate', 'High-performance clutch plate for smooth driving', 'Transmission', 'Brakes Inc.', 89.99, 7, 5, 8000001, 5),
+(3000014, 'Exhaust Muffler', 'Premium muffler for noise reduction and performance', 'Exhaust', 'Fastenings Ltd.', 45.00, 30, 8, 8000002, 5),
+(3000015, 'Fuel Injector', 'High-efficiency fuel injector for optimal combustion', 'Fuel System', 'Engine Works', 75.25, 40, 10, 8000003, 5),
+(3000017, 'Starter Motor', 'Durable starter motor for consistent engine ignition', 'Electrical', 'SparkWorks', 110.00, 0, 2, 8000003, 5),
+(3000018, 'CV Joint', 'High-quality CV joint for drive shaft durability', 'Transmission', 'Brakes Inc.', 72.50, 9, 10, 8000004, 5),
+(3000019, 'Drive Belt', 'Flexible drive belt for various car models', 'Engine', 'Fastenings Ltd.', 20.75, 50, 12, 8000002, 5),
+(3000020, 'Alternator', 'High-performance alternator for consistent charging', 'Electrical', 'PowerDrive Inc.', 150.00, 3, 5, 8000001, 5),
+(3000021, 'Water Pump', 'Reliable water pump for efficient cooling', 'Cooling System', 'CoolFlow Ltd.', 80.50, 9, 10, 8000002, 5),
+(3000022, 'Wheel Bearing', 'Durable wheel bearing for smooth rotation', 'Suspension', 'Auto Parts Co.', 35.00, 40, 12, 8000001, 5),
+(3000023, 'Control Arm', 'High-strength control arm for steering stability', 'Suspension', 'Fastenings Ltd.', 60.00, 20, 8, 8000002, 5),
+(3000024, 'Engine Mount', 'Sturdy engine mount to minimize vibrations', 'Engine', 'Engine Works', 45.75, 2, 3, 8000001, 5),
+(3000025, 'Exhaust Pipe', 'High-grade exhaust pipe for durability', 'Exhaust', 'Fastenings Ltd.', 55.00, 10, 2, 8000002, 5),
+(3000026, 'Timing Chain', 'Long-lasting timing chain for precise synchronization', 'Engine', 'SparkWorks', 70.00, 18, 6, 8000003, 5),
+(3000027, 'Battery Cable', 'Durable cable for secure battery connections', 'Electrical', 'Engine Works', 20.50, 50, 15, 8000003, 5),
+(3000028, 'Radiator Hose', 'Flexible radiator hose for efficient coolant flow', 'Cooling System', 'CoolFlow Ltd.', 18.99, 65, 20, 8000002, 5),
+(3000029, 'Brake Fluid', 'High-performance brake fluid for safety', 'Brakes', 'Brakes Inc.', 12.50, 100, 25, 8000001, 5),
+(3000031, 'Bonet', 'Very good bonets', 'Accessories', 'BonetsRUs', 100.00, 5, 1, 8000004, 6);
 
 -- --------------------------------------------------------
 
@@ -191,10 +195,11 @@ CREATE TABLE `suppliers` (
 --
 
 INSERT INTO `suppliers` (`supplier_id`, `supplier_name`, `contact_name`, `contact_phone`, `contact_email`, `address`, `active`) VALUES
-(8000001, 'Auto Parts Co.', 'John Smith', '07123456789', 'jsmith@autopartsco.com', '123 Auto Lane', 0),
-(8000002, 'Fastenings Ltd.', 'Jane Doe', '07987654321', 'jdoe@fasteningsltd.com', '45 Bolt St.', 0),
+(8000001, 'Auto Parts Co.', 'John Smith', '07123456789', 'jsmith@autopartsco.com', '123 Auto Lane', 1),
+(8000002, 'Fastenings Ltd.', 'Jane Doe', '07987654321', 'jdoe@fasteningsltd.com', '45 Bolt St.', 1),
 (8000003, 'Engine Works', 'Richard Roe', '07012345678', 'rroe@engineworks.com', '789 Engine Rd.', 0),
-(8000004, 'Car Parts Company', 'Bob', '38773487534', 'fufbiibc@hfufbish.com', 'giuwugfi ryegbfrie uigjer', 1);
+(8000004, 'Car Parts Company', 'Bob', '03877348753', 'Richard@gmail.com', 'Car Part Street', 1),
+(8000005, 'We Love Car Parts', 'Jimmy', '07892437932', 'weluvcarparts@email.com', 'Blackburn Road, Blackburn', 1);
 
 -- --------------------------------------------------------
 
@@ -216,41 +221,28 @@ CREATE TABLE `system_logs` (
 --
 
 INSERT INTO `system_logs` (`log_id`, `log_timestamp`, `user_id`, `user_name`, `action_type`, `log_description`) VALUES
-(1, '2024-12-10 00:17:34', 1000004, '1', 'LOGIN', 'Logged in at this time.'),
-(2, '2024-12-10 00:25:56', 1000004, '1', 'LOGIN', 'Logged in at this time'),
-(3, '2024-12-10 00:29:26', 1000004, '1', 'DELETE', 'Removed a user'),
-(4, '2024-12-10 01:14:18', 1000004, '1', 'ADD', 'Added an item with part ID: 3000016 to order ID: 6000002'),
-(5, '2024-12-10 01:15:22', 1000004, '1', 'LOGOUT', 'Logged Out'),
-(6, '2024-12-10 01:15:25', 1000004, '1', 'LOGIN', 'Logged in at this time'),
-(7, '2024-12-10 01:15:27', 1000004, '1', 'LOGOUT', 'Logged Out'),
-(8, '2024-12-10 01:20:44', 1000004, '1', 'LOGIN', 'Logged in at this time'),
-(9, '2024-12-10 01:26:40', 1000004, '1', 'UPDATE', 'Increased stock for Part ID: 3000001 by 51'),
-(10, '2024-12-10 01:26:41', 1000004, '1', 'UPDATE', 'Increased stock for Part ID: 3000001 by 52'),
-(11, '2024-12-10 01:26:41', 1000004, '1', 'UPDATE', 'Increased stock for Part ID: 3000001 by 53'),
-(12, '2024-12-10 01:26:43', 1000004, '1', 'UPDATE', 'Decreased stock for Part ID: 3000001 by 54'),
-(13, '2024-12-10 01:26:43', 1000004, '1', 'UPDATE', 'Decreased stock for Part ID: 3000001 by 53'),
-(14, '2024-12-10 01:26:43', 1000004, '1', 'UPDATE', 'Decreased stock for Part ID: 3000001 by 52'),
-(15, '2024-12-10 01:30:01', 1000004, '1', 'DELETE', 'Deleted Part ID: 3000016'),
-(16, '2024-12-10 01:30:28', 1000004, '1', 'UPDATE', 'Updated part'),
-(17, '2024-12-10 01:33:45', 1000004, '1', 'CREATE', 'Created a user'),
-(18, '2024-12-10 01:34:14', 1000004, '1', 'DELETE', 'Removed 1000024 '),
-(19, '2024-12-11 11:41:53', 1000004, '1', 'LOGIN', 'Logged in at this time'),
-(20, '2024-12-11 11:43:12', 1000004, '1', 'UPDATE', 'Updated a user'),
-(21, '2024-12-13 12:09:57', 1000004, '1', 'LOGOUT', 'Logged Out'),
-(22, '2024-12-13 12:11:45', 1000004, '1', 'LOGIN', 'Logged in at this time'),
-(23, '2025-01-02 21:34:44', 1000004, '1', 'LOGIN', 'Logged in at this time'),
-(24, '2025-01-03 12:46:26', 1000004, '1', 'CREATE', 'Added a branch'),
-(25, '2025-01-03 12:51:32', 1000004, '1', 'CREATE', 'Added a branch'),
-(99, '2025-01-03 12:57:34', 1000004, '1', 'DELETE', 'Deleted a branch'),
-(127, '2025-01-03 13:01:00', 1000004, '1', 'CREATE', 'Added a branch'),
-(128, '2025-01-03 13:01:09', 1000004, '1', 'DELETE', 'Deleted a branch'),
-(129, '2025-01-03 13:03:17', 1000004, '1', 'DELETE', 'Deleted branch: '),
-(130, '2025-01-03 13:04:18', 1000004, '1', 'CREATE', 'Added a branch'),
-(131, '2025-01-03 13:04:21', 1000004, '1', 'DELETE', 'Deleted branch: City Centre Branch'),
-(132, '2025-01-03 13:25:48', 1000004, '1', 'CREATE', 'Added a branch'),
-(133, '2025-01-03 13:28:39', 1000004, '1', 'UPDATE', 'Updated branch: Test Branch Test'),
-(134, '2025-01-03 13:46:21', 1000004, '1', 'UPDATE', 'Updated Part ID: 3000001'),
-(135, '2025-01-03 13:46:33', 1000004, '1', 'UPDATE', 'Updated Part ID: 3000002');
+(339, '2025-01-06 04:29:31', 1000026, 'Admin1', 'CREATE', 'Added an order'),
+(340, '2025-01-06 04:29:41', 1000026, 'Admin1', 'ADD', 'Added an item with part ID: 3000021 to order ID: 6000011'),
+(341, '2025-01-06 04:29:46', 1000026, 'Admin1', 'ADD', 'Added an item with part ID: 3000019 to order ID: 6000011'),
+(342, '2025-01-06 04:29:52', 1000026, 'Admin1', 'ADD', 'Added an item with part ID: 3000012 to order ID: 6000011'),
+(343, '2025-01-06 04:30:15', 1000026, 'Admin1', 'LOGOUT', 'Logged Out'),
+(344, '2025-01-06 04:30:29', 1000027, 'User1', 'LOGIN', 'Logged in at this time'),
+(345, '2025-01-06 04:31:11', 1000027, 'User1', 'CREATE', 'Added an order'),
+(346, '2025-01-06 04:31:24', 1000027, 'User1', 'ADD', 'Added an item with part ID: 3000010 to order ID: 6000012'),
+(347, '2025-01-06 04:31:31', 1000027, 'User1', 'ADD', 'Added an item with part ID: 3000029 to order ID: 6000012'),
+(348, '2025-01-06 04:31:37', 1000027, 'User1', 'ADD', 'Added an item with part ID: 3000027 to order ID: 6000012'),
+(349, '2025-01-06 04:31:53', 1000027, 'User1', 'LOGOUT', 'Logged Out'),
+(350, '2025-01-06 04:32:05', 1000026, 'Admin1', 'LOGIN', 'Logged in at this time'),
+(351, '2025-01-06 04:32:32', 1000026, 'Admin1', 'LOGOUT', 'Logged Out'),
+(352, '2025-01-06 04:32:45', 1000027, 'User1', 'LOGIN', 'Logged in at this time'),
+(353, '2025-01-06 04:33:00', 1000027, 'User1', 'CREATE', 'Added an order'),
+(354, '2025-01-06 04:33:13', 1000027, 'User1', 'ADD', 'Added an item with part ID: 3000031 to order ID: 6000013'),
+(355, '2025-01-06 04:34:01', 1000027, 'User1', 'LOGIN', 'Logged in at this time'),
+(356, '2025-01-06 04:35:08', 1000027, 'User1', 'LOGOUT', 'Logged Out'),
+(357, '2025-01-06 04:35:21', 1000026, 'Admin1', 'LOGIN', 'Logged in at this time'),
+(358, '2025-01-06 04:35:40', 1000026, 'Admin1', 'UPDATE', 'Updated Part ID: 3000028'),
+(359, '2025-01-06 04:35:58', 1000026, 'Admin1', 'UPDATE', 'Reactivated a supplier'),
+(360, '2025-01-06 04:37:53', 1000026, 'Admin1', 'DELETE', 'Deactivated a supplier');
 
 -- --------------------------------------------------------
 
@@ -272,13 +264,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `username`, `password`, `email`, `role`, `active`) VALUES
-(1000001, 'a', '$2y$10$VklExK7CdoqS3.qLuro3mOmZVT2SEhQIjyUG/II683o0dt3Zzpb2.', 'admin@autospare.com', 'Admin', 0),
-(1000002, 'staff_jane', 'hashed_password', 'jane@autospare.com', 'Admin', 1),
-(1000003, 'user', '$2y$10$JaP4ZkhHRAfcnL5xcSCuM.2O45OO/UBiumpbrnwaDyZAoA1yi8SF2', 'john@autospare.com', 'User', 1),
-(1000004, '1', '$2y$10$pCExSMCgHSqc8ARSqfTdIerOBPiA/GifuV6gGbxXuCHrw1RIAHkye', '1@gmail.com', 'Admin', 1),
-(1000020, 'test', '$2y$10$xwPfaTrtGFHas7PkCG9w5e2AfWyV8IF5Wir1UZTv1Q/s8LcGh80sS', 'standenfe@gmail.com', 'Admin', 1),
-(1000023, 'i am a test user', '$2y$10$VrsY0dZBfEU6IBlu3KAZVuvl3cxcPL9RxodW9p558ZuU/CKGaQ3t6', 'aiufugifah@ufbflb.com', 'User', 0),
-(1000024, 'EXamPLEUSER', '$2y$10$SBQIZyO6SvRUHkqK5OShDe/SO.TdzCcW7r62sS4K80Qfx6w04o0Uq', 'bob@gmail.com', 'admin', 0);
+(1000026, 'Admin1', '$2y$10$RY53Jsh/7ubJ3pMEZvlWCu3HJEkoqpCr4TzUENc7hVOQLK51Mho7m', 'admin@sap.com', 'Admin', 1),
+(1000027, 'User1', '$2y$10$bnP2gI8h3lMXiUBgL78VS.YLBnWBSsQqHihcAtFhj4sV41es99KZu', 'johnsmith@sap.com', 'User', 1);
 
 -- --------------------------------------------------------
 
@@ -299,13 +286,8 @@ CREATE TABLE `user_details` (
 --
 
 INSERT INTO `user_details` (`user_detail_id`, `user_id`, `first_name`, `last_name`, `phone_number`) VALUES
-(2000001, 1000001, 'Alice', 'Adminson', '07011223344'),
-(2000002, 1000002, 'Jane', 'Doe', '07022334455'),
-(2000003, 1000003, 'John', 'Smith', '07033445566'),
-(2000005, 1000004, 'bobadmin', 'admin', '848484994'),
-(2000020, 1000020, 'ddddddd', 'dddddd', '07927110610'),
-(2000023, 1000023, 'felix', 'standen', '83549538'),
-(2000024, 1000024, 'example', 'bobb', '79348543');
+(2000026, 1000026, 'James', 'Hunt', '07476492942'),
+(2000027, 1000027, 'John', 'Smith', '023099327');
 
 --
 -- Indexes for dumped tables
@@ -381,55 +363,55 @@ ALTER TABLE `user_details`
 -- AUTO_INCREMENT for table `branches`
 --
 ALTER TABLE `branches`
-  MODIFY `branch_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `branch_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `invoices`
 --
 ALTER TABLE `invoices`
-  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5000003;
+  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5000009;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6000008;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6000014;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7000014;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7000029;
 
 --
 -- AUTO_INCREMENT for table `parts`
 --
 ALTER TABLE `parts`
-  MODIFY `part_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3000039;
+  MODIFY `part_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3000032;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
 --
 ALTER TABLE `suppliers`
-  MODIFY `supplier_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8000005;
+  MODIFY `supplier_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8000006;
 
 --
 -- AUTO_INCREMENT for table `system_logs`
 --
 ALTER TABLE `system_logs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=136;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=361;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1000025;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1000028;
 
 --
 -- AUTO_INCREMENT for table `user_details`
 --
 ALTER TABLE `user_details`
-  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2000025;
+  MODIFY `user_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2000028;
 
 --
 -- Constraints for dumped tables

@@ -73,14 +73,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // If they provide a new password this is where we check that they match
-    if (!empty($new_password) && $new_password === $confirm_password) {
-        $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-        $update_password_sql = "UPDATE users SET password = ? WHERE user_id = ?";
-        $update_password_stmt = $con->prepare($update_password_sql);
-        $update_password_stmt->bind_param('si', $hashed_password, $user_id);
-        $update_password_stmt->execute();
-    } elseif (!empty($new_password)) {
-        die("Passwords do not match.");
+    if (!empty($new_password) || !empty($confirm_password)) {
+        if ($new_password === $confirm_password) {
+            $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+            $update_password_sql = "UPDATE users SET password = ? WHERE user_id = ?";
+            $update_password_stmt = $con->prepare($update_password_sql);
+            $update_password_stmt->bind_param('si', $hashed_password, $user_id);
+            $update_password_stmt->execute();
+        } else {
+            die("Passwords do not match.");
+        }
     }
 
     // Updating the users table with the new data
@@ -109,6 +111,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="style/base.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage User</title>
+    <script>
+        function validateForm() {
+            const newPassword = document.getElementById('new_password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+
+            if ((newPassword !== '' || confirmPassword !== '') && newPassword !== confirmPassword) {
+                alert('Passwords do not match.');
+                return false;
+            }
+            return true;
+        }
+    </script>
 </head>
 <body>
     <?php include('include/header.php'); ?>
@@ -118,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="back-button-container">
             <a href="view_users.php" class="back-btn">Back</a>
         </div>
-        <form action="manage_users.php?user_id=<?php echo htmlspecialchars($user['user_id']); ?>" method="POST" class="form">
+        <form action="manage_users.php?user_id=<?php echo htmlspecialchars($user['user_id']); ?>" method="POST" class="form" onsubmit="return validateForm();">
             <div class="form-columns">
                 <div class="left-column">
                     <div class="form-box">

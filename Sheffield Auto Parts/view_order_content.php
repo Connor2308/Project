@@ -113,7 +113,7 @@ $parts_result = $con->query($parts_query);
             <table class="inventory-list">
                 <thead>
                     <tr>
-                        <th>Item ID</th>
+                        <th>Part ID</th>
                         <th>Part Name</th>
                         <th>Quantity</th>
                         <th>Individual Price</th>
@@ -130,7 +130,7 @@ $parts_result = $con->query($parts_query);
                             $total_order_price += $total_price; //adding item total to the overall total
 
                             echo "<tr>";
-                            echo "<td>" . htmlspecialchars($row['order_item_id']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['part_id']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['part_name']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['order_quantity']) . "</td>";
                             echo "<td>£" . htmlspecialchars($row['unit_price']) . "</td>";

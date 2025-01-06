@@ -25,55 +25,68 @@ $sql = "SELECT
         ORDER BY 
             $sort_column $sort_order";
 
-
 $result = $con->query($sql);
 
 //create an order
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['create_order'])) {
     // capture form data
-    $user_id = $_POST['user_id'];
-    $order_status = $_POST['order_status'];
-    $order_date = $_POST['order_date'];
-    $order_time = $_POST['order_time'];
-    $recipient_name = $_POST['recipient_name']; // add this line to capture recipient's name
+    $user_id = $_POST['user_id'] ?? null;
+    $order_status = $_POST['order_status'] ?? null;
+    $order_date = $_POST['order_date'] ?? null;
+    $order_time = $_POST['order_time'] ?? null;
+    $recipient_name = $_POST['recipient_name'] ?? null;
 
-    // begin transaction
-    $con->begin_transaction();
+    if ($user_id && $order_status && $order_date && $order_time && $recipient_name) {
+        // begin transaction
+        $con->begin_transaction();
 
-    try {
-        // insert the new order into the orders table
-        $insert_sql = "INSERT INTO orders (user_id, order_date, order_time, order_status, recipient_name) 
-                       VALUES (?, ?, ?, ?, ?)";
-        $stmt = $con->prepare($insert_sql);
-        $stmt->bind_param('issss', $user_id, $order_date, $order_time, $order_status, $recipient_name);
-        $stmt->execute();
-        $order_id = $stmt->insert_id; // get the inserted order's ID
+        try {
+            // insert the new order into the orders table
+            $insert_sql = "INSERT INTO orders (user_id, order_date, order_time, order_status, recipient_name) 
+                           VALUES (?, ?, ?, ?, ?)";
+            $stmt = $con->prepare($insert_sql);
+            if (!$stmt) {
+                throw new Exception("Prepare statement failed: " . $con->error);
+            }
+            $stmt->bind_param('issss', $user_id, $order_date, $order_time, $order_status, $recipient_name);
+            if (!$stmt->execute()) {
+                throw new Exception("Execute statement failed: " . $stmt->error);
+            }
+            $order_id = $stmt->insert_id; // get the inserted order's ID
 
-        // insert the new invoice into the invoices table
-        $invoice_date = $order_date;
-        $invoice_time = $order_time;
-        $total_due = 0.00; // assuming initial total due is 0.00
-        $status = 0; // assuming 0 means unpaid
-        $total_paid = 0.00;
+            // insert the new invoice into the invoices table
+            $invoice_date = $order_date;
+            $invoice_time = $order_time;
+            $total_due = 0.00; // assuming initial total due is 0.00
+            $status = 0; // assuming 0 means unpaid
+            $total_paid = 0.00;
 
-        $invoice_sql = "INSERT INTO invoices (order_id, invoice_date, invoice_time, total_due, status, total_paid) 
-                        VALUES (?, ?, ?, ?, ?, ?)";
-        $invoice_stmt = $con->prepare($invoice_sql);
-        $invoice_stmt->bind_param('issdii', $order_id, $invoice_date, $invoice_time, $total_due, $status, $total_paid);
-        $invoice_stmt->execute();
+            $invoice_sql = "INSERT INTO invoices (order_id, invoice_date, invoice_time, total_due, status, total_paid) 
+                            VALUES (?, ?, ?, ?, ?, ?)";
+            $invoice_stmt = $con->prepare($invoice_sql);
+            if (!$invoice_stmt) {
+                throw new Exception("Prepare statement failed: " . $con->error);
+            }
+            $invoice_stmt->bind_param('issdii', $order_id, $invoice_date, $invoice_time, $total_due, $status, $total_paid);
+            if (!$invoice_stmt->execute()) {
+                throw new Exception("Execute statement failed: " . $invoice_stmt->error);
+            }
 
-        // commit the transaction
-        $con->commit();
+            // commit the transaction
+            $con->commit();
 
-        logAction($user_data['user_id'], $user_data['username'], 'CREATE', 'Added an order'); // log the action here
+            logAction($user_data['user_id'], $user_data['username'], 'CREATE', 'Added an order'); // log the action here
 
-        // redirect to the manage orders page with the newly created order's ID
-        header("Location: view_orders.php?order_id=$order_id");
-        exit;
-    } catch (Exception $e) {
-        // rollback transaction in case of error
-        $con->rollback();
-        echo "<p>Error creating order. Please try again.</p>";
+            // redirect to the manage orders page with the newly created order's ID
+            header("Location: view_orders.php?order_id=$order_id");
+            exit;
+        } catch (Exception $e) {
+            // rollback transaction in case of error
+            $con->rollback();
+            echo "<p>Error creating order: " . $e->getMessage() . "</p>";
+        }
+    } else {
+        echo "<p>Error: All fields are required.</p>";
     }
 }
 
@@ -84,7 +97,7 @@ $users_result = $con->query($users_query);
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_order'])) {
     $order_id = $_POST['order_id'];
 
-    //begin transaction to ensure data consistency
+    //begin transaction to ensure data consistency, rollback if error occurs
     $con->begin_transaction();
     try {
         //delete all references of the order in the invoice table
@@ -179,15 +192,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['refresh_price'])) {
                         <label for="order_time">Order Time:</label>
                         <input type="time" id="order_time" name="order_time" required>
                     </div>
-                    <div class="form-box">
-                        <label for="total_cost">Total Cost:</label>
-                        <input type="number" step="0.01" id="total_cost" name="total_cost" required>
-                    </div>
                 </div>
                 <div class="right-column">
                     <div class="form-box">
                         <label for="recipient">Recipient:</label>
-                        <input type="text" id="recipient" name="recipient" required>
+                        <input type="text" id="recipient" name="recipient_name" required>
                     </div>
                     <div class="form-box">
                         <label for="order_status">Order Status:</label>
@@ -196,9 +205,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['refresh_price'])) {
                             <option value="Completed">Completed</option>
                         </select>
                     </div>
+                    <div class="form-box">
+                        <label for="user_id">User:</label>
+                        <select id="user_id" name="user_id" required>
+                            <?php
+                            if ($users_result && $users_result->num_rows > 0) {
+                                while ($user = $users_result->fetch_assoc()) {
+                                    echo "<option value='" . htmlspecialchars($user['user_id']) . "'>" . htmlspecialchars($user['username']) . "</option>";
+                                }
+                            } else {
+                                echo "<option value=''>No users found</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
                 </div>
             </div>
-            <button type="submit" class="save-btn">Add Order</button>
+            <button type="submit" class="save-btn" name="create_order">Add Order</button>
         </form>
     </div>
     <div class="page-container">
