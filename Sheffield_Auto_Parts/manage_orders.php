@@ -63,37 +63,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form action="manage_orders.php?order_id=<?php echo htmlspecialchars($order['order_id']); ?>" method="POST" class="form">
             <div class="form-columns">
                 <div class="left-column">
+                    <!-- order id -->
                     <div class="form-box">
                         <label for="order_id">Order ID:</label>
                         <input type="text" id="order_id" value="<?php echo htmlspecialchars($order['order_id']); ?>" readonly>
                     </div>
-
+                    <!-- username -->
                     <div class="form-box">
                         <label for="username">Username:</label>
                         <input type="text" id="username" value="<?php echo htmlspecialchars($order['username']); ?>" readonly>
                     </div>
-
+                    <!-- recipient -->
                     <div class="form-box">
                         <label for="recipient">Recipient:</label>
                         <input type="text" id="recipient" name="recipient" value="<?php echo htmlspecialchars($order['recipient_name']); ?>" required>
                     </div>
-
+                    <!-- order date -->
                     <div class="form-box">
                         <label for="order_date">Order Date:</label>
                         <input type="date" id="order_date" name="order_date" value="<?php echo htmlspecialchars($order['order_date']); ?>" required>
                     </div>
                 </div>
                 <div class="right-column">
+                    <!-- order time -->
                     <div class="form-box">
                         <label for="order_time">Order Time:</label>
                         <input type="time" id="order_time" name="order_time" value="<?php echo htmlspecialchars($order['order_time']); ?>" required>
                     </div>
-
+                    <!-- total cost -->
                     <div class="form-box">
                         <label for="total_cost">Total Cost:</label>
                         <input type="number" id="total_cost" name="total_cost" step="0.01" value="<?php echo htmlspecialchars($order['total_cost']); ?>" required>
                     </div>
-
+                    <!-- order status -->
                     <div class="form-box">
                         <label for="order_status">Order Status:</label>
                         <select id="order_status" name="order_status" required>

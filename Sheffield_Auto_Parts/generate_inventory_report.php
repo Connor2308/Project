@@ -21,7 +21,7 @@ $sql = "SELECT
         ORDER BY parts.part_id";
 $result = $con->query($sql);
 
-// Create a new PDF document in landscape orientation
+// Create a new PDF document in landscape orientation, 'L' for landscape
 $pdf = new FPDF('L', 'mm', 'A4');
 $pdf->AddPage();
 
@@ -45,10 +45,9 @@ $pdf->Ln();
 
 // Add table rows
 $pdf->SetFont('Arial', '', 12);
-while ($row = $result->fetch_assoc()) {
-    $branch_status = $row['branch_active'] ? '' : ' (Closed)';
+while ($row = $result->fetch_assoc()) { // Loop through each row of the result set
+    $branch_status = $row['branch_active'] ? '' : ' (Closed)'; // Add branch status if closed
     $branch_name = $row['branch_name'] . $branch_status;
-
     $pdf->Cell(20, 10, $row['part_id'], 1);
     $pdf->Cell(40, 10, $row['part_name'], 1);
     $pdf->Cell(30, 10, $row['genre'], 1);

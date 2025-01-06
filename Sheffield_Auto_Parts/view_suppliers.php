@@ -1,6 +1,5 @@
 <?php
 include('include/init.php');
-
 // Handle deactivating a supplier
 if (isset($_GET['deactivate_supplier_id'])) {
     $deactivate_supplier_id = intval($_GET['deactivate_supplier_id']);
@@ -12,7 +11,6 @@ if (isset($_GET['deactivate_supplier_id'])) {
     header('Location: view_suppliers.php');
     exit;
 }
-
 // Handle reactivating a supplier
 if (isset($_GET['reactivate_supplier_id'])) {
     $reactivate_supplier_id = intval($_GET['reactivate_supplier_id']);
@@ -58,13 +56,12 @@ $next_sort_order = $sort_order === 'asc' ? 'desc' : 'asc';
 $sql = "SELECT supplier_id, supplier_name, contact_name, contact_phone, contact_email, address, active FROM suppliers 
         ORDER BY $sort_column $sort_order";
 $result = $con->query($sql);
-
 if (!$result) {
     die("Error fetching suppliers: " . $con->error);
 }
 ?>
-<!-- HTML -->
 
+<!-- HTML -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,24 +83,29 @@ if (!$result) {
             <?php endif; ?>
             <div class="form-columns">
                 <div class="left-column">
+                    <!-- name -->
                     <div class="form-box">
                         <label for="supplier_name">Supplier Name:</label>
                         <input type="text" id="supplier_name" name="supplier_name" required>
                     </div>
+                    <!-- con name -->
                     <div class="form-box">
                         <label for="contact_name">Contact Name:</label>
                         <input type="text" id="contact_name" name="contact_name" required>
                     </div>
+                    <!-- con phone -->
                     <div class="form-box">
                         <label for="contact_phone">Contact Phone:</label>
                         <input type="text" id="contact_phone" name="contact_phone" required>
                     </div>
                 </div>
                 <div class="right-column">
+                    <!-- con email -->
                     <div class="form-box">
                         <label for="contact_email">Contact Email:</label>
                         <input type="email" id="contact_email" name="contact_email" required>
                     </div>
+                    <!-- address -->
                     <div class="form-box">
                         <label for="address">Address:</label>
                         <input type="text" id="address" name="address" required>
@@ -157,6 +159,5 @@ if (!$result) {
             </table>
         </div>
     </div>
-    <?php include('include/footer.php')?>
 </body>
 </html>

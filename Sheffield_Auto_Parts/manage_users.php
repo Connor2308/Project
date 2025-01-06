@@ -135,16 +135,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form action="manage_users.php?user_id=<?php echo htmlspecialchars($user['user_id']); ?>" method="POST" class="form" onsubmit="return validateForm();">
             <div class="form-columns">
                 <div class="left-column">
+                    <!-- username -->
                     <div class="form-box">
                         <label for="username">Username:</label>
                         <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['username']); ?>" required>
                     </div>
-
+                    <!-- email -->
                     <div class="form-box">
                         <label for="email">Email:</label>
                         <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
                     </div>
-
+                    <!-- role -->
                     <div class="form-box">
                         <label for="role">Role:</label>
                         <select id="role" name="role" required>
@@ -152,18 +153,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <option value="User" <?php echo ($user['role'] === 'User' ? 'selected' : ''); ?>>User</option>
                         </select>
                     </div>
-
+                    <!-- first name -->
                     <div class="form-box">
                         <label for="first_name">First Name:</label>
                         <input type="text" id="first_name" name="first_name" value="<?php echo htmlspecialchars($user['first_name']); ?>" required>
                     </div>
                 </div>
                 <div class="right-column">
+                    <!-- lastname -->
                     <div class="form-box">
                         <label for="last_name">Last Name:</label>
                         <input type="text" id="last_name" name="last_name" value="<?php echo htmlspecialchars($user['last_name']); ?>" required>
                     </div>
-
+                    <!-- phone numbers -->
                     <div class="form-box">
                         <label for="phone_number">Phone Number:</label>
                         <input type="text" id="phone_number" name="phone_number" value="<?php echo htmlspecialchars($user['phone_number']); ?>" required>
@@ -174,6 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label for="new_password">New Password:</label>
                         <input type="password" id="new_password" name="new_password">
                     </div>
+                    <!-- confirm the new password -->
                     <div class="form-box">
                         <label for="confirm_password">Confirm Password:</label>
                         <input type="password" id="confirm_password" name="confirm_password">

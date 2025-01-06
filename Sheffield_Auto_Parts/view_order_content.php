@@ -157,6 +157,7 @@ $parts_result = $con->query($parts_query);
         <div class="add-part-form">
             <h3>Add a New Part to the Order</h3>
             <form method="POST">
+                <!-- select a part -->
                 <label for="part_id">Select Part:</label>
                 <select name="part_id" id="part_id" required>
                     <option value="" disabled selected>Select a Part</option>
@@ -172,6 +173,7 @@ $parts_result = $con->query($parts_query);
                     }
                     ?>
                 </select>
+                <!-- adding quantity of parts -->
                 <label for="order_quantity">Quantity:</label>
                 <input type="number" name="order_quantity" id="order_quantity" required min="1">
 

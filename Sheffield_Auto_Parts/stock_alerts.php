@@ -107,7 +107,5 @@ $result = $stmt->get_result();
             ?>
         </div>
     </div>
-
-    <?php include('include/footer.php'); ?>
 </body>
 </html>

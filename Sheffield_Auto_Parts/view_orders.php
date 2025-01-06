@@ -185,19 +185,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['refresh_price'])) {
             <div class="form-columns">
                 <div class="left-column">
                     <div class="form-box">
+                        <!-- date -->
                         <label for="order_date">Order Date:</label>
                         <input type="date" id="order_date" name="order_date" required>
                     </div>
+                    <!-- time -->
                     <div class="form-box">
                         <label for="order_time">Order Time:</label>
                         <input type="time" id="order_time" name="order_time" required>
                     </div>
                 </div>
                 <div class="right-column">
+                    <!-- recipient -->
                     <div class="form-box">
                         <label for="recipient">Recipient:</label>
                         <input type="text" id="recipient" name="recipient_name" required>
                     </div>
+                    <!-- order status -->
                     <div class="form-box">
                         <label for="order_status">Order Status:</label>
                         <select id="order_status" name="order_status" required>
@@ -205,6 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['refresh_price'])) {
                             <option value="Completed">Completed</option>
                         </select>
                     </div>
+                    <!-- user -->
                     <div class="form-box">
                         <label for="user_id">User:</label>
                         <select id="user_id" name="user_id" required>
@@ -292,7 +297,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['refresh_price'])) {
                     ?>
                 </tbody>
             </table>
-            
         </div>
     </div>
 </body>

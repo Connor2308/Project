@@ -73,32 +73,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form action="manage_supplier.php?supplier_id=<?php echo htmlspecialchars($supplier['supplier_id']); ?>" method="POST" class="form">
             <div class="form-columns">
                 <div class="left-column">
+                    <!-- name -->
                     <div class="form-box">
                         <label for="supplier_name">Supplier Name:</label>
                         <input type="text" id="supplier_name" name="supplier_name" value="<?php echo htmlspecialchars($supplier['supplier_name']); ?>" required>
                     </div>
-
+                    <!-- contact name -->
                     <div class="form-box">
                         <label for="contact_name">Contact Name:</label>
                         <input type="text" id="contact_name" name="contact_name" value="<?php echo htmlspecialchars($supplier['contact_name']); ?>" required>
                     </div>
-
+                    <!-- con email -->
                     <div class="form-box">
                         <label for="contact_email">Contact Email:</label>
                         <input type="email" id="contact_email" name="contact_email" value="<?php echo htmlspecialchars($supplier['contact_email']); ?>" required>
                     </div>
-
+                    <!-- con phone -->
                     <div class="form-box">
                         <label for="contact_phone">Contact Phone:</label>
                         <input type="text" id="contact_phone" name="contact_phone" value="<?php echo htmlspecialchars($supplier['contact_phone']); ?>" required>
                     </div>
                 </div>
                 <div class="right-column">
+                    <!-- address -->
                     <div class="form-box">
                         <label for="address">Address:</label>
                         <textarea id="address" name="address" required><?php echo htmlspecialchars($supplier['address']); ?></textarea>
                     </div>
-
+                    <!-- are they still an active supplier -->
                     <div class="form-box">
                         <label for="active">Active:</label>
                         <select id="active" name="active" required>

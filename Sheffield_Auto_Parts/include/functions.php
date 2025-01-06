@@ -1,4 +1,6 @@
 <?php
+//File consists of all of the functions that are used in the system
+
 //checking the user who is logged in function
 function check_login($con){
   if(isset($_SESSION['user_id'])){//the current loggin in user in the session
@@ -13,6 +15,8 @@ function check_login($con){
   //redirect to login page as login has failed
   header("Location: signin.php");
 }
+
+//checking if the user is an admin if not booting them off the page
 function checkAdmin() {
   if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'Admin') {
       echo "<script>
@@ -23,7 +27,7 @@ function checkAdmin() {
   }
 }
 
-// Function to update the total cost in the orders table
+//Function to update the total cost in the orders table when the refresh is pressed
 function updateOrderTotal($con, $order_id) {
   // Recalculate the total order price
   $total_order_price = 0;
@@ -37,7 +41,7 @@ function updateOrderTotal($con, $order_id) {
 
   // Sum up the total price of all order items
   while ($row = $result->fetch_assoc()) {
-      $total_order_price += $row['order_quantity'] * $row['unit_price'];
+    $total_order_price += $row['order_quantity'] * $row['unit_price'];
   }
 
   // Update the total_cost in the orders table
@@ -46,7 +50,8 @@ function updateOrderTotal($con, $order_id) {
   $update_stmt->bind_param('di', $total_order_price, $order_id);
   $update_stmt->execute();
 }
-//Function to log actions
+
+//Function to log actions, called all over the system from logging in to updating orders
 function logAction($user_id, $user_name, $action_type, $desc) {
   global $con; // Access the database connection
 

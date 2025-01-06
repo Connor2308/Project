@@ -118,11 +118,12 @@ while ($row = $branch_result->fetch_assoc()) {
         <form action="manage_part.php?part_id=<?php echo htmlspecialchars($part['part_id']); ?>" method="POST" class="form">
             <div class="form-columns">
                 <div class="left-column">
+                    <!-- name -->
                     <div class="form-box">
                         <label for="part_name">Part Name:</label>
                         <input type="text" id="part_name" name="part_name" value="<?php echo htmlspecialchars($part['part_name']); ?>" required>
                     </div>
-
+                    <!-- genre -->
                     <div class="form-box">
                         <label for="genre">Genre:</label>
                         <select id="genre" name="genre" required>
@@ -132,12 +133,12 @@ while ($row = $branch_result->fetch_assoc()) {
                             <?php endforeach; ?>
                         </select>
                     </div>
-
+                    <!-- manufacturer -->
                     <div class="form-box">
                         <label for="manufacturer">Manufacturer:</label>
                         <input type="text" id="manufacturer" name="manufacturer" value="<?php echo htmlspecialchars($part['manufacturer']); ?>" required>
                     </div>
-
+                    <!-- supplier -->
                     <div class="form-box">
                         <label for="supplier_id">Supplier:</label>
                         <select id="supplier_id" name="supplier_id" required>
@@ -151,6 +152,7 @@ while ($row = $branch_result->fetch_assoc()) {
                     </div>
                 </div>
                 <div class="right-column">
+                    <!-- branch -->
                     <div class="form-box">
                         <label for="branch_id">Branch:</label>
                         <select id="branch_id" name="branch_id" required>
@@ -162,22 +164,22 @@ while ($row = $branch_result->fetch_assoc()) {
                             <?php endforeach; ?>
                         </select>
                     </div>
-
+                    <!-- Unit price -->
                     <div class="form-box">
                         <label for="unit_price">Unit Price:</label>
                         <input type="number" step="0.01" id="unit_price" name="unit_price" value="<?php echo htmlspecialchars($part['unit_price']); ?>" required>
                     </div>
-
+                    <!-- Quantity in stock -->
                     <div class="form-box">
                         <label for="quantity_in_stock">Quantity in Stock:</label>
                         <input type="number" id="quantity_in_stock" name="quantity_in_stock" value="<?php echo htmlspecialchars($part['quantity_in_stock']); ?>" min="0" required>
                     </div>
-
+                    <!-- Reorder level -->
                     <div class="form-box">
                         <label for="reorder_level">Reorder Level:</label>
                         <input type="number" id="reorder_level" name="reorder_level" value="<?php echo htmlspecialchars($part['reorder_level']); ?>" min="0" required>
                     </div>
-
+                    <!-- Description -->
                     <div class="form-box">
                         <label for="description">Description:</label>
                         <textarea id="description" name="description" required><?php echo htmlspecialchars($part['description']); ?></textarea>

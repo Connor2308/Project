@@ -102,7 +102,7 @@ $pdf->Cell(40, 10, iconv('UTF-8', 'ISO-8859-1', 'Collective Price'), 1);
 $pdf->Ln();
 
 $pdf->SetFont('Arial', '', 12);
-while ($item = $items_result->fetch_assoc()) {
+while ($item = $items_result->fetch_assoc()) { // Loop through each order item
     $pdf->Cell(40, 10, iconv('UTF-8', 'ISO-8859-1', $item['order_item_id']), 1);
     $pdf->Cell(80, 10, iconv('UTF-8', 'ISO-8859-1', $item['part_name']), 1);
     $pdf->Cell(30, 10, iconv('UTF-8', 'ISO-8859-1', $item['order_quantity']), 1);

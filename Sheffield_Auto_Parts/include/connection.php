@@ -1,5 +1,6 @@
 <?php
-$dbhost = "localhost";
+//database details
+$dbhost = "localhost"; 
 $dbuser = "root";
 $dbpass = "";
 $dbname = "sheffield_auto_spares_db";

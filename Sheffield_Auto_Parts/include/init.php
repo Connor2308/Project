@@ -1,5 +1,5 @@
 <?php
-session_start();
+session_start(); //use this to start the session and to stop me having to write it out every time
 include('include/connection.php');
 include('include/functions.php');
 if (!isset($_SESSION['user_id'])) {

@@ -33,14 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Fetch all genres for the dropdown
-$genre_sql = "SELECT DISTINCT genre FROM parts";
+$genre_sql = "SELECT DISTINCT genre FROM parts"; //here is where is learned about distinct www.w3schools.com/sql/sql_distinct.asp
 $genre_result = $con->query($genre_sql);
 $genres = [];
-while ($row = $genre_result->fetch_assoc()) {
+while ($row = $genre_result->fetch_assoc()) { //loop for each genre
     $genres[] = $row['genre'];
 }
 
-// Fetch only active suppliers for the dropdown
+// Fetch only active suppliers for the dropdown, as we dont want them adding inactive suppliers to new parts
 $supplier_sql = "SELECT supplier_id, supplier_name FROM suppliers WHERE active = 1";
 $supplier_result = $con->query($supplier_sql);
 $suppliers = [];
@@ -48,8 +48,8 @@ while ($row = $supplier_result->fetch_assoc()) {
     $suppliers[] = $row;
 }
 
-// Fetch all branches for the dropdown
-$branch_sql = "SELECT branch_id, branch_name FROM branches";
+// Fetch all branches for the dropdown, it will only show active branches that are available
+$branch_sql = "SELECT branch_id, branch_name FROM branches WHERE active = 1";
 $branch_result = $con->query($branch_sql);
 $branches = [];
 while ($row = $branch_result->fetch_assoc()) {
@@ -69,7 +69,6 @@ while ($row = $branch_result->fetch_assoc()) {
     <?php include('include/header.php'); ?>
     <div class="page-container">
         <h2 class="page-title">Add New Part</h2>
-        <!-- Container that contains all of the boxes -->
             <!-- Back Button -->
         <div class="back-button-container">
             <a href="inventory.php" class="back-btn">Back</a>
@@ -77,10 +76,12 @@ while ($row = $branch_result->fetch_assoc()) {
         <form action="adding_new_parts.php" method="POST" class="adding-form">
             <div class="form-columns">
                 <div class="left-column">
+                    <!-- Part Name -->
                     <div class="form-box">
                         <label for="part_name">Part Name:</label>
                         <input type="text" id="part_name" name="part_name" required>
                     </div>
+                    <!-- Genre -->
                     <div class="form-box">
                         <label for="genre">Genre:</label>
                         <select id="genre" name="genre" required>
@@ -90,10 +91,12 @@ while ($row = $branch_result->fetch_assoc()) {
                             <?php endforeach; ?>
                         </select>
                     </div>
+                    <!-- Manufac -->
                     <div class="form-box">
                         <label for="manufacturer">Manufacturer:</label>
                         <input type="text" id="manufacturer" name="manufacturer" required>
                     </div>
+                    <!-- Supplier -->
                     <div class="form-box">
                         <label for="supplier_id">Supplier:</label>
                         <select id="supplier_id" name="supplier_id" required>
@@ -105,6 +108,7 @@ while ($row = $branch_result->fetch_assoc()) {
                     </div>
                 </div>
                 <div class="right-column">
+                    <!-- Branch -->
                     <div class="form-box">
                         <label for="branch_id">Branch:</label>
                         <select id="branch_id" name="branch_id" required>
@@ -114,18 +118,22 @@ while ($row = $branch_result->fetch_assoc()) {
                             <?php endforeach; ?>
                         </select>
                     </div>
+                    <!-- Unit Price -->
                     <div class="form-box">
                         <label for="unit_price">Unit Price:</label>
                         <input type="number" step="0.01" id="unit_price" name="unit_price" required>
                     </div>
+                    <!-- Quantity in Stock -->
                     <div class="form-box">
                         <label for="quantity_in_stock">Quantity in Stock:</label>
                         <input type="number" id="quantity_in_stock" name="quantity_in_stock" required>
                     </div>
+                    <!-- Reorder Level -->
                     <div class="form-box">
                         <label for="reorder_level">Reorder Level:</label>
                         <input type="number" id="reorder_level" name="reorder_level" required>
                     </div>
+                    <!-- Description -->
                     <div class="form-box">
                         <label for="description">Description:</label>
                         <textarea id="description" name="description" required></textarea>

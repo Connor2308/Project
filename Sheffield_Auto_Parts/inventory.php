@@ -105,10 +105,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
         $con->rollback();
         echo "<p>Error removing part: " . $e->getMessage() . "</p>";
     }
-
 }
 ?>
-
 <!-- HTML -->
 <!DOCTYPE html>
 <html lang="en">
@@ -116,8 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style/base.css">
     <link rel="stylesheet" href="style/tablelist.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Car Parts Inventory</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <?php include('include/header.php'); ?>
@@ -134,6 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
         <form action="inventory.php" method="POST" class="adding-form">
             <h3>Filter Parts</h3>
             <div class="form-columns">
+                <!-- Genres -->
                 <div class="left-column">
                     <div class="form-box">
                         <label for="genres">Genres:</label>
@@ -146,6 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
                     </div>
                 </div>
                 <div class="right-column">
+                    <!-- Branch -->
                     <div class="form-box">
                         <label for="branch">Branch:</label>
                         <select id="branch" name="branch">
@@ -156,10 +156,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
                             <?php endforeach; ?>
                         </select>
                     </div>
+                    <!-- min price -->
                     <div class="form-box">
                         <label for="min_price">Min Price:</label>
                         <input type="number" step="0.01" id="min_price" name="min_price" value="<?php echo htmlspecialchars($min_price); ?>">
                     </div>
+                    <!--Max price -->
                     <div class="form-box">
                         <label for="max_price">Max Price:</label>
                         <input type="number" step="0.01" id="max_price" name="max_price" value="<?php echo htmlspecialchars($max_price); ?>">

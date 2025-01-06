@@ -70,26 +70,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <!-- Manage Branch Section -->
         <form action="manage_branches.php?branch_id=<?php echo htmlspecialchars($branch['branch_id']); ?>" method="POST" class="form">
+            <!-- name -->
             <div class="form-box">
                 <label for="branch_name">Branch Name:</label>
                 <input type="text" id="branch_name" name="branch_name" value="<?php echo htmlspecialchars($branch['branch_name']); ?>" required>
             </div>
-
+            <!-- phone -->
             <div class="form-box">
                 <label for="branch_phone">Contact Phone:</label>
                 <input type="text" id="branch_phone" name="branch_phone" value="<?php echo htmlspecialchars($branch['branch_phone']); ?>" required>
             </div>
-
+            <!-- email -->
             <div class="form-box">
                 <label for="branch_email">Contact Email:</label>
                 <input type="email" id="branch_email" name="branch_email" value="<?php echo htmlspecialchars($branch['branch_email']); ?>" required>
             </div>
-
+            <!-- address -->
             <div class="form-box">
                 <label for="branch_address">Address:</label>
                 <textarea id="branch_address" name="branch_address" required><?php echo htmlspecialchars($branch['branch_address']); ?></textarea>
             </div>
-
+            <!-- submit button -->
             <button type="submit" class="save-btn">Save Changes</button>
         </form>
     </div>

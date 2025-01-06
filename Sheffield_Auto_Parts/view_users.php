@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
             throw new Exception('Error deactivating the user.');
         }
         //commit transaction
-        logAction($user_data['user_id'], $user_data['username'], 'DELETE', "Removed $user_id "); // Log the action here
+        logAction($user_data['user_id'], $user_data['username'], 'DELETE', "Removed $user_id ");
         $con->commit();
         header('Location: view_users.php'); //redirects you to the users page if it is successful
         exit;
@@ -115,7 +115,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
         echo "<p>Error removing user: " . $e->getMessage() . "</p>";
     }
 }
-
 ?>
 <!-- HTML -->
 <!DOCTYPE html>
@@ -136,34 +135,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
             <h3>Create New User</h3>
             <div class="form-columns">
                 <div class="right-column">
+                    <!-- first name -->
                     <div class="form-box">
                         <label for="first_name">First Name:</label>
                         <input type="text" id="first_name" name="first_name">
                     </div>
+                    <!-- last name -->
                     <div class="form-box">
                         <label for="last_name">Last Name:</label>
                         <input type="text" id="last_name" name="last_name">
                     </div>
+                    <!-- email -->
                     <div class="form-box">
                         <label for="email">Email:</label>
                         <input type="email" id="email" name="email" required>
                     </div>
+                    <!-- number -->
                     <div class="form-box">
                         <label for="phone_number">Phone Number:</label>
                         <input type="text" id="phone_number" name="phone_number">
                     </div>
                 </div>
                 <div class="left-column">
+                    <!-- username -->
                     <div class="form-box">
                         <label for="username">Username:</label>
                         <input type="text" id="username" name="username" required>
                     </div>
-
+                    <!-- password -->
                     <div class="form-box">
                         <label for="password">Password:</label>
                         <input type="password" id="password" name="password" required>
                     </div>
-
+                    <!-- role -->
                     <div class="form-box">
                         <label for="role">Role:</label>
                         <select id="role" name="role">
@@ -175,7 +179,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
             </div>
             <button type="submit" name="create_user" class="save-btn">Create User</button>
         </form>
-
         <!-- User table -->
         <div class="table-container">
             <table class="inventory-list">
@@ -205,7 +208,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
                             echo "<td>" . htmlspecialchars($row['last_name'] ?? "N/A") . "</td>";
                             echo "<td>" . htmlspecialchars($row['phone_number'] ?? "N/A") . "</td>";
                             echo "<td><a href='manage_users.php?user_id=" . htmlspecialchars($row['user_id']) . "' class='manage-btn'>Manage User</a></td>";
-                            
                             // Remove User button
                             echo "<td>
                                     <form method='POST' onsubmit='return confirm(\"Are you sure you want to delete this user?.\");'>
@@ -218,7 +220,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_user'])) {
                     } else {
                         echo "<tr><td colspan='8'>No users found.</td></tr>";
                     }
-                    
                     ?>
                 </tbody>
             </table>
