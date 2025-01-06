@@ -75,7 +75,6 @@ if (isset($_GET['export'])) {
                 <button type="submit">Search</button>
             </form>
         </div>
-        <a href="?export=true" class="export-btn">Export to CSV</a>
         <div class="table-container">
             <table class="inventory-list">
                 <thead>
