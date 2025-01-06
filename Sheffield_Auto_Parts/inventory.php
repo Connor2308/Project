@@ -1,6 +1,5 @@
 <?php
 include('include/init.php'); // Initialise, includes the database connection
-checkAdmin(); // Verifying admin
 
 // Sorting Section
 $sort_column = isset($_GET['sort_column']) ? $_GET['sort_column'] : 'part_id'; // Default sort column
