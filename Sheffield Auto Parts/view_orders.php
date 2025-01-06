@@ -269,6 +269,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['refresh_price'])) {
                     ?>
                 </tbody>
             </table>
+            
         </div>
     </div>
 </body>
