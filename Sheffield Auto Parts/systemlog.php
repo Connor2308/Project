@@ -1,23 +1,19 @@
 <?php
-include('include/init.php'); //Initialise the system
+include('include/init.php'); 
 checkAdmin();
-// Get the selected user filter from the dropdown (if any)
 $user_filter = isset($_POST['user_filter']) ? $_POST['user_filter'] : '';
 
-// SQL query to fetch log actions,
 $sql = "SELECT system_logs.log_id, system_logs.user_id, system_logs.user_name, system_logs.action_type, system_logs.log_description, system_logs.log_timestamp 
         FROM system_logs 
-        WHERE 1"; // 1 is a placeholder for the WHERE clause; we add conditions later
+        WHERE 1"; 
 
 if ($user_filter) {
-    $sql .= " AND system_logs.user_id = $user_filter"; //filter by selected user ID
+    $sql .= " AND system_logs.user_id = $user_filter"; 
 }
 
-$sql .= " ORDER BY system_logs.log_timestamp DESC"; //order logs by timestamp
+$sql .= " ORDER BY system_logs.log_timestamp DESC"; 
 
 $result = $con->query($sql);
-
-// Get the list of users for the dropdown filter
 $user_sql = "SELECT user_id, username FROM users ORDER BY username";
 $user_result = $con->query($user_sql);
 ?>
