@@ -1,7 +1,23 @@
 <?php
-include('include/init.php'); // Initialise, includes the database connection
+include('include/init.php');
 
-// Fetch parts with stock levels below the reorder level
+$records_per_page = 10; 
+
+$sql_count = "SELECT COUNT(*) AS total FROM parts WHERE quantity_in_stock < reorder_level";
+$result_count = $con->query($sql_count);
+$total_records = $result_count->fetch_assoc()['total'];
+
+$total_pages = ceil($total_records / $records_per_page);
+
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$start_from = ($page - 1) * $records_per_page;
+
+$order_by = isset($_GET['sort_by']) ? $_GET['sort_by'] : 'part_id';
+$order_dir = isset($_GET['order']) ? $_GET['order'] : 'ASC';
+$order_dir = ($order_dir === 'ASC') ? 'DESC' : 'ASC';
+
+$search_term = isset($_GET['search']) ? "%" . $_GET['search'] . "%" : "%";
+
 $sql = "SELECT 
             parts.part_id, 
             parts.part_name, 
@@ -12,11 +28,27 @@ $sql = "SELECT
         FROM parts 
         INNER JOIN suppliers ON parts.supplier_id = suppliers.supplier_id
         LEFT JOIN branches ON parts.branch_id = branches.branch_id
-        WHERE parts.quantity_in_stock < parts.reorder_level";
-$result = $con->query($sql);
+        WHERE parts.quantity_in_stock < parts.reorder_level
+        AND (parts.part_name LIKE ? OR suppliers.supplier_name LIKE ?)
+        ORDER BY $order_by $order_dir
+        LIMIT $start_from, $records_per_page";
 
-if (!$result) {
-    die("Error fetching stock alerts: " . $con->error);
+$stmt = $con->prepare($sql);
+$stmt->bind_param('ss', $search_term, $search_term);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if (isset($_GET['export'])) {
+    header('Content-Type: text/csv');
+    header('Content-Disposition: attachment; filename="stock_alerts.csv"');
+    $output = fopen('php://output', 'w');
+    fputcsv($output, ['Part ID', 'Part Name', 'Quantity in Stock', 'Reorder Level', 'Supplier', 'Branch']);
+
+    while ($row = $result->fetch_assoc()) {
+        fputcsv($output, $row);
+    }
+    fclose($output);
+    exit;
 }
 ?>
 
@@ -31,20 +63,31 @@ if (!$result) {
 </head>
 <body>
     <?php include('include/header.php'); ?>
-    
+
     <div class="page-container">
         <h2 class="page-title">Stock Alerts</h2>
-        
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <form method="get" action="">
+                <input type="text" name="search" placeholder="Search by part name or supplier" value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <!-- Export to CSV Button -->
+        <a href="?export=true" class="export-btn">Export to CSV</a>
+
         <div class="table-container">
             <table class="inventory-list">
                 <thead>
                     <tr>
-                        <th>Part ID</th>
-                        <th>Part Name</th>
-                        <th>Quantity in Stock</th>
-                        <th>Reorder Level</th>
-                        <th>Supplier</th>
-                        <th>Branch</th>
+                        <th><a href="?sort_by=part_id&order=<?php echo $order_dir; ?>">Part ID</a></th>
+                        <th><a href="?sort_by=part_name&order=<?php echo $order_dir; ?>">Part Name</a></th>
+                        <th><a href="?sort_by=quantity_in_stock&order=<?php echo $order_dir; ?>">Quantity in Stock</a></th>
+                        <th><a href="?sort_by=reorder_level&order=<?php echo $order_dir; ?>">Reorder Level</a></th>
+                        <th><a href="?sort_by=supplier_name&order=<?php echo $order_dir; ?>">Supplier</a></th>
+                        <th><a href="?sort_by=branch_name&order=<?php echo $order_dir; ?>">Branch</a></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -67,8 +110,17 @@ if (!$result) {
                 </tbody>
             </table>
         </div>
+
+        <!-- Pagination Links -->
+        <div class="pagination">
+            <?php
+            for ($i = 1; $i <= $total_pages; $i++) {
+                echo "<a href='stock_alerts.php?page=$i&sort_by=$order_by&order=$order_dir' class='" . ($i == $page ? 'active' : '') . "'>$i</a>";
+            }
+            ?>
+        </div>
     </div>
-    
+
     <?php include('include/footer.php'); ?>
 </body>
 </html>

@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jan 04, 2025 at 01:59 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: localhost
+-- Generation Time: Jan 06, 2025 at 01:01 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -40,6 +40,7 @@ CREATE TABLE `branches` (
 --
 
 INSERT INTO `branches` (`branch_id`, `branch_name`, `branch_address`, `branch_phone`, `branch_email`) VALUES
+(1, 'Main Branch', NULL, NULL, NULL),
 (5, 'Test Branch Test', 'bsvjfdbfvdil', 'uigolhfvdohvfd', 'bkvfjdbhvfd@gmailc.om');
 
 -- --------------------------------------------------------
@@ -165,7 +166,9 @@ INSERT INTO `parts` (`part_id`, `part_name`, `description`, `genre`, `manufactur
 (3000026, 'Timing Chain', 'Long-lasting timing chain for precise synchronization', 'Engine', 'SparkWorks', 70.00, 18, 6, 8000003, NULL),
 (3000027, 'Battery Cable', 'Durable cable for secure battery connections', 'Electrical', 'Engine Works', 20.50, 50, 15, 8000003, NULL),
 (3000028, 'Radiator Hose', 'Flexible radiator hose for efficient coolant flow', 'Cooling System', 'CoolFlow Ltd.', 18.99, 60, 20, 8000003, NULL),
-(3000029, 'Brake Fluid', 'High-performance brake fluid for safety', 'Brakes', 'Brakes Inc.', 12.50, 100, 25, 8000001, NULL);
+(3000029, 'Brake Fluid', 'High-performance brake fluid for safety', 'Brakes', 'Brakes Inc.', 12.50, 100, 25, 8000001, NULL),
+(3000037, 'Test Part 1', 'Description for Test Part 1', 'Genre 1', 'Manufacturer 1', 100.00, 5, 10, 8000001, 1),
+(3000038, 'Test Part 2', 'Description for Test Part 2', 'Genre 2', 'Manufacturer 2', 150.00, 2, 3, 8000002, 1);
 
 -- --------------------------------------------------------
 
@@ -402,7 +405,7 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT for table `parts`
 --
 ALTER TABLE `parts`
-  MODIFY `part_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3000031;
+  MODIFY `part_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3000039;
 
 --
 -- AUTO_INCREMENT for table `suppliers`

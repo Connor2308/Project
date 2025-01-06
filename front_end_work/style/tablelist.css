@@ -19,6 +19,8 @@ body {
     flex-direction: column;
     padding-top: 20px;
     margin: 0 auto;
+    align-items: center; /* Center the content horizontally */
+
 }
 
 /* Page title */
@@ -224,7 +226,75 @@ body {
 .inventory-list tbody tr:nth-child(odd) {
     background-color: #f9f9f9;
 }
+.search-bar {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end; 
+    gap: 10px; 
+    width: 33%; 
+    padding: 0 20px;
+    align-items: center;
+    flex-wrap: nowrap; 
+}
 
+.search-bar input {
+    padding: 12px; 
+    font-size: 16px; 
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    flex-grow: 1; 
+    min-width: 300px;
+    max-width: 600px; 
+}
+
+.search-bar button {
+    padding: 12px;
+    font-size: 16px; 
+    background-color: #79B7AC;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 10px;
+    flex-shrink: 0; 
+}
+
+.search-bar button:hover {
+    background-color: #68a097;
+}
+
+.export-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 20px 0;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.export-btn:hover {
+    background-color: #45a049;
+}
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    padding: 5px 10px;
+    margin: 0 2px;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.pagination a.active {
+    background-color: #79B7AC;
+    color: white;
+}
 /* Button container for stock update */
 .button-container {
     display: flex;
