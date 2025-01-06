@@ -18,6 +18,7 @@ $order_dir = ($order_dir === 'ASC') ? 'DESC' : 'ASC';
 
 $search_term = isset($_GET['search']) ? "%" . $_GET['search'] . "%" : "%";
 
+// Correcting the SQL query
 $sql = "SELECT 
             parts.part_id, 
             parts.part_name, 
@@ -28,16 +29,12 @@ $sql = "SELECT
         FROM parts 
         INNER JOIN suppliers ON parts.supplier_id = suppliers.supplier_id
         LEFT JOIN branches ON parts.branch_id = branches.branch_id
-<<<<<<< HEAD
         WHERE parts.quantity_in_stock < parts.reorder_level
         AND (parts.part_name LIKE ? OR suppliers.supplier_name LIKE ?)
         ORDER BY $order_by $order_dir
         LIMIT $start_from, $records_per_page";
-=======
-        WHERE parts.quantity_in_stock < parts.reorder_level"; // Select parts with stock levels below the reorder level
-$result = $con->query($sql);
->>>>>>> 4e6f348 (More CSS Fixes)
 
+// Prepare and bind parameters
 $stmt = $con->prepare($sql);
 $stmt->bind_param('ss', $search_term, $search_term);
 $stmt->execute();
