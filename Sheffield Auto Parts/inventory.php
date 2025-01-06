@@ -1,34 +1,29 @@
 <?php
-include('include/init.php'); // Initialise, includes the database connection
+include('include/init.php'); 
 
-// Sorting Section
-$sort_column = isset($_GET['sort_column']) ? $_GET['sort_column'] : 'part_id'; // Default sort column
-$sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'ASC'; // Default sort order
-$next_sort_order = ($sort_order == 'ASC') ? 'DESC' : 'ASC'; // Toggle sort order
+$sort_column = isset($_GET['sort_column']) ? $_GET['sort_column'] : 'part_id'; 
+$sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'ASC'; /
+$next_sort_order = ($sort_order == 'ASC') ? 'DESC' : 'ASC'; 
 
-// Handling filters
 $selected_genres = isset($_POST['genres']) ? $_POST['genres'] : []; 
 $min_price = isset($_POST['min_price']) && is_numeric($_POST['min_price']) ? $_POST['min_price'] : null;
 $max_price = isset($_POST['max_price']) && is_numeric($_POST['max_price']) ? $_POST['max_price'] : null;
 $branch_filter = isset($_POST['branch']) ? $_POST['branch'] : '';
 
-// Fetch all genres for the dropdown
-$genre_sql = "SELECT DISTINCT genre FROM parts"; //https://www.w3schools.com/sql/sql_distinct.asp here is the documentation for DISTINCT
+$genre_sql = "SELECT DISTINCT genre FROM parts";
 $genre_result = $con->query($genre_sql);
 $genres = [];
 while ($row = $genre_result->fetch_assoc()) {
-    $genres[] = $row['genre']; //saving the genre in the genres array
+    $genres[] = $row['genre']; 
 }
 
-// Fetch branches for the dropdown
 $branches_sql = "SELECT branch_id, branch_name FROM branches";
 $branches_result = $con->query($branches_sql);
 $branches = [];
 while ($row = $branches_result->fetch_assoc()) {
-    $branches[] = $row; //saving the branch_id and branch_name in the branches array 
+    $branches[] = $row; 
 }
 
-// Build the query based on the filters
 $sql = "SELECT 
             parts.part_id, 
             parts.part_name, 
@@ -44,7 +39,7 @@ $sql = "SELECT
         INNER JOIN suppliers ON parts.supplier_id = suppliers.supplier_id
         LEFT JOIN branches ON parts.branch_id = branches.branch_id";
 
-$conditions = []; // Array to store conditions
+$conditions = []; 
 
 if ($min_price !== null) {
     $conditions[] = "parts.unit_price >= $min_price";
@@ -66,18 +61,14 @@ if (!empty($conditions)) {
 
 $sql .= " ORDER BY $sort_column $sort_order";
 
-//
 $result = $con->query($sql);
 
-// Delete part
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
     $part_id = $_POST['part_id'];
 
-    // Begin transaction to ensure data consistency
     $con->begin_transaction();
 
     try {
-        // Delete all items in the order
         $delete_items_sql = "DELETE FROM order_items WHERE part_id = ?";
         $delete_items_stmt = $con->prepare($delete_items_sql);
         $delete_items_stmt->bind_param('i', $part_id);
@@ -85,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
             throw new Exception('Error deleting item from order items.');
         }
 
-        // Delete the order itself
         $delete_part_sql = "DELETE FROM parts WHERE part_id = ?";
         $delete_part_stmt = $con->prepare($delete_part_sql);
         $delete_part_stmt->bind_param('i', $part_id);
@@ -93,13 +83,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
             throw new Exception('Error deleting the parts.');
         }
 
-        // Commit the transaction
         $con->commit();
-        logAction($user_data['user_id'], $user_data['username'], 'DELETE', "Deleted Part ID: $part_id"); // Log the action here
-        header('Location: inventory.php'); // Redirect to parts page after successful removal
+        logAction($user_data['user_id'], $user_data['username'], 'DELETE', "Deleted Part ID: $part_id"); 
+        header('Location: inventory.php'); 
         exit;
     } catch (Exception $e) {
-        // Rollback in case of error
         $con->rollback();
         echo "<p>Error removing part: " . $e->getMessage() . "</p>";
     } 
@@ -229,7 +217,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_part'])) {
             </table>
         </div>
     </div>
-    <!-- Include JavaScript files -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="js/update_stock.js"></script>
 </body>
