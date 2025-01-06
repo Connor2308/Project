@@ -42,13 +42,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['create_order'])) {
 
         try {
             // insert the new order into the orders table
-            $insert_sql = "INSERT INTO orders (user_id, order_date, order_time, order_status, recipient_name) 
-                           VALUES (?, ?, ?, ?, ?)";
+            $insert_sql = "INSERT INTO orders (user_id, order_date, order_time, order_status, recipient_name, total_cost) 
+                           VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $con->prepare($insert_sql);
             if (!$stmt) {
                 throw new Exception("Prepare statement failed: " . $con->error);
             }
-            $stmt->bind_param('issss', $user_id, $order_date, $order_time, $order_status, $recipient_name);
+            $total_cost = 0.00; // Set total cost to 0
+            $stmt->bind_param('issssd', $user_id, $order_date, $order_time, $order_status, $recipient_name, $total_cost);
             if (!$stmt->execute()) {
                 throw new Exception("Execute statement failed: " . $stmt->error);
             }
