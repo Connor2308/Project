@@ -5,7 +5,7 @@ This project is an Inventory Management System for a Car Parts business. The web
 ===
 Setup
 ---
-To first set up the system please first have XAMPP installed, Start Apache and MySQL, when installed, go on PHPMyAdmin (Click admin on MySQL), then import the database with all the mock data into it this can be found in the GitHub repo under SQL in the Sheffield Auto Spares Folder.
+To first set up the system please first have XAMPP installed, Start Apache and MySQL, when installed, go on PHPMyAdmin (Click admin on MySQL), then import the database with all the mock data and tables into it this can be found in the GitHub repo under SQL in the Sheffield Auto Spares Folder.
 
 Then click the admin on apache and insert this link to access the page, http://localhost/Project/Sheffield_Auto_Parts/signin.php
 
@@ -21,4 +21,5 @@ Password: Password1
 ---
 
 Now you should be able to access our system.
+There is already some data in the sql ready for you to use.
 

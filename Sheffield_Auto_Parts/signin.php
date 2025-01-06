@@ -67,8 +67,6 @@ if (isset($_POST['username'], $_POST['password'])) {
     </div>
 </div>
 
-<?php include('include/footer.php') ?>
-
 <?php
 if (isset($_SESSION['error_message'])) {
     echo "<script>window.onload = function() { showErrorMessage('" . $_SESSION['error_message'] . "'); }</script>";
